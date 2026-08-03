@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { withBase } from '@/lib/paths';
+import Navbar from '@/components/nav/Navbar.astro';
+import Hero from '@/components/capa/Hero.astro';
+import Faixa from '@/components/sections/Faixa.astro';
+import Sobre from '@/components/sections/Sobre.astro';
+import FaixaMarca from '@/components/sections/FaixaMarca.astro';
+import PreAgendamentoSecao from '@/components/sections/PreAgendamentoSecao.astro';
+import Areas from '@/components/sections/Areas.astro';
+import ComoFunciona from '@/components/sections/ComoFunciona.astro';
+import Formacao from '@/components/sections/Formacao.astro';
+import Avaliacoes from '@/components/sections/Avaliacoes.astro';
+import Instagram from '@/components/sections/Instagram.astro';
+import Faq from '@/components/sections/Faq.astro';
+import Contato from '@/components/sections/Contato.astro';
+import Rodape from '@/components/sections/Rodape.astro';
+import Fab from '@/components/ui/Fab.astro';
+---
+
+<BaseLayout>
+  <Fragment slot="head">
+    <link
+      rel="preload"
+      as="image"
+      imagesrcset={`${withBase('/hero/hero-1280.avif')} 1280w, ${withBase('/hero/hero-1920.avif')} 1920w, ${withBase('/hero/hero-2560.avif')} 2560w`}
+      imagesizes="100vw"
+      media="(min-width: 768px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={withBase('/hero/poster.jpg')}
+      media="(max-width: 767px)"
+      fetchpriority="high"
+    />
+  </Fragment>
+
+  <Navbar />
+  <Hero />
+
+  <main id="conteudo">
+    <Faixa />
+    <Sobre />
+    <FaixaMarca />
+    <PreAgendamentoSecao />
+    <Areas />
+    <ComoFunciona />
+    <Formacao />
+    <Avaliacoes />
+    <Instagram />
+    <Faq />
+    <Contato />
+  </main>
+
+  <Rodape />
+  <Fab />
+</BaseLayout>

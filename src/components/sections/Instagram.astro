@@ -1,0 +1,179 @@
+---
+import { instagram } from '@/content/data';
+import { withBase } from '@/lib/paths';
+---
+
+<section id="instagram" aria-labelledby="instagram-titulo" class="overflow-hidden bg-bone">
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
+    <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
+      <div>
+        <p class="anima rotulo-caps flex items-center gap-2.5 text-gold-deep">
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.1a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          {instagram.usuario}
+        </p>
+        <h2
+          id="instagram-titulo"
+          class="anima mt-4 max-w-xl font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] text-ink"
+          style="--anima-delay: 80ms"
+        >
+          O dia a dia de quem <span class="texto-ouro">defende você</span>
+        </h2>
+        <p class="anima medida mt-4 text-ink-muted" style="--anima-delay: 140ms">
+          {instagram.texto}
+        </p>
+      </div>
+
+      <a
+        href={instagram.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-clean anima shrink-0 text-[0.95rem]"
+        style="--anima-delay: 180ms"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.1a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z"
+            fill="currentColor"
+          ></path>
+        </svg>
+        Seguir no Instagram
+      </a>
+    </div>
+
+    <div
+      id="trilho-reels"
+      class="carrossel sem-scrollbar anima mt-12"
+      style="--anima-delay: 160ms"
+      role="list"
+    >
+      {instagram.reels.map((r, i) => (
+        <figure
+          role="listitem"
+          class="group relative aspect-[9/16] overflow-hidden rounded-3xl bg-ink"
+        >
+          <video
+            class="reel h-full w-full object-cover"
+            preload="none"
+            playsinline
+            poster={withBase(`/reels/${r.arquivo}.jpg`)}
+            aria-label={`Vídeo do Instagram: ${r.legenda}`}
+          >
+            <source src={withBase(`/reels/${r.arquivo}.mp4`)} type="video/mp4" />
+          </video>
+
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-ink/90 to-transparent transition-opacity duration-300 group-hover:opacity-90"
+            aria-hidden="true"
+          >
+          </div>
+
+          <button
+            type="button"
+            class="reel-play absolute inset-0 flex items-center justify-center"
+            aria-label={`Assistir: ${r.legenda}`}
+            data-indice={i}
+          >
+            <span
+              class="flex h-16 w-16 items-center justify-center rounded-full border border-bone/50 bg-ink/35 text-bone backdrop-blur-sm transition-transform duration-300 group-hover:scale-110"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                <path d="M5 3l10 6-10 6z" fill="currentColor"></path>
+              </svg>
+            </span>
+          </button>
+
+          <figcaption
+            class="pointer-events-none absolute inset-x-0 bottom-0 p-5 text-bone"
+          >
+            <span class="rotulo-caps">{r.legenda}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const trilho = document.getElementById('trilho-reels');
+  if (trilho) {
+    /* Play manual com som (padrão dos reels: nada toca sozinho) */
+    trilho.querySelectorAll<HTMLButtonElement>('.reel-play').forEach((botao) => {
+      botao.addEventListener('click', () => {
+        const fig = botao.closest('figure');
+        const v = fig?.querySelector('video') as HTMLVideoElement | null;
+        if (!v) return;
+        trilho.querySelectorAll('video').forEach((outro) => {
+          if (outro !== v) {
+            outro.pause();
+            (outro.closest('figure')?.querySelector('.reel-play') as HTMLElement)?.classList.remove('opacity-0');
+          }
+        });
+        if (v.paused) {
+          v.play().catch(() => {});
+          botao.classList.add('opacity-0');
+        } else {
+          v.pause();
+          botao.classList.remove('opacity-0');
+        }
+      });
+    });
+
+    trilho.querySelectorAll('video').forEach((v) => {
+      v.addEventListener('click', () => {
+        const b = v.closest('figure')?.querySelector('.reel-play') as HTMLElement | null;
+        if (!v.paused) {
+          v.pause();
+          b?.classList.remove('opacity-0');
+        }
+      });
+      v.addEventListener('ended', () => {
+        const b = v.closest('figure')?.querySelector('.reel-play') as HTMLElement | null;
+        b?.classList.remove('opacity-0');
+      });
+    });
+
+    /* Arraste com o mouse (no toque o scroll nativo resolve) */
+    let arrastando = false;
+    let moveu = false;
+    let x0 = 0;
+    let scroll0 = 0;
+    trilho.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      arrastando = true;
+      moveu = false;
+      x0 = e.clientX;
+      scroll0 = trilho.scrollLeft;
+    });
+    trilho.addEventListener('pointermove', (e) => {
+      if (!arrastando) return;
+      const dx = e.clientX - x0;
+      if (Math.abs(dx) > 6) {
+        moveu = true;
+        trilho.classList.add('arrastando');
+      }
+      trilho.scrollLeft = scroll0 - dx;
+    });
+    const soltar = () => {
+      arrastando = false;
+      trilho.classList.remove('arrastando');
+    };
+    trilho.addEventListener('pointerup', soltar);
+    trilho.addEventListener('pointercancel', soltar);
+    trilho.addEventListener(
+      'click',
+      (e) => {
+        if (moveu) {
+          e.preventDefault();
+          e.stopPropagation();
+          moveu = false;
+        }
+      },
+      true
+    );
+  }
+</script>

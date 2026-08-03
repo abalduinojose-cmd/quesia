@@ -1,0 +1,39 @@
+---
+/**
+ * Cabeçalho de seção v3: numeração gigante apagada ao fundo + eyebrow dourado
+ * + título display (conteúdo via slot, para permitir spans .texto-ouro).
+ */
+interface Props {
+  numero: string;
+  eyebrow: string;
+  tema?: 'claro' | 'escuro';
+  alinhar?: 'esq' | 'dir';
+  tituloId?: string;
+}
+const { numero, eyebrow, tema = 'claro', alinhar = 'esq', tituloId } = Astro.props;
+---
+
+<div class={`relative ${alinhar === 'dir' ? 'text-right' : ''}`}>
+  <span
+    class={`numeral-fantasma ${tema === 'escuro' ? 'numeral-fantasma-claro' : ''} ${
+      alinhar === 'dir' ? 'right-0 -top-12' : '-left-3 -top-12'
+    }`}
+    aria-hidden="true"
+  >
+    {numero}
+  </span>
+  <p
+    class={`rotulo-caps anima relative z-10 ${tema === 'escuro' ? 'text-gold' : 'text-gold-deep'}`}
+  >
+    {eyebrow}
+  </p>
+  <h2
+    id={tituloId}
+    class={`anima relative z-10 mt-4 font-display text-[clamp(2.1rem,4.2vw,3.35rem)] leading-[1.06] ${
+      tema === 'escuro' ? 'text-bone' : 'text-ink'
+    } ${alinhar === 'dir' ? 'ml-auto' : ''} max-w-3xl`}
+    style="--anima-delay: 80ms"
+  >
+    <slot />
+  </h2>
+</div>

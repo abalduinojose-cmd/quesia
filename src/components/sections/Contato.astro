@@ -1,0 +1,102 @@
+---
+import { site, contato, numeroCapitulo } from '@/content/data';
+import TituloSecao from '@/components/ui/TituloSecao.astro';
+
+const redes = [
+  {
+    nome: 'Instagram',
+    url: site.social.instagram,
+    icone:
+      'M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.1a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z',
+  },
+  {
+    nome: 'Facebook',
+    url: site.social.facebook,
+    icone:
+      'M13.5 21v-7.2h2.4l.4-2.8h-2.8V9.2c0-.8.2-1.4 1.4-1.4h1.5V5.3c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8V11H8.1v2.8h2.4V21h3Z',
+  },
+  {
+    nome: 'LinkedIn',
+    url: site.social.linkedin,
+    icone:
+      'M6.9 8.6H4V20h2.9V8.6ZM5.4 7.3a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4ZM20 13.4c0-3-1.6-4.9-4.1-4.9-1.5 0-2.4.8-2.8 1.5V8.6H10.2V20h2.9v-6c0-1.4.7-2.3 2-2.3s1.9.9 1.9 2.3v6H20v-6.6Z',
+  },
+  {
+    nome: 'Perfil no Google',
+    url: site.social.google,
+    icone:
+      'M12 10.2v3.9h5.5a4.7 4.7 0 0 1-2 3.1l3.2 2.5c1.9-1.7 3-4.3 3-7.3 0-.7-.1-1.5-.2-2.2H12Zm-6.6 4.6a6.6 6.6 0 0 1 0-5.6L2.1 6.6a11 11 0 0 0 0 10.8l3.3-2.6ZM12 22c3 0 5.5-1 7.3-2.7l-3.2-2.5c-.9.6-2.1 1-4.1 1a7 7 0 0 1-6.6-4.6L2.1 15.8A11 11 0 0 0 12 22Zm0-17.6c1.6 0 3.1.6 4.2 1.7l3.1-3.1A11 11 0 0 0 2.1 6.6l3.3 2.6A7 7 0 0 1 12 4.4Z',
+  },
+];
+---
+
+<section
+  id="contato"
+  aria-labelledby="contato-titulo"
+  class="overflow-hidden bg-ink text-bone"
+>
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+    <TituloSecao
+      numero={numeroCapitulo('contato')}
+      eyebrow="Contato"
+      tema="escuro"
+      tituloId="contato-titulo"
+    >
+      Vamos conversar sobre o <span class="texto-ouro-claro">seu caso</span>?
+    </TituloSecao>
+
+    <p class="anima medida mt-8 text-bone-muted" style="--anima-delay: 80ms">
+      {contato.texto}
+    </p>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      <div class="cartao-escuro anima rounded-2xl p-8" style="--anima-delay: 120ms">
+        <p class="rotulo-caps text-gold">Escritório</p>
+        <p class="mt-4 font-display text-[1.5rem] leading-snug text-bone">
+          {site.endereco.linha1}
+        </p>
+        <p class="mt-1 text-bone-muted">{site.endereco.linha2}</p>
+        <a
+          href={site.endereco.mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="link-draw rotulo-caps mt-6 inline-block text-gold"
+        >
+          Ver rota no Google Maps&nbsp;&nbsp;→
+        </a>
+      </div>
+
+      <div class="cartao-escuro anima rounded-2xl p-8" style="--anima-delay: 200ms">
+        <p class="rotulo-caps text-gold">Canais e redes</p>
+        <div class="mt-5 flex items-center gap-4">
+          {redes.map((r) => (
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${r.nome}, abre em nova aba`}
+              class="flex h-11 w-11 items-center justify-center rounded-full border border-bone/20 text-bone-muted transition-colors duration-300 hover:border-gold hover:text-gold"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={r.icone} fill="currentColor"></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+        {
+          site.email && (
+            <a href={`mailto:${site.email}`} class="link-draw mt-5 inline-block text-bone">
+              {site.email}
+            </a>
+          )
+        }
+        <a
+          href="#pre-agendamento"
+          class="link-draw rotulo-caps mt-6 block text-gold"
+        >
+          Fazer pré-agendamento&nbsp;&nbsp;→
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

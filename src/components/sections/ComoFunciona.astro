@@ -1,0 +1,47 @@
+---
+import { processo, numeroCapitulo } from '@/content/data';
+import TituloSecao from '@/components/ui/TituloSecao.astro';
+---
+
+<section
+  id="como-funciona"
+  aria-labelledby="como-funciona-titulo"
+  class="overflow-hidden bg-bone"
+>
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+    <TituloSecao
+      numero={numeroCapitulo('como-funciona')}
+      eyebrow="Como funciona"
+      tituloId="como-funciona-titulo"
+      alinhar="dir"
+    >
+      Simples do primeiro <span class="texto-ouro">contato</span> à conclusão
+    </TituloSecao>
+
+    <div class="relative mt-16">
+      <div class="absolute left-0 right-0 top-7 hidden h-px bg-gold-soft md:block" aria-hidden="true"></div>
+      <div
+        class="anima-wipe absolute left-0 right-0 top-7 hidden h-px bg-gold md:block"
+        aria-hidden="true"
+      >
+      </div>
+
+      <ol class="grid gap-12 md:grid-cols-3 md:gap-8" role="list">
+        {processo.map((e, i) => (
+          <li class="anima relative" style={`--anima-delay: ${i * 140}ms`}>
+            <span
+              class="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border border-gold/45 bg-bone font-display italic text-[1.5rem] text-gold-deep"
+              aria-hidden="true"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="mt-6 font-display text-[1.45rem] leading-snug text-ink">
+              {e.titulo}
+            </h3>
+            <p class="medida-curta mt-3 text-[0.97rem] text-ink-muted">{e.texto}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>

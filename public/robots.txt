@@ -1,0 +1,6 @@
+# Quesia Constâncio Advocacia
+User-agent: *
+Allow: /
+
+# Prévia no GitHub Pages (trocar pelo domínio próprio quando houver)
+Sitemap: https://abalduinojose-cmd.github.io/quesia/sitemap-index.xml

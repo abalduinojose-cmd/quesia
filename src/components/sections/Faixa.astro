@@ -1,0 +1,58 @@
+---
+import { site, avaliacoes } from '@/content/data';
+
+const stats = [
+  {
+    valor: '5,0',
+    estrela: true,
+    rotulo: `${avaliacoes.total} avaliações no Google`,
+    href: avaliacoes.url,
+    contar: null,
+  },
+  { valor: '237.540', estrela: false, rotulo: 'Inscrição OAB/RJ', href: null, contar: null },
+  { valor: 'Pedro do Rio', estrela: false, rotulo: 'Petrópolis · RJ', href: null, contar: null },
+  {
+    valor: 'Presencial e online',
+    estrela: false,
+    rotulo: 'Atendimento em todo o Brasil',
+    href: null,
+    contar: null,
+  },
+];
+---
+
+<section aria-label="Credenciais em números" class="bg-ink text-bone">
+  <div
+    class="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-y-10 px-5 py-16 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-x-12 lg:px-12 lg:py-20"
+  >
+    {stats.map((s, i) => {
+      const Tag = s.href ? 'a' : 'div';
+      return (
+        <Tag
+          class="cartao-escuro anima group rounded-2xl p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-gold/50"
+          style={`--anima-delay: ${i * 90}ms`}
+          {...(s.href
+            ? { href: s.href, target: '_blank', rel: 'noopener noreferrer' }
+            : {})}
+        >
+          <span class="regua-tick" aria-hidden="true"></span>
+          <p class="texto-ouro-claro mt-5 font-display text-[2.1rem] leading-tight">
+            {s.valor}
+            {s.estrela && <span aria-hidden="true"> ★</span>}
+          </p>
+          <p class="rotulo-caps mt-2 text-bone-muted">
+            {s.rotulo}
+            {s.href && (
+              <span
+                class="ml-1 inline-block text-gold transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden="true"
+              >
+                →
+              </span>
+            )}
+          </p>
+        </Tag>
+      );
+    })}
+  </div>
+</section>

@@ -1,0 +1,13 @@
+---
+interface Props {
+  forte?: boolean;
+  classe?: string;
+}
+const { forte = false, classe = '' } = Astro.props;
+---
+
+<div
+  class={`h-px w-full ${forte ? 'bg-gold/45' : 'bg-gold-soft'} ${classe}`}
+  aria-hidden="true"
+>
+</div>
