@@ -83,9 +83,14 @@ visitantes automaticamente.
 
 6. Rode `npm run build:pages`, faça commit e push. Pronto.
 
-Enquanto o `.env` não existir, o site funciona no modo antigo (grade.json) e o
-painel avisa o que falta. A chave anon é pública por natureza: quem tem ela só
-consegue ler a agenda e criar um agendamento, nunca alterar horários.
+**A troca é automática.** Sem o `.env`, o `/admin` mostra o painel local
+(usuário `quesiaadv`, senha `123456`, com botão Publicar) e o site lê o
+`grade.json`. Assim que as chaves entrarem e o site for gerado de novo, o mesmo
+endereço passa a mostrar o painel do Supabase, com login por e-mail e
+sincronização na hora. Nenhum link muda.
+
+A chave anon é pública por natureza: quem tem ela só consegue ler a agenda e
+criar um agendamento, nunca alterar horários.
 
 ## Agenda e painel da equipe
 

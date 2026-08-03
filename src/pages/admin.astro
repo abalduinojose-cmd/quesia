@@ -2,7 +2,12 @@
 import '@/styles/global.css';
 import { site } from '@/content/data';
 import { withBase } from '@/lib/paths';
+import { temSupabase } from '@/lib/supabase';
 import Painel from '@/components/admin/Painel';
+import PainelLocal from '@/components/admin/PainelLocal.astro';
+
+/* Com as chaves do Supabase no .env, entra o painel que salva no banco e
+   sincroniza sozinho. Sem elas, segue o painel que publica o grade.json. */
 ---
 
 <!doctype html>
@@ -15,6 +20,12 @@ import Painel from '@/components/admin/Painel';
     <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
   </head>
   <body class="min-h-dvh bg-bone-dim text-ink">
-    <Painel client:load urlGrade={withBase('/grade.json')} />
+    {
+      temSupabase ? (
+        <Painel client:load urlGrade={withBase('/grade.json')} />
+      ) : (
+        <PainelLocal />
+      )
+    }
   </body>
 </html>
