@@ -1,0 +1,38 @@
+---
+import { formacao, numeroCapitulo } from '@/content/data';
+import TituloSecao from '@/components/ui/TituloSecao.astro';
+
+const temPendencia = formacao.some((f) => f.confirmar);
+---
+
+<section id="formacao" aria-labelledby="formacao-titulo" class="overflow-hidden bg-bone">
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
+    <TituloSecao
+      numero={numeroCapitulo('formacao')}
+      eyebrow="Formação e atuação"
+      tituloId="formacao-titulo"
+    >
+      Estudo constante, atuação de <span class="texto-ouro">confiança</span>
+    </TituloSecao>
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-2" role="list">
+      {formacao.map((f, i) => (
+        <li
+          class="cartao anima rounded-2xl px-7 py-6"
+          style={`--anima-delay: ${i * 80}ms`}
+        >
+          <p class="font-display text-[1.3rem] leading-snug text-ink">{f.titulo}</p>
+          <p class="rotulo-caps mt-2 text-ink-muted">
+            {f.detalhe}{f.confirmar ? ' *' : ''}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    {temPendencia && (
+      <p class="anima mt-6 text-sm text-ink-muted">
+        * Informações em atualização com a advogada.
+      </p>
+    )}
+  </div>
+</section>

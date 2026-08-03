@@ -1,0 +1,50 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/content/data';
+import { withBase } from '@/lib/paths';
+import Hairline from '@/components/ui/Hairline.astro';
+---
+
+<BaseLayout
+  titulo={`Política de privacidade · ${site.nome} ${site.sufixo}`}
+  descricao="Como este site trata os seus dados: sem cookies de rastreamento e com contato direto pelo WhatsApp."
+  caminho="/privacidade"
+>
+  <main class="mx-auto w-full max-w-3xl px-5 py-20 sm:px-8">
+    <a href={withBase('/')} class="link-draw rotulo-caps text-gold-deep">
+      ← Voltar ao site
+    </a>
+
+    <h1 class="mt-10 font-display text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.05] text-ink">
+      Política de privacidade
+    </h1>
+    <Hairline classe="mt-8" />
+
+    <div class="mt-10 flex flex-col gap-6 text-ink-muted">
+      <p>
+        Este site é uma página informativa de {site.nome} {site.sufixo} e foi
+        construído para respeitar a sua privacidade.
+      </p>
+      <p>
+        Não utilizamos cookies de rastreamento, pixels de publicidade nem
+        ferramentas de análise que identifiquem você. Nenhum dado pessoal é
+        coletado ou armazenado pelo site enquanto você navega.
+      </p>
+      <p>
+        O pré-agendamento funciona montando uma mensagem que é aberta no seu
+        próprio aplicativo de WhatsApp. As informações que você digitar (nome e
+        resumo do caso) seguem direto para a conversa com a advogada e não
+        passam por servidores deste site.
+      </p>
+      <p>
+        As conversas por WhatsApp, e-mail ou redes sociais são protegidas pelo
+        sigilo profissional da advocacia, nos termos do Estatuto da Advocacia
+        (Lei 8.906/1994) e do Código de Ética e Disciplina da OAB.
+      </p>
+      <p>
+        Para qualquer solicitação relacionada a dados pessoais, fale diretamente
+        com a advogada pelo WhatsApp {site.whatsapp.display}.
+      </p>
+    </div>
+  </main>
+</BaseLayout>

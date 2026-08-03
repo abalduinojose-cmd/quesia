@@ -1,0 +1,150 @@
+---
+import { site, rodape, capitulos, especialidades } from '@/content/data';
+import { withBase } from '@/lib/paths';
+import { waLink, waMensagemPadrao } from '@/lib/wa';
+
+const ano = new Date().getFullYear();
+
+const redes = [
+  {
+    nome: 'Instagram',
+    url: site.social.instagram,
+    d: 'M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2Zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm5.3-3.1a1.05 1.05 0 1 1 0 2.1 1.05 1.05 0 0 1 0-2.1Z',
+  },
+  {
+    nome: 'Facebook',
+    url: site.social.facebook,
+    d: 'M13.5 21v-7.2h2.4l.4-2.8h-2.8V9.2c0-.8.2-1.4 1.4-1.4h1.5V5.3c-.3 0-1.2-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8V11H8.1v2.8h2.4V21h3Z',
+  },
+  {
+    nome: 'WhatsApp',
+    url: waLink(waMensagemPadrao),
+    d: 'M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.5-.3-2.5.7.7-2.5-.3-.5A8 8 0 0 1 12 4Zm-3 4.4c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.1 0 1.3.9 2.5 1 2.7.1.2 1.8 2.9 4.5 3.9 2.2.9 2.7.7 3.1.7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.9c-.2-.1-.4-.1-.6.1l-.8.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2-.1-.4 0-.5l.6-.8c.2-.2.2-.4.1-.6l-.8-1.9c-.2-.5-.4-.7-.5-.7Z',
+  },
+  {
+    nome: 'Como chegar',
+    url: site.endereco.mapsUrl,
+    d: 'M12 2a7 7 0 0 1 7 7c0 4.4-4.6 9.9-6.3 11.8a1 1 0 0 1-1.4 0C9.6 18.9 5 13.4 5 9a7 7 0 0 1 7-7Zm0 2a5 5 0 0 0-5 5c0 2.9 2.9 7 5 9.5 2.1-2.5 5-6.6 5-9.5a5 5 0 0 0-5-5Zm0 2.6a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8Z',
+  },
+];
+---
+
+<footer class="relative overflow-hidden bg-ink text-bone">
+  <div class="h-px w-full bg-gradient-to-r from-transparent via-gold/60 to-transparent" aria-hidden="true"></div>
+
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
+    <!-- Chamada final -->
+    <div class="flex flex-col items-start justify-between gap-8 pb-14 lg:flex-row lg:items-end">
+      <div>
+        <p class="font-display text-[clamp(1.8rem,3.4vw,2.6rem)] leading-[1.1] text-bone">
+          Pronto para dar o <span class="texto-ouro-claro">primeiro passo</span>?
+        </p>
+        <p class="medida-curta mt-3 text-bone-muted">
+          Fale com a advogada hoje mesmo, sem compromisso.
+        </p>
+      </div>
+      <a
+        href={waLink(waMensagemPadrao)}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-clean shrink-0 text-[0.95rem]"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d={redes[2].d} fill="currentColor"></path>
+        </svg>
+        Conversar no WhatsApp
+      </a>
+    </div>
+
+    <div class="h-px w-full bg-bone/10" aria-hidden="true"></div>
+
+    <!-- Três colunas -->
+    <div class="grid gap-12 py-14 md:grid-cols-3">
+      <div>
+        <div class="flex items-center gap-4">
+          <img
+            src={withBase('/logos/qc-mark-bone.png')}
+            alt=""
+            width="40"
+            height="46"
+            loading="lazy"
+            decoding="async"
+            class="h-11 w-auto"
+          />
+          <div>
+            <p class="font-display text-[1.3rem] leading-tight">{site.nome}</p>
+            <p class="rotulo-caps mt-1 text-bone-muted">{site.oab}</p>
+          </div>
+        </div>
+        <p class="mt-6 max-w-xs text-sm leading-relaxed text-bone-muted">
+          {especialidades.join(' · ')}
+        </p>
+      </div>
+
+      <nav aria-label="Navegação do rodapé">
+        <p class="rotulo-caps text-gold">Navegação</p>
+        <ul class="mt-5 grid grid-cols-2 gap-x-6 gap-y-3" role="list">
+          {capitulos.map((c) => (
+            <li>
+              <a
+                href={`#${c.id}`}
+                class="link-draw text-sm text-bone-muted transition-colors hover:text-bone"
+              >
+                {c.curto}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div>
+        <p class="rotulo-caps text-gold">Contato</p>
+        <address class="mt-5 flex flex-col gap-2 not-italic text-sm text-bone-muted">
+          <a href={waLink(waMensagemPadrao)} target="_blank" rel="noopener noreferrer" class="link-draw w-fit transition-colors hover:text-bone">
+            {site.whatsapp.display}
+          </a>
+          <span>{site.endereco.linha1}</span>
+          <span>{site.endereco.linha2}</span>
+        </address>
+
+        <div class="mt-6 flex items-center gap-3">
+          {redes.map((r) => (
+            <a
+              href={r.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${r.nome}, abre em nova aba`}
+              class="flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.06] text-bone-muted transition-colors duration-300 hover:bg-gold hover:text-ink"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+                <path d={r.d} fill="currentColor"></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="h-px w-full bg-bone/10" aria-hidden="true"></div>
+
+    <!-- Avisos e legais -->
+    <div class="flex flex-col gap-6 pt-10">
+      <div class="flex max-w-4xl flex-col gap-2">
+        {rodape.avisos.map((a) => (
+          <p class="text-xs leading-relaxed text-bone-muted/80">{a}</p>
+        ))}
+      </div>
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <p class="text-xs text-bone-muted">
+          © {ano} {site.nome} {site.sufixo}
+        </p>
+        <a
+          href={withBase('/privacidade')}
+          class="link-draw text-xs text-bone-muted transition-colors hover:text-bone"
+        >
+          Política de privacidade
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

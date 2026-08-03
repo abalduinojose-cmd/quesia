@@ -1,0 +1,6 @@
+# Quesia Constâncio Advocacia
+User-agent: *
+Allow: /
+
+# Ajuste o domínio quando publicar (mesmo SITE_URL/BASE_PATH do build)
+Sitemap: https://abjpublicidade.github.io/quesia-constancio/sitemap-index.xml

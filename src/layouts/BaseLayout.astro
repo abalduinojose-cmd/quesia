@@ -1,0 +1,162 @@
+---
+import '@/styles/global.css';
+import interWoff from '../assets/fonts/inter-var.woff2?url';
+import serifWoff from '../assets/fonts/fraunces-var.woff2?url';
+import { seo, site } from '@/content/data';
+import { jsonLdAttorney } from '@/lib/schema';
+import { withBase } from '@/lib/paths';
+
+interface Props {
+  titulo?: string;
+  descricao?: string;
+  /** caminho relativo ao site, ex.: "/privacidade" */
+  caminho?: string;
+}
+
+const {
+  titulo = seo.titulo,
+  descricao = seo.descricao,
+  caminho = '/',
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://abjpublicidade.github.io');
+const canonical = new URL(withBase(caminho), siteUrl).toString();
+const ogImage = new URL(withBase('/og.jpg'), siteUrl).toString();
+const logoAbs = new URL(withBase('/logos/qc-lockup.png'), siteUrl).toString();
+const jsonLd = JSON.stringify(jsonLdAttorney(canonical, logoAbs, ogImage));
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <title>{titulo}</title>
+    <meta name="description" content={descricao} />
+    <meta name="keywords" content={seo.palavrasChave.join(', ')} />
+    <meta name="author" content={`${site.nome} ${site.sufixo}`} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#FAF9F9" />
+
+    <link rel="icon" type="image/png" sizes="48x48" href={withBase('/favicon.png')} />
+    <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
+
+    <link
+      rel="preload"
+      href={serifWoff}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={interWoff}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={`${site.nome} ${site.sufixo}`} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descricao} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descricao} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={jsonLd} />
+    <slot name="head" />
+  </head>
+  <body class="bg-bone text-ink font-sans">
+    <a
+      href="#conteudo"
+      class="rotulo-caps sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-ink focus:text-bone focus:px-4 focus:py-2"
+    >
+      Pular para o conteúdo
+    </a>
+
+    <slot />
+
+    <script>
+      import Lenis from 'lenis';
+      import 'lenis/dist/lenis.css';
+
+      const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Reveals: adiciona .in quando o elemento entra na viewport */
+      const alvos = document.querySelectorAll(
+        '.anima, .anima-fade, .anima-mask, .anima-wipe, .anima-color, .anima-draw'
+      );
+      if (reduz) {
+        alvos.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entradas) => {
+            for (const e of entradas) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
+        );
+        alvos.forEach((el) => io.observe(el));
+      }
+
+      /* Contadores numéricos */
+      const contadores = document.querySelectorAll<HTMLElement>('[data-count-to]');
+      const animaContagem = (el: HTMLElement) => {
+        const fim = Number(el.dataset.countTo ?? '0');
+        if (reduz || !Number.isFinite(fim)) {
+          el.textContent = String(fim);
+          return;
+        }
+        const dur = 1400;
+        const t0 = performance.now();
+        const tick = (t: number) => {
+          const p = Math.min(1, (t - t0) / dur);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = String(Math.round(fim * eased));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+      const ioCont = new IntersectionObserver(
+        (entradas) => {
+          for (const e of entradas) {
+            if (e.isIntersecting) {
+              animaContagem(e.target as HTMLElement);
+              ioCont.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.4 }
+      );
+      contadores.forEach((el) => ioCont.observe(el));
+
+      /* Smooth scroll com Lenis + âncoras do sumário */
+      if (!reduz) {
+        const lenis = new Lenis({ autoRaf: true, duration: 1.05 });
+        document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+          a.addEventListener('click', (ev) => {
+            const hash = a.getAttribute('href');
+            if (!hash || hash === '#') return;
+            const alvo = document.querySelector(hash);
+            if (!alvo) return;
+            ev.preventDefault();
+            lenis.scrollTo(alvo as HTMLElement, { offset: -78 });
+            history.pushState(null, '', hash);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

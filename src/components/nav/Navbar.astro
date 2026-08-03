@@ -1,0 +1,98 @@
+---
+import { capitulos, site } from '@/content/data';
+import { waLink, waMensagemPadrao } from '@/lib/wa';
+import { withBase } from '@/lib/paths';
+---
+
+<nav id="navbar" class="fixed inset-x-0 top-0 z-50" aria-label="Navegação do site">
+  <div
+    class="mx-auto flex h-[4.5rem] w-full max-w-[1280px] items-center justify-between gap-5 px-5 sm:px-8 lg:px-12"
+  >
+    <a href="#topo" class="flex items-center gap-3" aria-label="Voltar ao topo">
+      <img
+        class="nav-logo-claro h-9 w-auto"
+        src={withBase('/logos/qc-mark-bone.png')}
+        alt=""
+        width="34"
+        height="38"
+      />
+      <img
+        class="nav-logo-escuro h-9 w-auto"
+        src={withBase('/logos/qc-mark.png')}
+        alt=""
+        width="34"
+        height="38"
+      />
+      <span class="nav-tinta rotulo-caps hidden sm:block">{site.nome}</span>
+    </a>
+
+    <div class="hidden items-center gap-7 lg:flex">
+      {capitulos.map((c) => (
+        <a href={`#${c.id}`} class="nav-tinta-suave link-draw text-[0.9rem]">
+          {c.curto}
+        </a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={waLink(waMensagemPadrao)}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="nav-btn rotulo-caps hidden rounded-full px-5 py-2.5 sm:inline-flex"
+      >
+        WhatsApp
+      </a>
+
+      <details id="menu-mobile" class="relative lg:hidden">
+        <summary
+          class="nav-btn flex h-11 w-11 items-center justify-center rounded-full"
+          aria-label="Abrir menu"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+            <path
+              d="M2 4.5h14M2 9h14M2 13.5h14"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            ></path>
+          </svg>
+        </summary>
+        <div
+          class="absolute right-0 top-14 w-64 rounded-2xl border border-bone/10 bg-ink p-3 shadow-2xl"
+        >
+          {capitulos.map((c) => (
+            <a
+              href={`#${c.id}`}
+              class="block rounded-xl px-4 py-3 text-[0.95rem] text-bone-muted transition-colors hover:bg-white/5 hover:text-bone"
+            >
+              {c.titulo}
+            </a>
+          ))}
+          <a
+            href={waLink(waMensagemPadrao)}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-ouro rotulo-caps mt-2 w-full !py-3"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </details>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('navbar');
+  const aoRolar = () => nav?.classList.toggle('nav-solida', window.scrollY > 40);
+  aoRolar();
+  document.addEventListener('scroll', aoRolar, { passive: true });
+
+  const menu = document.getElementById('menu-mobile') as HTMLDetailsElement | null;
+  menu?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      menu.open = false;
+    })
+  );
+</script>

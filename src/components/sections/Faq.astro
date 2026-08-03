@@ -1,0 +1,81 @@
+---
+import { faq, numeroCapitulo } from '@/content/data';
+import { waLink } from '@/lib/wa';
+import TituloSecao from '@/components/ui/TituloSecao.astro';
+
+const waDuvida = waLink('Olá, Dra. Quesia! Vim pelo site e fiquei com uma dúvida.');
+---
+
+<section id="faq" aria-labelledby="faq-titulo" class="overflow-hidden bg-bone-dim">
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+    <div class="grid gap-14 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <TituloSecao
+          numero={numeroCapitulo('faq')}
+          eyebrow="Perguntas frequentes"
+          tituloId="faq-titulo"
+        >
+          Dúvidas que chegam <span class="texto-ouro">todos os dias</span>
+        </TituloSecao>
+
+        <div
+          class="cartao anima mt-10 rounded-2xl p-7"
+          style="--anima-delay: 160ms"
+        >
+          <p class="font-display text-[1.3rem] leading-snug text-ink">
+            Não achou a sua dúvida?
+          </p>
+          <p class="mt-2 text-[0.95rem] text-ink-muted">
+            Perguntar não custa nada e a resposta vem da própria advogada.
+          </p>
+          <a
+            href={waDuvida}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-5 inline-flex items-center gap-2.5 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 2a8 8 0 1 1-4.2 14.8l-.5-.3-2.5.7.7-2.5-.3-.5A8 8 0 0 1 12 4Zm-3 4.4c-.2 0-.5.1-.7.4-.2.3-.9.9-.9 2.1 0 1.3.9 2.5 1 2.7.1.2 1.8 2.9 4.5 3.9 2.2.9 2.7.7 3.1.7.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.2-.2-.5-.3l-1.7-.9c-.2-.1-.4-.1-.6.1l-.8.9c-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.1-.2-.1-.4 0-.5l.6-.8c.2-.2.2-.4.1-.6l-.8-1.9c-.2-.5-.4-.7-.5-.7Z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            Perguntar no WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-8">
+        {faq.map((f, i) => (
+          <details
+            class="acordeao cartao anima mb-4 rounded-2xl px-7"
+            style={`--anima-delay: ${i * 60}ms`}
+            open={i === 0}
+          >
+            <summary class="flex items-center justify-between gap-5 py-6">
+              <span class="flex items-baseline gap-4">
+                <span class="texto-ouro font-display italic text-[1.15rem]" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class="font-display text-[1.22rem] leading-snug text-ink sm:text-[1.35rem]">
+                  {f.pergunta}
+                </span>
+              </span>
+              <span
+                class="acordeao-icone flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold-deep"
+                aria-hidden="true"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12">
+                  <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+                </svg>
+              </span>
+            </summary>
+            <p class="medida border-t border-gold-soft pb-7 pt-5 text-[0.97rem] text-ink-muted sm:pl-11">
+              {f.resposta}
+            </p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
