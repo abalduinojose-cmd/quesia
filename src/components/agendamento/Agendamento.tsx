@@ -16,6 +16,7 @@ import {
 
 interface Props {
   areasOpcoes: string[];
+  assuntos: Record<string, string[]>;
   modalidades: string[];
   intro: string;
   aviso: string;
@@ -29,17 +30,11 @@ const esquemaNome = z
   .min(2, 'Digite o seu nome para incluir na mensagem.')
   .max(80, 'Use um nome mais curto.');
 
-const perguntas = [
-  'Qual área tem a ver com o seu caso?',
-  'Como você prefere ser atendido?',
-  'Escolha o melhor dia e horário',
-  'Para terminar, como a advogada deve te chamar?',
-];
-
-const rotulos = ['Área', 'Atendimento', 'Data', 'Dados'];
+const rotulos = ['Assunto', 'Atendimento', 'Data', 'Dados'];
 
 export default function Agendamento({
   areasOpcoes,
+  assuntos,
   modalidades,
   intro,
   aviso,
@@ -48,6 +43,7 @@ export default function Agendamento({
 }: Props) {
   const [passo, setPasso] = useState(0);
   const [area, setArea] = useState<string | null>(null);
+  const [assunto, setAssunto] = useState<string | null>(null);
   const [modalidade, setModalidade] = useState<string | null>(null);
   const [dia, setDia] = useState<string | null>(null);
   const [hora, setHora] = useState<string | null>(null);
@@ -86,9 +82,23 @@ export default function Agendamento({
     tituloRef.current?.focus({ preventScroll: true });
   }, [passo]);
 
+  const listaAssuntos = area ? (assuntos[area] ?? []) : [];
+  /* No passo 0 o voltar desfaz a área escolhida antes de sair do passo. */
   const voltar = () => {
     setErro(null);
+    if (passo === 0 && area) {
+      setArea(null);
+      setAssunto(null);
+      return;
+    }
     setPasso((p) => Math.max(0, p - 1));
+  };
+
+  const escolherArea = (a: string) => {
+    setArea(a);
+    setAssunto(null);
+    /* "Outro assunto" não tem sublista: segue direto */
+    if ((assuntos[a] ?? []).length === 0) setPasso(1);
   };
 
   const validarNome = () => {
@@ -103,6 +113,7 @@ export default function Agendamento({
     const linhas = [
       'Olá, Dra. Quesia! Vim pelo site e gostaria de agendar um atendimento.',
       `Área: ${area ?? 'a definir'}`,
+      ...(assunto ? [`Assunto: ${assunto}`] : []),
       `Atendimento: ${modalidade ?? 'a combinar'}`,
       dia && hora
         ? `Data escolhida: ${descreveEscolha(dia, hora)}`
@@ -161,10 +172,22 @@ export default function Agendamento({
   const diaSelecionado = dias.find((d) => d.iso === dia) ?? null;
 
   const chips = [
-    area,
+    passo > 0 ? area : null,
+    passo > 0 ? assunto : null,
     passo > 1 ? modalidade : null,
     passo > 2 && dia && hora ? descreveEscolha(dia, hora) : null,
   ].filter(Boolean) as string[];
+
+  const pergunta =
+    passo === 0
+      ? area
+        ? `O que você precisa em ${area}?`
+        : 'Qual área tem a ver com o seu caso?'
+      : passo === 1
+        ? 'Como você prefere ser atendido?'
+        : passo === 2
+          ? 'Escolha o melhor dia e horário'
+          : 'Para terminar, como a advogada deve te chamar?';
 
   return (
     <div className="cartao-escuro overflow-hidden rounded-3xl">
@@ -236,24 +259,56 @@ export default function Agendamento({
           tabIndex={-1}
           className="font-display text-[1.65rem] leading-snug text-bone outline-none"
         >
-          {perguntas[passo]}
+          {pergunta}
         </h3>
 
-        {passo === 0 && (
+        {passo === 0 && !area && (
           <p className="medida-curta mt-3 text-[0.95rem] text-bone-muted">{intro}</p>
         )}
+        {passo === 0 && area && listaAssuntos.length > 0 && (
+          <p className="medida-curta mt-3 text-[0.95rem] text-bone-muted">
+            Escolha o tema mais próximo do seu caso. Assim a advogada já chega na
+            conversa sabendo do que se trata.
+          </p>
+        )}
 
-        <div key={passo} className="pa-passo">
+        <div key={`${passo}-${area ?? ''}`} className="pa-passo">
           {passo === 0 &&
-            escolha(
-              areasOpcoes,
-              area,
-              (o) => {
-                setArea(o);
-                setPasso(1);
-              },
-              'sm:grid-cols-2'
-            )}
+            !area &&
+            escolha(areasOpcoes, area, escolherArea, 'sm:grid-cols-2')}
+
+          {passo === 0 && area && listaAssuntos.length > 0 && (
+            <div className="mt-8 flex flex-col gap-2.5">
+              {listaAssuntos.map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  aria-pressed={assunto === t}
+                  onClick={() => {
+                    setAssunto(t);
+                    setPasso(1);
+                  }}
+                  className={`group flex cursor-pointer items-center gap-3.5 rounded-xl border px-5 py-3.5 text-left text-[0.94rem] transition-all duration-300 ${
+                    assunto === t
+                      ? 'border-gold bg-gold/10 text-gold'
+                      : 'border-bone/15 bg-white/[0.03] text-bone hover:border-gold/50 hover:bg-white/[0.06]'
+                  }`}
+                >
+                  <span
+                    className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold/70 transition-transform duration-300 group-hover:scale-150"
+                    aria-hidden="true"
+                  />
+                  <span className="flex-1">{t}</span>
+                  <span
+                    className="text-gold/0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-gold"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
 
           {passo === 1 &&
             escolha(
@@ -423,7 +478,7 @@ export default function Agendamento({
           )}
         </div>
 
-        {passo > 0 && (
+        {(passo > 0 || area) && (
           <button
             type="button"
             onClick={voltar}

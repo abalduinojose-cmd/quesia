@@ -1,5 +1,5 @@
 ---
-import { site, preAgendamento, numeroCapitulo } from '@/content/data';
+import { site, preAgendamento, assuntosPorArea, numeroCapitulo } from '@/content/data';
 import { withBase } from '@/lib/paths';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 import Agendamento from '@/components/agendamento/Agendamento';
@@ -7,8 +7,8 @@ import Agendamento from '@/components/agendamento/Agendamento';
 const passos = [
   {
     n: '01',
-    t: 'Escolha a área',
-    d: 'Previdenciário, Imobiliário, Sucessório ou outro assunto.',
+    t: 'Escolha a área e o assunto',
+    d: 'Previdenciário, Imobiliário ou Sucessório, e o tema exato do seu caso.',
   },
   {
     n: '02',
@@ -74,6 +74,7 @@ const passos = [
           <Agendamento
             client:load
             areasOpcoes={[...preAgendamento.areas]}
+            assuntos={assuntosPorArea}
             modalidades={[...preAgendamento.modalidades]}
             intro={preAgendamento.intro}
             aviso={preAgendamento.aviso}

@@ -52,8 +52,11 @@ underscore) e os assets saem em `assets/` justamente por isso.
 
 ## Agenda e painel da equipe
 
-- **Painel:** https://abalduinojose-cmd.github.io/quesia/admin · senha `quesia2026`
-  (trocar em `src/pages/admin.astro`, constante `SENHA`).
+- **Painel:** https://abalduinojose-cmd.github.io/quesia/admin
+  Usuário `quesiaadv` · senha `123456` (trocar em `src/pages/admin.astro`,
+  constantes `USUARIO` e `SENHA`).
+- Três abas: **Próximos dias** (marcar ocupado, bloquear data), **Grade fixa**
+  (horários de cada dia da semana) e **Ajustes** (antecedência e janela).
 - A grade fica em `public/grade.json` e é lida **em tempo de execução**, então
   publicar horários novos NÃO exige recompilar o site.
 - No painel a equipe marca os horários de cada dia da semana, bloqueia datas

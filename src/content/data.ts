@@ -482,6 +482,12 @@ export const faq: PerguntaFaq[] = [
   },
 ];
 
+/** Assuntos de cada área, para o segundo filtro do agendamento. */
+export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([
+  ...areas.map((a) => [a.tituloCurto, [...a.topicos, `Outro tema de ${a.tituloCurto}`]]),
+  ['Outro assunto', []],
+]);
+
 export const preAgendamento = {
   titulo: 'Agendamento',
   intro:

@@ -23,34 +23,37 @@ const stats = [
 
 <section aria-label="Credenciais em números" class="bg-ink text-bone">
   <div
-    class="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-y-10 px-5 py-16 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:gap-x-12 lg:px-12 lg:py-20"
+    class="mx-auto grid w-full max-w-[1280px] grid-cols-2 gap-3 px-5 py-14 sm:gap-4 sm:px-8 lg:px-12 lg:py-16"
   >
     {stats.map((s, i) => {
       const Tag = s.href ? 'a' : 'div';
       return (
         <Tag
-          class="cartao-escuro anima group rounded-2xl p-6 transition-[border-color,transform] duration-300 hover:-translate-y-1 hover:border-gold/50"
+          class="cartao-escuro anima group flex flex-col justify-between gap-4 rounded-2xl p-5 transition-[border-color,transform,background-color] duration-300 hover:-translate-y-1 hover:border-gold/50 hover:bg-white/[0.05] sm:p-7"
           style={`--anima-delay: ${i * 90}ms`}
           {...(s.href
             ? { href: s.href, target: '_blank', rel: 'noopener noreferrer' }
             : {})}
         >
-          <span class="regua-tick" aria-hidden="true"></span>
-          <p class="texto-ouro-claro mt-5 font-display text-[2.1rem] leading-tight">
+          <p
+            class="texto-ouro-claro font-display text-[clamp(1.5rem,5.2vw,2.15rem)] leading-[1.1]"
+          >
             {s.valor}
             {s.estrela && <span aria-hidden="true"> ★</span>}
           </p>
-          <p class="rotulo-caps mt-2 text-bone-muted">
-            {s.rotulo}
+          <div class="flex items-end justify-between gap-2">
+            <p class="rotulo-caps text-[0.66rem] leading-snug text-bone-muted sm:text-[0.72rem]">
+              {s.rotulo}
+            </p>
             {s.href && (
               <span
-                class="ml-1 inline-block text-gold transition-transform duration-300 group-hover:translate-x-1"
+                class="shrink-0 text-gold transition-transform duration-300 group-hover:translate-x-1"
                 aria-hidden="true"
               >
                 →
               </span>
             )}
-          </p>
+          </div>
         </Tag>
       );
     })}
