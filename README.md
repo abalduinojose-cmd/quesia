@@ -53,10 +53,9 @@ underscore) e os assets saem em `assets/` justamente por isso.
 ## Checklist antes de publicar
 
 - [ ] **OAB/RJ 237.540**: confirmar com a advogada (fonte: Previdenciarista).
-- [ ] **Endereço**: o site usa o do cartão de visitas, Rua Vereador Carlos
-      Canedo 161, Pedro do Rio. O perfil do Google mostra OUTRO endereço
-      (Estr. União e Indústria 19328, CEP 25750-222). Confirmar qual vale e,
-      se preciso, corrigir o perfil do Google.
+- [x] **Endereço**: confirmado pela advogada em 03/08/2026, Estrada União e
+      Indústria, 19.328, sobreloja, Pedro do Rio, Petrópolis/RJ. O endereço do
+      cartão de visitas (Rua Vereador Carlos Canedo, 161) está desatualizado.
 - [ ] **E-mail profissional**: não localizado; `site.email` está `null`
       (o bloco só aparece quando preenchido).
 - [ ] **Formação**: bacharelado e pós marcados com * "a confirmar" em
