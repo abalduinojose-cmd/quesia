@@ -28,6 +28,10 @@ interface Props {
   aviso: string;
   numeroWhats: string;
   urlGrade: string;
+  /** Cabeçalho de confiança: quem vai atender */
+  foto?: string;
+  advogada?: string;
+  oab?: string;
 }
 
 const esquemaNome = z
@@ -46,6 +50,9 @@ export default function Agendamento({
   aviso,
   numeroWhats,
   urlGrade,
+  foto,
+  advogada,
+  oab,
 }: Props) {
   const [passo, setPasso] = useState(0);
   const [area, setArea] = useState<string | null>(null);
@@ -247,6 +254,39 @@ export default function Agendamento({
 
   return (
     <div className="cartao-escuro overflow-hidden rounded-3xl">
+      {/* Quem vai atender */}
+      {advogada && (
+        <div className="flex items-center gap-4 border-b border-bone/10 px-7 py-5 sm:px-9">
+          {foto && (
+            <img
+              src={foto}
+              alt=""
+              width="52"
+              height="52"
+              loading="lazy"
+              decoding="async"
+              className="h-13 w-13 shrink-0 rounded-full object-cover object-top ring-1 ring-gold/40"
+              style={{ height: '3.25rem', width: '3.25rem' }}
+            />
+          )}
+          <div className="min-w-0">
+            <p className="text-[0.72rem] uppercase tracking-[0.14em] text-bone-muted">
+              Quem vai te atender
+            </p>
+            <p className="mt-1 font-display text-[1.15rem] leading-tight text-bone">
+              {advogada}
+            </p>
+            {oab && <p className="text-[0.78rem] text-bone-muted">{oab}</p>}
+          </div>
+          <span
+            className="ml-auto hidden shrink-0 items-center gap-1.5 rounded-full border border-gold/30 bg-gold/[0.08] px-3 py-1.5 text-[0.72rem] text-gold sm:flex"
+            title="Avaliação pública no Google"
+          >
+            ★ 5,0
+          </span>
+        </div>
+      )}
+
       {/* Trilha de passos */}
       <div className="flex items-stretch border-b border-bone/10">
         {rotulos.map((r, i) => {
@@ -554,6 +594,47 @@ export default function Agendamento({
             Voltar
           </button>
         )}
+      </div>
+
+      {/* Sinais de confiança */}
+      <div className="grid grid-cols-1 gap-px border-t border-bone/10 bg-bone/10 sm:grid-cols-3">
+        {[
+          {
+            t: 'Sigilo profissional',
+            d: 'O que você contar fica entre você e a advogada.',
+            i: 'M12 2.5 5 5.5v5.2c0 4.3 2.9 8.3 7 9.3 4.1-1 7-5 7-9.3V5.5l-7-3Zm0 6.1a1.9 1.9 0 0 1 1 3.5v2a1 1 0 0 1-2 0v-2a1.9 1.9 0 0 1 1-3.5Z',
+          },
+          {
+            t: 'Sem compromisso',
+            d: 'Escolher um horário não gera custo nem vínculo.',
+            i: 'M12 2.5a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19Zm0 2a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Zm-.9 3.4h1.8v4.7l3.1 1.9-.9 1.5-4-2.4V7.9Z',
+          },
+          {
+            t: 'Resposta da advogada',
+            d: 'Quem responde no WhatsApp é ela, não um robô.',
+            i: 'M12 3a4.2 4.2 0 1 1 0 8.4A4.2 4.2 0 0 1 12 3Zm0 2a2.2 2.2 0 1 0 0 4.4A2.2 2.2 0 0 0 12 5ZM4.5 20.2c0-3.6 3.4-6.1 7.5-6.1s7.5 2.5 7.5 6.1a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1Zm2.1-1h10.8c-.5-2-2.7-3.1-5.4-3.1s-4.9 1.1-5.4 3.1Z',
+          },
+        ].map((s) => (
+          <div key={s.t} className="bg-ink px-6 py-5">
+            <div className="flex items-start gap-3">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 24 24"
+                className="mt-0.5 shrink-0 text-gold"
+                aria-hidden="true"
+              >
+                <path d={s.i} fill="currentColor" />
+              </svg>
+              <div>
+                <p className="text-[0.86rem] font-medium text-bone">{s.t}</p>
+                <p className="mt-1 text-[0.78rem] leading-relaxed text-bone-muted">
+                  {s.d}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
