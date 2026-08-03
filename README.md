@@ -58,6 +58,35 @@ Página enxuta que abre direto na escolha da área, sem o site inteiro pela
 frente. É o link para mandar por WhatsApp. O painel tem um botão que copia
 esse endereço.
 
+## Supabase: a advogada atualiza e cai no site na hora
+
+Com o Supabase ligado, o painel salva direto no banco: nada de baixar arquivo
+nem enviar ao GitHub. E o horário que um cliente escolhe some para os próximos
+visitantes automaticamente.
+
+**Como ligar (uma vez só, cerca de 5 minutos):**
+
+1. Crie uma conta em https://supabase.com e um projeto novo (plano free serve).
+2. No projeto, abra **SQL Editor**, cole o conteúdo de `supabase.sql` e clique
+   em RUN. Isso cria as tabelas `agenda` e `agendamentos` com as permissões
+   certas (leitura pública, escrita só para quem está logado).
+3. Em **Authentication > Users > Add user**, crie o e-mail e a senha da
+   advogada, deixando "Auto Confirm User" marcado. Repita para a equipe.
+4. Em **Project Settings > Data API**, copie a *Project URL* e a chave
+   *anon public*.
+5. Na raiz do projeto, copie `.env.example` para `.env` e preencha:
+
+   ```
+   PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+   PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
+   ```
+
+6. Rode `npm run build:pages`, faça commit e push. Pronto.
+
+Enquanto o `.env` não existir, o site funciona no modo antigo (grade.json) e o
+painel avisa o que falta. A chave anon é pública por natureza: quem tem ela só
+consegue ler a agenda e criar um agendamento, nunca alterar horários.
+
 ## Agenda e painel da equipe
 
 - **Painel:** https://abalduinojose-cmd.github.io/quesia/admin
