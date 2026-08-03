@@ -30,21 +30,25 @@ Scripts de asset individuais: `npm run fonts | logo | fotos | video | og`.
 Os originais ficam copiados em `src-assets/` (logo do cartão, foto do ensaio,
 vídeo bruto do Downloads).
 
-## Deploy no GitHub Pages
+## Deploy
 
-O build sai em `docs/` (padrão dos outros projetos). Para repositório
-`usuario.github.io/quesia-constancio`:
+Repositório: https://github.com/abalduinojose-cmd/quesia
+Prévia: https://abalduinojose-cmd.github.io/quesia/
 
-```powershell
-$env:SITE_URL = 'https://SEUUSUARIO.github.io'
-$env:BASE_PATH = '/quesia-constancio'
-npm run build
+**Prévia (GitHub Pages).** O `build:pages` já aplica sozinho a base `/quesia` e
+o domínio do Pages:
+
+```bash
+npm run build:pages
 ```
 
-Depois: commit de `docs/` e, nas configurações do repositório, Pages →
-branch main → pasta `/docs`. Os assets saem na pasta `assets/` (sem underscore,
-o Jekyll do Pages ignoraria `_astro/`). Para domínio próprio na raiz, rode o
-build sem as duas variáveis e ajuste o `Sitemap:` em `public/robots.txt`.
+Depois `git add -A`, commit e `git push`. Nas configurações do repositório,
+Pages deve estar em **branch main, pasta /docs**. O arquivo `public/.nojekyll`
+é obrigatório (sem ele o Jekyll do Pages descarta pastas iniciadas por
+underscore) e os assets saem em `assets/` justamente por isso.
+
+**Domínio próprio.** Use `npm run build` (base na raiz), ajuste o domínio em
+`astro.config.mjs` e o `Sitemap:` em `public/robots.txt`.
 
 ## Checklist antes de publicar
 
