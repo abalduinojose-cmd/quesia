@@ -50,10 +50,10 @@ export const site = {
   },
   email: null as string | null, // CONFIRMAR: e-mail profissional
   endereco: {
-    linha1: 'Rua Vereador Carlos Canedo, 161',
+    linha1: 'Estrada União e Indústria, 19.328, sobreloja',
     linha2: 'Pedro do Rio, Petrópolis, RJ',
     mapsUrl:
-      'https://www.google.com/maps/search/?api=1&query=Rua+Vereador+Carlos+Canedo+161+Pedro+do+Rio+Petr%C3%B3polis+RJ',
+      'https://www.google.com/maps/search/?api=1&query=Estrada+Uni%C3%A3o+e+Ind%C3%BAstria+19328+Pedro+do+Rio+Petr%C3%B3polis+RJ',
   },
   social: {
     instagram: 'https://www.instagram.com/advogada_quesiaconstancio/',
@@ -487,7 +487,11 @@ export const preAgendamento = {
   intro:
     'Responda três perguntas e abra o WhatsApp com a sua mensagem pronta. A confirmação de dia e horário é combinada diretamente com a advogada.',
   areas: [...areas.map((a) => a.tituloCurto), 'Outro assunto'],
-  modalidades: ['Presencial em Pedro do Rio', 'Online', 'Tanto faz'],
+  modalidades: [
+    'Presencial em Pedro do Rio',
+    'Online',
+    'Qualquer uma das opções',
+  ],
   aviso: 'Sem compromisso. O pré-agendamento não cria vínculo nem garante horário.',
 } as const;
 
