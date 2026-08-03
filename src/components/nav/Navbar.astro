@@ -2,6 +2,7 @@
 import { capitulos, site } from '@/content/data';
 import { waLink, waMensagemPadrao } from '@/lib/wa';
 import { withBase } from '@/lib/paths';
+import IconeWhats from '@/components/ui/IconeWhats.astro';
 ---
 
 <nav id="navbar" class="fixed inset-x-0 top-0 z-50" aria-label="Navegação do site">
@@ -39,49 +40,117 @@ import { withBase } from '@/lib/paths';
         href={waLink(waMensagemPadrao)}
         target="_blank"
         rel="noopener noreferrer"
-        class="nav-btn rotulo-caps hidden rounded-full px-5 py-2.5 sm:inline-flex"
+        class="nav-btn rotulo-caps hidden items-center gap-2 rounded-full px-5 py-2.5 sm:inline-flex"
       >
+        <IconeWhats tamanho={15} />
         WhatsApp
       </a>
 
-      <details id="menu-mobile" class="relative lg:hidden">
-        <summary
-          class="nav-btn flex h-11 w-11 items-center justify-center rounded-full"
-          aria-label="Abrir menu"
-        >
-          <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-            <path
-              d="M2 4.5h14M2 9h14M2 13.5h14"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linecap="round"
-            ></path>
-          </svg>
-        </summary>
-        <div
-          class="absolute right-0 top-14 w-64 rounded-2xl border border-bone/10 bg-ink p-3 shadow-2xl"
-        >
-          {capitulos.map((c) => (
-            <a
-              href={`#${c.id}`}
-              class="block rounded-xl px-4 py-3 text-[0.95rem] text-bone-muted transition-colors hover:bg-white/5 hover:text-bone"
-            >
-              {c.titulo}
-            </a>
-          ))}
-          <a
-            href={waLink(waMensagemPadrao)}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-ouro rotulo-caps mt-2 w-full !py-3"
-          >
-            WhatsApp
-          </a>
-        </div>
-      </details>
+      <button
+        id="abre-menu"
+        type="button"
+        class="nav-btn flex h-11 w-11 items-center justify-center rounded-full lg:hidden"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="painel-menu"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path
+            d="M2 4.5h14M2 9h14M2 13.5h14"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          ></path>
+        </svg>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Painel deslizante -->
+<div
+  id="menu-overlay"
+  class="menu-overlay fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm lg:hidden"
+  hidden
+>
+</div>
+
+<aside
+  id="painel-menu"
+  class="menu-painel fixed inset-y-0 right-0 z-[70] flex w-[86%] max-w-sm flex-col bg-ink text-bone shadow-2xl lg:hidden"
+  aria-label="Menu de navegação"
+  hidden
+>
+  <div class="flex items-center justify-between border-b border-bone/10 px-6 py-5">
+    <img
+      src={withBase('/logos/qc-mark-bone.png')}
+      alt=""
+      width="30"
+      height="34"
+      class="h-8 w-auto"
+    />
+    <button
+      id="fecha-menu"
+      type="button"
+      class="flex h-10 w-10 items-center justify-center rounded-full border border-bone/25 text-bone transition-colors hover:border-gold hover:text-gold"
+      aria-label="Fechar menu"
+    >
+      <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+        <path
+          d="M3 3l10 10M13 3L3 13"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+        ></path>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto px-4 py-6" aria-label="Seções do site">
+    <ul class="flex flex-col gap-1" role="list">
+      {capitulos.map((c, i) => (
+        <li>
+          <a
+            href={`#${c.id}`}
+            class="menu-item group flex items-center gap-4 rounded-xl px-4 py-3.5 transition-colors duration-300 hover:bg-white/[0.06]"
+            style={`--i: ${i}`}
+          >
+            <span
+              class="rotulo-caps w-5 shrink-0 text-gold/70 transition-colors group-hover:text-gold"
+              aria-hidden="true"
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="flex-1 text-[1.02rem] text-bone-muted transition-colors group-hover:text-bone">
+              {c.titulo}
+            </span>
+            <span
+              class="text-gold/0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:text-gold"
+              aria-hidden="true"
+            >
+              →
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="border-t border-bone/10 p-5">
+    <a
+      href={waLink(waMensagemPadrao)}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#25D366] px-5 py-3.5 text-[0.95rem] font-semibold text-white transition-transform duration-300 active:scale-[0.98]"
+    >
+      <IconeWhats tamanho={18} />
+      Conversar no WhatsApp
+    </a>
+    <p class="rotulo-caps mt-4 text-center text-bone-muted">
+      {site.whatsapp.display} · {site.oab}
+    </p>
+  </div>
+</aside>
 
 <script>
   const nav = document.getElementById('navbar');
@@ -89,10 +158,42 @@ import { withBase } from '@/lib/paths';
   aoRolar();
   document.addEventListener('scroll', aoRolar, { passive: true });
 
-  const menu = document.getElementById('menu-mobile') as HTMLDetailsElement | null;
-  menu?.querySelectorAll('a').forEach((a) =>
-    a.addEventListener('click', () => {
-      menu.open = false;
-    })
-  );
+  const abre = document.getElementById('abre-menu');
+  const fecha = document.getElementById('fecha-menu');
+  const painel = document.getElementById('painel-menu');
+  const overlay = document.getElementById('menu-overlay');
+
+  const abrirMenu = () => {
+    if (!painel || !overlay) return;
+    painel.hidden = false;
+    overlay.hidden = false;
+    /* deixa o navegador pintar o estado inicial antes de animar */
+    requestAnimationFrame(() => {
+      painel.classList.add('aberto');
+      overlay.classList.add('aberto');
+    });
+    abre?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    painel.querySelector<HTMLAnchorElement>('a')?.focus({ preventScroll: true });
+  };
+
+  const fecharMenu = () => {
+    if (!painel || !overlay) return;
+    painel.classList.remove('aberto');
+    overlay.classList.remove('aberto');
+    abre?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    window.setTimeout(() => {
+      painel.hidden = true;
+      overlay.hidden = true;
+    }, 320);
+  };
+
+  abre?.addEventListener('click', abrirMenu);
+  fecha?.addEventListener('click', fecharMenu);
+  overlay?.addEventListener('click', fecharMenu);
+  painel?.querySelectorAll('a').forEach((a) => a.addEventListener('click', fecharMenu));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && painel && !painel.hidden) fecharMenu();
+  });
 </script>

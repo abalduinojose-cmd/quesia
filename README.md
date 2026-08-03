@@ -50,6 +50,26 @@ underscore) e os assets saem em `assets/` justamente por isso.
 **Domínio próprio.** Use `npm run build` (base na raiz), ajuste o domínio em
 `astro.config.mjs` e o `Sitemap:` em `public/robots.txt`.
 
+## Agenda e painel da equipe
+
+- **Painel:** https://abalduinojose-cmd.github.io/quesia/admin · senha `quesia2026`
+  (trocar em `src/pages/admin.astro`, constante `SENHA`).
+- A grade fica em `public/grade.json` e é lida **em tempo de execução**, então
+  publicar horários novos NÃO exige recompilar o site.
+- No painel a equipe marca os horários de cada dia da semana, bloqueia datas
+  (feriado, férias), marca horários já ocupados e ajusta antecedência mínima e
+  quantos dias mostrar.
+- Ao clicar em **Publicar grade**, o painel baixa um `grade.json`. Envie esse
+  arquivo para a pasta `docs/` do repositório (pelo site do GitHub mesmo,
+  "Add file → Upload files", substituindo o antigo). Em 2 a 3 minutos o site
+  mostra os horários novos.
+- Enquanto não publicar, as mudanças ficam salvas só no aparelho de quem editou.
+
+**Limite conhecido:** sem banco de dados, o site não trava o horário sozinho
+quando alguém agenda. A reserva se conclui na conversa do WhatsApp e a equipe
+marca o horário como ocupado no painel. Para reserva automática entre
+visitantes seria necessário um backend (Supabase, por exemplo).
+
 ## Checklist antes de publicar
 
 - [ ] **OAB/RJ 237.540**: confirmar com a advogada (fonte: Previdenciarista).

@@ -1,7 +1,8 @@
 ---
 import { site, preAgendamento, numeroCapitulo } from '@/content/data';
+import { withBase } from '@/lib/paths';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
-import PreAgendamento from '@/components/agendamento/PreAgendamento';
+import Agendamento from '@/components/agendamento/Agendamento';
 
 const passos = [
   {
@@ -16,8 +17,13 @@ const passos = [
   },
   {
     n: '03',
-    t: 'Abra o WhatsApp',
-    d: 'A mensagem chega pronta e a advogada responde você.',
+    t: 'Escolha dia e horário',
+    d: 'A agenda mostra só os horários realmente livres.',
+  },
+  {
+    n: '04',
+    t: 'Confirme pelo WhatsApp',
+    d: 'A mensagem chega pronta e a advogada confirma com você.',
   },
 ];
 ---
@@ -30,48 +36,49 @@ const passos = [
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
     <TituloSecao
       numero={numeroCapitulo('pre-agendamento')}
-      eyebrow="Pré-agendamento"
+      eyebrow="Agendamento"
       tema="escuro"
       tituloId="pre-agendamento-titulo"
     >
-      Agende uma conversa em <span class="texto-ouro-claro">três toques</span>
+      Agende seu atendimento em <span class="texto-ouro-claro">poucos toques</span>
     </TituloSecao>
 
     <div class="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-5">
         <p class="anima medida-curta text-bone-muted">{preAgendamento.intro}</p>
 
-        <ol class="mt-10 flex flex-col gap-8" role="list">
+        <ol class="mt-10 flex flex-col gap-7" role="list">
           {passos.map((p, i) => (
-            <li class="anima flex gap-5" style={`--anima-delay: ${i * 110}ms`}>
+            <li class="anima flex gap-5" style={`--anima-delay: ${i * 100}ms`}>
               <span
-                class="texto-ouro-claro font-display italic text-[1.7rem] leading-none"
+                class="texto-ouro-claro font-display italic text-[1.6rem] leading-none"
                 aria-hidden="true"
               >
                 {p.n}
               </span>
               <div>
-                <p class="font-display text-[1.28rem] leading-snug text-bone">{p.t}</p>
-                <p class="mt-1.5 text-[0.95rem] text-bone-muted">{p.d}</p>
+                <p class="font-display text-[1.24rem] leading-snug text-bone">{p.t}</p>
+                <p class="mt-1.5 text-[0.93rem] text-bone-muted">{p.d}</p>
               </div>
             </li>
           ))}
         </ol>
 
-        <p class="anima rotulo-caps mt-11 text-bone-muted" style="--anima-delay: 340ms">
-          Resposta direto no WhatsApp {site.whatsapp.display}
+        <p class="anima rotulo-caps mt-11 text-bone-muted" style="--anima-delay: 420ms">
+          Confirmação pelo WhatsApp {site.whatsapp.display}
         </p>
       </div>
 
       <div class="anima lg:col-span-7" style="--anima-delay: 140ms">
         <div class="rounded-[calc(1.5rem+1px)] bg-gradient-to-br from-gold/45 via-bone/10 to-transparent p-px shadow-[0_30px_70px_-40px_rgb(0_0_0/0.9)]">
-          <PreAgendamento
+          <Agendamento
             client:load
             areasOpcoes={[...preAgendamento.areas]}
             modalidades={[...preAgendamento.modalidades]}
             intro={preAgendamento.intro}
             aviso={preAgendamento.aviso}
             numeroWhats={site.whatsapp.numero}
+            urlGrade={withBase('/grade.json')}
           />
         </div>
       </div>

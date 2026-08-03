@@ -311,9 +311,29 @@ header[id] {
 #navbar .nav-btn:hover { background: var(--color-bone); color: var(--color-ink); }
 #navbar.nav-solida .nav-btn:hover { background: var(--color-ink); color: var(--color-bone); }
 
-/* Menu mobile (details/summary) */
-#menu-mobile > summary { list-style: none; cursor: pointer; }
-#menu-mobile > summary::-webkit-details-marker { display: none; }
+/* Menu mobile: painel deslizante */
+.menu-painel {
+  transform: translateX(100%);
+  transition: transform 0.36s var(--ease-editorial);
+}
+.menu-painel.aberto { transform: translateX(0); }
+.menu-overlay {
+  opacity: 0;
+  transition: opacity 0.36s ease;
+}
+.menu-overlay.aberto { opacity: 1; }
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .menu-painel.aberto .menu-item {
+    animation: menuEntra 0.4s var(--ease-editorial) backwards;
+    animation-delay: calc(90ms + var(--i) * 45ms);
+  }
+  @keyframes menuEntra {
+    from { opacity: 0; transform: translateX(18px); }
+    to { opacity: 1; transform: none; }
+  }
+}
 
 /* ---------------------------------------------------------------------------
    FAB WhatsApp: pílula expansível VERDE (verde é a cor do WhatsApp)

@@ -1,0 +1,403 @@
+---
+import '@/styles/global.css';
+import { site } from '@/content/data';
+import { withBase } from '@/lib/paths';
+
+const urlGrade = withBase('/grade.json');
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Agenda · {site.nome} {site.sufixo}</title>
+    <link rel="icon" type="image/png" href={withBase('/favicon.png')} />
+  </head>
+  <body class="min-h-dvh bg-bone-dim text-ink">
+    <!-- Porta de entrada -->
+    <div
+      id="tela-senha"
+      class="fixed inset-0 z-50 flex items-center justify-center bg-ink px-5"
+    >
+      <div class="w-full max-w-sm">
+        <img
+          src={withBase('/logos/qc-mark-bone.png')}
+          alt=""
+          width="40"
+          height="46"
+          class="mx-auto h-11 w-auto"
+        />
+        <h1 class="mt-6 text-center font-display text-[1.9rem] leading-tight text-bone">
+          Agenda da advogada
+        </h1>
+        <p class="mt-2 text-center text-sm text-bone-muted">
+          Área restrita à equipe do escritório.
+        </p>
+        <form id="form-senha" class="mt-8">
+          <label for="senha" class="rotulo-caps text-bone-muted">Senha</label>
+          <input
+            id="senha"
+            type="password"
+            autocomplete="current-password"
+            class="mt-2.5 w-full rounded-xl border border-bone/15 bg-white/[0.04] px-4 py-3.5 text-bone outline-none transition-colors focus:border-gold"
+          />
+          <p id="erro-senha" class="mt-2 hidden text-sm text-[#F2B8A2]">
+            Senha incorreta.
+          </p>
+          <button type="submit" class="btn-clean mt-5 w-full">Entrar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Painel -->
+    <div id="painel" class="hidden">
+      <header class="border-b border-gold-soft bg-bone">
+        <div
+          class="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8"
+        >
+          <div class="flex items-center gap-3">
+            <img
+              src={withBase('/logos/qc-mark.png')}
+              alt=""
+              width="30"
+              height="34"
+              class="h-8 w-auto"
+            />
+            <div>
+              <p class="font-display text-[1.15rem] leading-tight">Agenda</p>
+              <p class="rotulo-caps text-ink-muted">
+                Publicada em <span id="atualizado-em">-</span>
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <button id="btn-publicar" type="button" class="btn-clean text-[0.9rem]">
+              Publicar grade
+            </button>
+            <a
+              href={withBase('/')}
+              class="rotulo-caps rounded-full border border-ink/25 px-4 py-2.5 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-bone"
+            >
+              Ver site
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto w-full max-w-5xl px-5 py-10 sm:px-8">
+        <!-- Resumo -->
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div class="cartao rounded-2xl p-5">
+            <p class="rotulo-caps text-gold-deep">Horários por semana</p>
+            <p id="kpi-semana" class="mt-2 font-display text-[2rem] leading-none">0</p>
+          </div>
+          <div class="cartao rounded-2xl p-5">
+            <p class="rotulo-caps text-gold-deep">Ocupados</p>
+            <p id="kpi-ocupados" class="mt-2 font-display text-[2rem] leading-none">0</p>
+          </div>
+          <div class="cartao rounded-2xl p-5">
+            <p class="rotulo-caps text-gold-deep">Datas bloqueadas</p>
+            <p id="kpi-bloqueios" class="mt-2 font-display text-[2rem] leading-none">0</p>
+          </div>
+        </div>
+
+        <!-- Grade semanal -->
+        <section class="mt-10">
+          <h2 class="font-display text-[1.5rem]">Grade da semana</h2>
+          <p class="mt-1 text-sm text-ink-muted">
+            Marque os horários que a advogada atende em cada dia. Vale para todas as
+            semanas.
+          </p>
+          <div id="grade-semana" class="mt-6 flex flex-col gap-3"></div>
+        </section>
+
+        <!-- Próximos dias -->
+        <section class="mt-12">
+          <h2 class="font-display text-[1.5rem]">Próximos 30 dias</h2>
+          <p class="mt-1 text-sm text-ink-muted">
+            Toque num horário para marcar como ocupado. Use o botão do dia para
+            bloquear a data inteira (feriado, férias).
+          </p>
+          <div id="proximos-dias" class="mt-6 flex flex-col gap-3"></div>
+        </section>
+
+        <!-- Ajustes -->
+        <section class="mt-12">
+          <h2 class="font-display text-[1.5rem]">Ajustes</h2>
+          <div class="cartao mt-5 grid gap-5 rounded-2xl p-6 sm:grid-cols-2">
+            <label class="flex flex-col gap-2">
+              <span class="rotulo-caps text-ink-muted">Antecedência mínima (horas)</span>
+              <input
+                id="in-antecedencia"
+                type="number"
+                min="0"
+                max="168"
+                class="rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"
+              />
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="rotulo-caps text-ink-muted">Mostrar quantos dias à frente</span>
+              <input
+                id="in-dias"
+                type="number"
+                min="7"
+                max="90"
+                class="rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"
+              />
+            </label>
+          </div>
+        </section>
+
+        <!-- Como publicar -->
+        <section class="mt-12 rounded-2xl border border-gold/30 bg-gold/[0.06] p-6">
+          <h2 class="font-display text-[1.3rem]">Como publicar as mudanças</h2>
+          <ol class="mt-4 flex list-decimal flex-col gap-2 pl-5 text-[0.95rem] text-ink-muted">
+            <li>Clique em <strong class="text-ink">Publicar grade</strong>: baixa o arquivo <code class="rounded bg-ink/5 px-1.5 py-0.5">grade.json</code>.</li>
+            <li>Abra o repositório no GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5 py-0.5">docs</code> e envie o arquivo por cima do antigo.</li>
+            <li>Em 2 a 3 minutos o site já mostra os horários novos.</li>
+          </ol>
+          <p class="mt-4 text-sm text-ink-muted">
+            Enquanto não publicar, as mudanças ficam salvas só neste aparelho.
+          </p>
+        </section>
+      </main>
+
+      <div
+        id="aviso"
+        class="pointer-events-none fixed bottom-5 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-6 py-3 text-sm text-bone opacity-0 transition-opacity duration-300"
+      >
+      </div>
+    </div>
+
+    <script define:vars={{ urlGrade }}>
+      /* Senha simples: evita mexida acidental de quem tem o link.
+         Não é proteção de verdade (o site é estático). */
+      const SENHA = 'quesia2026';
+      const CHAVE = 'qc-grade';
+      const nomesDia = [
+        'Domingo',
+        'Segunda',
+        'Terça',
+        'Quarta',
+        'Quinta',
+        'Sexta',
+        'Sábado',
+      ];
+      const nomesMes = [
+        'jan', 'fev', 'mar', 'abr', 'mai', 'jun',
+        'jul', 'ago', 'set', 'out', 'nov', 'dez',
+      ];
+      const HORAS = [];
+      for (let h = 7; h <= 20; h++) HORAS.push(String(h).padStart(2, '0') + ':00');
+
+      let grade = null;
+
+      const iso = (d) =>
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+      function avisar(texto) {
+        const el = document.getElementById('aviso');
+        el.textContent = texto;
+        el.style.opacity = '1';
+        clearTimeout(el._t);
+        el._t = setTimeout(() => (el.style.opacity = '0'), 2600);
+      }
+
+      function salvar() {
+        localStorage.setItem(CHAVE, JSON.stringify(grade));
+        desenhar();
+      }
+
+      async function carregar() {
+        const local = localStorage.getItem(CHAVE);
+        if (local) {
+          try {
+            grade = JSON.parse(local);
+          } catch {
+            grade = null;
+          }
+        }
+        if (!grade) {
+          const r = await fetch(urlGrade, { cache: 'no-store' });
+          grade = await r.json();
+        }
+        grade.semana = grade.semana || {};
+        grade.bloqueios = grade.bloqueios || [];
+        grade.ocupados = grade.ocupados || [];
+        desenhar();
+      }
+
+      function desenhar() {
+        document.getElementById('atualizado-em').textContent =
+          grade.atualizadoEm || 'ainda não publicada';
+        const totalSemana = Object.values(grade.semana).reduce(
+          (s, h) => s + (h ? h.length : 0),
+          0
+        );
+        document.getElementById('kpi-semana').textContent = totalSemana;
+        document.getElementById('kpi-ocupados').textContent = grade.ocupados.length;
+        document.getElementById('kpi-bloqueios').textContent = grade.bloqueios.length;
+        document.getElementById('in-antecedencia').value = grade.antecedenciaHoras ?? 12;
+        document.getElementById('in-dias').value = grade.diasFuturos ?? 30;
+
+        /* Grade da semana */
+        const cx = document.getElementById('grade-semana');
+        cx.innerHTML = '';
+        for (let d = 0; d < 7; d++) {
+          const ativos = grade.semana[String(d)] || [];
+          const linha = document.createElement('div');
+          linha.className = 'cartao rounded-2xl p-5';
+          linha.innerHTML = `
+            <div class="flex items-baseline justify-between gap-3">
+              <p class="font-display text-[1.2rem]">${nomesDia[d]}</p>
+              <p class="rotulo-caps text-ink-muted">${ativos.length} horário${ativos.length === 1 ? '' : 's'}</p>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2" data-dia="${d}"></div>`;
+          const box = linha.querySelector('[data-dia]');
+          HORAS.forEach((h) => {
+            const on = ativos.includes(h);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = h;
+            b.className =
+              'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
+              (on
+                ? 'border-gold-deep bg-gold/15 text-gold-deep font-medium'
+                : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
+            b.addEventListener('click', () => {
+              const lista = grade.semana[String(d)] || [];
+              grade.semana[String(d)] = on
+                ? lista.filter((x) => x !== h)
+                : [...lista, h].sort();
+              salvar();
+            });
+            box.appendChild(b);
+          });
+          cx.appendChild(linha);
+        }
+
+        /* Próximos dias */
+        const px = document.getElementById('proximos-dias');
+        px.innerHTML = '';
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        let mostrados = 0;
+        for (let i = 0; i < (grade.diasFuturos ?? 30) && mostrados < 40; i++) {
+          const d = new Date(hoje);
+          d.setDate(d.getDate() + i);
+          const chave = iso(d);
+          const daSemana = grade.semana[String(d.getDay())] || [];
+          if (daSemana.length === 0) continue;
+          mostrados++;
+          const bloqueado = grade.bloqueios.includes(chave);
+
+          const card = document.createElement('div');
+          card.className = 'cartao rounded-2xl p-5' + (bloqueado ? ' opacity-60' : '');
+          card.innerHTML = `
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <p class="font-display text-[1.15rem]">
+                ${nomesDia[d.getDay()]}, ${d.getDate()} de ${nomesMes[d.getMonth()]}
+              </p>
+              <button type="button" data-bloq="${chave}"
+                class="rotulo-caps cursor-pointer rounded-full border px-3.5 py-1.5 transition-colors ${
+                  bloqueado
+                    ? 'border-[#B4462F] text-[#B4462F]'
+                    : 'border-ink/20 text-ink-muted hover:border-ink/50'
+                }">
+                ${bloqueado ? 'Bloqueado' : 'Bloquear dia'}
+              </button>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2" data-slots="${chave}"></div>`;
+
+          card.querySelector('[data-bloq]').addEventListener('click', () => {
+            grade.bloqueios = bloqueado
+              ? grade.bloqueios.filter((x) => x !== chave)
+              : [...grade.bloqueios, chave];
+            salvar();
+          });
+
+          const slots = card.querySelector('[data-slots]');
+          daSemana.forEach((h) => {
+            const id = `${chave}T${h}`;
+            const ocupado = grade.ocupados.includes(id);
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = h;
+            b.disabled = bloqueado;
+            b.className =
+              'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
+              (ocupado
+                ? 'border-[#B4462F]/50 bg-[#B4462F]/10 text-[#B4462F] line-through'
+                : 'border-ink/12 text-ink hover:border-gold-deep/50');
+            b.addEventListener('click', () => {
+              grade.ocupados = ocupado
+                ? grade.ocupados.filter((x) => x !== id)
+                : [...grade.ocupados, id];
+              salvar();
+            });
+            slots.appendChild(b);
+          });
+
+          px.appendChild(card);
+        }
+        if (mostrados === 0) {
+          px.innerHTML =
+            '<p class="text-ink-muted">Nenhum horário na grade da semana ainda. Marque os horários acima.</p>';
+        }
+      }
+
+      /* Login */
+      document.getElementById('form-senha').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const val = document.getElementById('senha').value;
+        if (val === SENHA) {
+          sessionStorage.setItem('qc-admin', '1');
+          entrar();
+        } else {
+          document.getElementById('erro-senha').classList.remove('hidden');
+        }
+      });
+
+      function entrar() {
+        document.getElementById('tela-senha').style.display = 'none';
+        document.getElementById('painel').classList.remove('hidden');
+        carregar();
+      }
+      if (sessionStorage.getItem('qc-admin') === '1') entrar();
+
+      /* Ajustes */
+      document.getElementById('in-antecedencia').addEventListener('change', (e) => {
+        grade.antecedenciaHoras = Number(e.target.value) || 0;
+        salvar();
+        avisar('Antecedência atualizada');
+      });
+      document.getElementById('in-dias').addEventListener('change', (e) => {
+        grade.diasFuturos = Number(e.target.value) || 30;
+        salvar();
+        avisar('Período atualizado');
+      });
+
+      /* Publicar: limpa o passado e baixa o arquivo */
+      document.getElementById('btn-publicar').addEventListener('click', () => {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        grade.ocupados = grade.ocupados.filter((x) => new Date(x) >= hoje);
+        grade.bloqueios = grade.bloqueios.filter((x) => new Date(x + 'T23:59') >= hoje);
+        grade.atualizadoEm = iso(new Date());
+        salvar();
+
+        const blob = new Blob([JSON.stringify(grade, null, 2)], {
+          type: 'application/json',
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'grade.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+        avisar('grade.json baixado. Envie ao GitHub para publicar.');
+      });
+    </script>
+  </body>
+</html>

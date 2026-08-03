@@ -318,7 +318,7 @@ export const avaliacoes = {
 /** Seções que entram na navegação e na numeração de fundo */
 export const capitulos = [
   { id: 'sobre', titulo: 'Sobre a advogada', curto: 'Sobre' },
-  { id: 'pre-agendamento', titulo: 'Pré-agendamento', curto: 'Agendar' },
+  { id: 'pre-agendamento', titulo: 'Agendar atendimento', curto: 'Agendar' },
   { id: 'areas', titulo: 'Áreas de atuação', curto: 'Áreas' },
   { id: 'como-funciona', titulo: 'Como funciona', curto: 'Como funciona' },
   { id: 'formacao', titulo: 'Formação e atuação', curto: 'Formação' },
@@ -483,16 +483,17 @@ export const faq: PerguntaFaq[] = [
 ];
 
 export const preAgendamento = {
-  titulo: 'Pré-agendamento',
+  titulo: 'Agendamento',
   intro:
-    'Responda três perguntas e abra o WhatsApp com a sua mensagem pronta. A confirmação de dia e horário é combinada diretamente com a advogada.',
+    'Escolha a área, o tipo de atendimento e o melhor horário. A mensagem chega pronta no WhatsApp e a advogada confirma com você.',
   areas: [...areas.map((a) => a.tituloCurto), 'Outro assunto'],
   modalidades: [
     'Presencial em Pedro do Rio',
     'Online',
     'Qualquer uma das opções',
   ],
-  aviso: 'Sem compromisso. O pré-agendamento não cria vínculo nem garante horário.',
+  aviso:
+    'O horário fica reservado após a confirmação da advogada pelo WhatsApp.',
 } as const;
 
 export const contato = {
