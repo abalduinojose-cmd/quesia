@@ -406,6 +406,37 @@ details.acordeao[open] {
 .medida { max-width: 62ch; }
 .medida-curta { max-width: 46ch; }
 
+/* Campo do painel da agenda: rótulo fixo dentro da caixa */
+.campo {
+  border-radius: 0.75rem;
+  border: 1px solid rgb(250 249 249 / 15%);
+  background: rgb(255 255 255 / 3%);
+  padding: 0.7rem 1rem 0.75rem;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.campo:focus-within {
+  border-color: var(--color-gold);
+  background: rgb(255 255 255 / 5%);
+}
+.campo label {
+  display: block;
+  font-size: 0.64rem;
+  font-weight: 550;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(250 249 249 / 55%);
+  transition: color 0.25s ease;
+}
+.campo:focus-within label { color: var(--color-gold); }
+.campo input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0.3rem 0 0;
+  color: var(--color-bone);
+  outline: none;
+}
+
 /* Carrossel arrastável (depoimentos) */
 .sem-scrollbar {
   scrollbar-width: none;

@@ -50,6 +50,14 @@ underscore) e os assets saem em `assets/` justamente por isso.
 **Domínio próprio.** Use `npm run build` (base na raiz), ajuste o domínio em
 `astro.config.mjs` e o `Sitemap:` em `public/robots.txt`.
 
+## Link de agendamento para enviar aos clientes
+
+https://abalduinojose-cmd.github.io/quesia/agendar
+
+Página enxuta que abre direto na escolha da área, sem o site inteiro pela
+frente. É o link para mandar por WhatsApp. O painel tem um botão que copia
+esse endereço.
+
 ## Agenda e painel da equipe
 
 - **Painel:** https://abalduinojose-cmd.github.io/quesia/admin

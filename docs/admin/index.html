@@ -1,11 +1,11 @@
-<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/index.BgBk4xn_.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --> <div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center bg-ink px-5"> <div class="w-full max-w-sm"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="40" height="46" class="mx-auto h-11 w-auto"> <h1 class="mt-6 text-center font-display text-[1.9rem] leading-tight text-bone">
-Agenda da advogada
-</h1> <p class="mt-2 text-center text-sm text-bone-muted">
+<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/agendar.C70t7x40.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --> <div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-ink px-5"> <div class="absolute inset-0 bg-[radial-gradient(110%_75%_at_50%_0%,rgb(201_168_81/0.16),transparent_62%)]" aria-hidden="true"></div> <div class="relative w-full max-w-[23rem]"> <div class="rounded-3xl border border-bone/10 bg-white/[0.04] p-8 backdrop-blur-sm sm:p-9"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="36" height="41" class="h-10 w-auto"> <h1 class="mt-6 font-display text-[2rem] leading-none text-bone">Agenda</h1> <p class="mt-2 text-[0.88rem] text-bone-muted">
 Área restrita à equipe do escritório.
-</p> <form id="form-login" class="mt-8 flex flex-col gap-4"> <label class="flex flex-col gap-2"> <span class="rotulo-caps text-bone-muted">Usuário</span> <input id="usuario" type="text" autocomplete="username" class="rounded-xl border border-bone/15 bg-white/[0.04] px-4 py-3.5 text-bone outline-none transition-colors focus:border-gold"> </label> <label class="flex flex-col gap-2"> <span class="rotulo-caps text-bone-muted">Senha</span> <input id="senha" type="password" autocomplete="current-password" class="rounded-xl border border-bone/15 bg-white/[0.04] px-4 py-3.5 text-bone outline-none transition-colors focus:border-gold"> </label> <p id="erro-login" class="hidden text-sm text-[#F2B8A2]">
+</p> <form id="form-login" class="mt-8 flex flex-col gap-3.5"> <div class="campo"> <label for="usuario">Usuário</label> <input id="usuario" type="text" autocomplete="username"> </div> <div class="campo"> <label for="senha">Senha</label> <input id="senha" type="password" autocomplete="current-password"> </div> <p id="erro-login" class="hidden text-sm text-[#F2B8A2]">
 Usuário ou senha incorretos.
-</p> <button type="submit" class="btn-clean mt-1 w-full">Entrar</button> </form> </div> </div> <!-- Painel --> <div id="painel" class="hidden pb-28"> <header class="sticky top-0 z-30 border-b border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8"> <div class="flex items-center gap-3"> <img src="/quesia/logos/qc-mark.png" alt="" width="28" height="32" class="h-7 w-auto"> <div> <p class="font-display text-[1.1rem] leading-tight">Agenda</p> <p class="text-[0.72rem] text-ink-muted">
-No ar desde <span id="atualizado-em">-</span> </p> </div> </div> <div class="flex items-center gap-2"> <span id="selo-pendente" class="hidden rounded-full bg-[#B4462F]/12 px-3 py-1.5 text-[0.72rem] font-medium text-[#B4462F]">
+</p> <button type="submit" class="btn-clean mt-2 w-full justify-center">
+Entrar
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M3 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </form> </div> </div> </div> <!-- Painel --> <div id="painel" class="hidden pb-28"> <header class="sticky top-0 z-30 border-b border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8"> <div class="flex items-center gap-3"> <img src="/quesia/logos/qc-mark.png" alt="" width="28" height="32" class="h-7 w-auto"> <div> <p class="font-display text-[1.1rem] leading-tight">Agenda</p> <p class="text-[0.72rem] text-ink-muted">
+Publicada em <span id="atualizado-em">-</span> </p> </div> </div> <div class="flex items-center gap-2"> <span id="selo-pendente" class="hidden rounded-full bg-[#B4462F]/12 px-3 py-1.5 text-[0.72rem] font-medium text-[#B4462F]">
 não publicado
 </span> <a href="/quesia/" class="rotulo-caps hidden rounded-full border border-ink/20 px-4 py-2 text-ink-muted transition-colors hover:border-ink hover:text-ink sm:inline-block">
 Ver site
@@ -23,7 +23,9 @@ horários livres
 marcados como ocupados
 </p> </div> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-bloqueios" class="font-display text-[1.7rem] leading-none">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">
 dias bloqueados
-</p> </div> </div> <!-- Aba: próximos dias --> <section id="painel-dias" class="mt-8"> <div class="flex flex-wrap items-end justify-between gap-3"> <div> <h2 class="font-display text-[1.4rem]">Próximos dias</h2> <p class="mt-1 text-sm text-ink-muted">
+</p> </div> </div> <!-- Link para enviar aos clientes --> <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-gold/[0.07] px-5 py-4"> <div class="min-w-0"> <p class="text-[0.88rem] font-medium">Link de agendamento</p> <p id="link-agendar" class="truncate text-[0.78rem] text-ink-muted"></p> </div> <button id="btn-copiar" type="button" class="rotulo-caps shrink-0 cursor-pointer rounded-full border border-gold-deep/40 px-4 py-2 text-gold-deep transition-colors hover:bg-gold-deep hover:text-bone">
+Copiar
+</button> </div> <!-- Aba: próximos dias --> <section id="painel-dias" class="mt-8"> <div class="flex flex-wrap items-end justify-between gap-3"> <div> <h2 class="font-display text-[1.4rem]">Próximos dias</h2> <p class="mt-1 text-sm text-ink-muted">
 Toque num horário para marcar como ocupado. Toque de novo para liberar.
 </p> </div> </div> <div id="lista-dias" class="mt-5 flex flex-col gap-3"></div> </section> <!-- Aba: grade fixa --> <section id="painel-semana" class="mt-8 hidden"> <h2 class="font-display text-[1.4rem]">Grade fixa da semana</h2> <p class="mt-1 text-sm text-ink-muted">
 Os horários marcados aqui valem para todas as semanas. É a base da agenda.
@@ -36,11 +38,9 @@ No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5 py-0.5">docs</cod
 e envie o arquivo por cima do antigo.
 </li> <li>Em 2 a 3 minutos o site mostra os horários novos.</li> </ol> </div> <button id="btn-restaurar" type="button" class="rotulo-caps mt-6 rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
 Descartar mudanças não publicadas
-</button> </section> </main> <!-- Barra de publicação --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8"> <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">
+</button> </section> </main> <!-- Barra de publicação --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3 sm:px-8"> <div class="flex items-center gap-2.5"> <span id="ponto-estado" class="h-2 w-2 shrink-0 rounded-full bg-[#3E9A5F]" aria-hidden="true"></span> <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">
 Tudo publicado.
-</p> <button id="btn-publicar" type="button" class="btn-clean shrink-0 text-[0.9rem]">
-Publicar
-</button> </div> </div> <div id="aviso" class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-6 py-3 text-sm text-bone opacity-0 transition-opacity duration-300"></div> </div> <script>(function(){const urlGrade = "/quesia/grade.json";
+</p> </div> <button id="btn-publicar" type="button" class="group flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-40"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M8 11V2m0 0L4.5 5.5M8 2l3.5 3.5M2.5 10.5v2A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> <span id="rotulo-publicar">Publicar</span> </button> </div> </div> <div id="aviso" class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-6 py-3 text-sm text-bone opacity-0 transition-opacity duration-300"></div> </div> <script>(function(){const urlGrade = "/quesia/grade.json";
 
       /* Acesso simples: evita mexida acidental de quem tem o link.
          Não é proteção de verdade, o site é estático. */
@@ -75,6 +75,15 @@ Publicar
         document.getElementById('estado-publicacao').textContent = v
           ? 'Mudanças ainda não publicadas.'
           : 'Tudo publicado.';
+        const ponto = document.getElementById('ponto-estado');
+        ponto.className =
+          'h-2 w-2 shrink-0 rounded-full ' +
+          (v ? 'bg-[#B4462F] animate-pulse' : 'bg-[#3E9A5F]');
+        const btn = document.getElementById('btn-publicar');
+        btn.disabled = !v;
+        document.getElementById('rotulo-publicar').textContent = v
+          ? 'Publicar'
+          : 'Publicado';
       }
 
       function salvar() {
@@ -257,6 +266,21 @@ Publicar
           cx.appendChild(linha);
         }
       }
+
+      /* Link de agendamento para enviar aos clientes */
+      const linkAgendar = new URL(
+        urlGrade.replace(/grade\.json$/, 'agendar'),
+        location.origin
+      ).toString();
+      document.getElementById('link-agendar').textContent = linkAgendar;
+      document.getElementById('btn-copiar').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(linkAgendar);
+          avisar('Link copiado');
+        } catch {
+          avisar(linkAgendar);
+        }
+      });
 
       /* Login */
       document.getElementById('form-login').addEventListener('submit', (e) => {
