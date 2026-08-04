@@ -1,9 +1,6 @@
 ---
 import { areas, numeroCapitulo } from '@/content/data';
-import { waLink, waMensagemArea } from '@/lib/wa';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
-
-const links = areas.map((a) => waLink(waMensagemArea(a.titulo)));
 
 /* Ícones stroke fino (1.5) por área */
 const icones: Record<string, string> = {
@@ -67,9 +64,8 @@ const icones: Record<string, string> = {
           </ul>
 
           <a
-            href={links[i]}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#agendamento"
+            data-abre-area={a.tituloCurto}
             class="link-draw rotulo-caps mt-8 inline-block pt-2 text-gold-deep"
           >
             Falar sobre {a.tituloCurto}&nbsp;&nbsp;→
@@ -79,3 +75,15 @@ const icones: Record<string, string> = {
     </div>
   </div>
 </section>
+
+<script>
+  /* Cada cartão leva ao agendamento com a área já marcada, então na seção a
+     pessoa só escolhe o tema. Sem JS, o link ainda rola até o agendamento. */
+  document.querySelectorAll<HTMLAnchorElement>('[data-abre-area]').forEach((a) => {
+    a.addEventListener('click', () => {
+      window.dispatchEvent(
+        new CustomEvent('qc:area', { detail: a.dataset.abreArea })
+      );
+    });
+  });
+</script>

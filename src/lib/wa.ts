@@ -9,28 +9,5 @@ export function waLink(mensagem: string): string {
 export const waMensagemPadrao =
   'Olá, Dra. Quesia! Vim pelo site e gostaria de conversar sobre o meu caso.';
 
-/** Mensagem pré-filtrada por área de atuação. */
-export function waMensagemArea(area: string): string {
-  return `Olá, Dra. Quesia! Vim pelo site e gostaria de falar sobre ${area}.`;
-}
-
-export interface DadosAgendamento {
-  area: string;
-  modalidade: string;
-  nome: string;
-  resumo?: string;
-}
-
-/** Mensagem estruturada do wizard de agendamento. */
-export function waMensagemAgendamento(d: DadosAgendamento): string {
-  const linhas = [
-    'Olá, Dra. Quesia! Vim pelo site e gostaria de agendar um atendimento.',
-    `Área: ${d.area}`,
-    `Atendimento: ${d.modalidade}`,
-    `Nome: ${d.nome}`,
-  ];
-  if (d.resumo && d.resumo.trim().length > 0) {
-    linhas.push(`Resumo: ${d.resumo.trim()}`);
-  }
-  return linhas.join('\n');
-}
+/* A mensagem estruturada do agendamento é montada dentro do próprio wizard
+   (Agendamento.tsx), porque depende de área, tema, data e valor escolhidos. */

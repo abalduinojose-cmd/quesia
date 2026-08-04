@@ -98,7 +98,7 @@ export const especialidades = [
  * do sumário se reajusta sozinha.
  */
 /**
- * Avaliações reais coletadas do perfil público no Google (01/08/2026).
+ * Avaliações reais coletadas do perfil público no Google (01 e 04/08/2026).
  * Fotos por hotlink dos avatares públicos (lh3) com referrerpolicy no-referrer.
  * Exibição LIGADA a pedido do cliente em 02/08/2026, ciente do Provimento
  * 205/2021 da OAB.
@@ -311,6 +311,42 @@ export const avaliacoes = {
       data: '2 anos atrás',
       texto: 'Excelente advogada, me prestou um ótimo trabalho.',
       foto: 'https://lh3.googleusercontent.com/a/ACg8ocItdEG-SUY_-zsa2P4CXr7T7sF0_VzNO1XlczVbtnQ8_HpGEQ=w96-h96-p-rp-mo-br100',
+    },
+    /* Segunda leva, coletada em 04/08/2026 */
+    {
+      nome: 'Lia Marcia Segadas Vianna',
+      nota: 5,
+      data: '2 anos atrás',
+      texto: 'Advogada excelente. Dedicada, atenciosa e competente!',
+      foto: 'https://lh3.googleusercontent.com/a-/ALV-UjVB8Av5a8Bj3ziSrjJdsdCXJy7bbKaG0PcqMyNZxoKhVSMWid0=w96-h96-p-rp-mo-br100',
+    },
+    {
+      nome: 'Aliane Alcantara',
+      nota: 5,
+      data: 'um ano atrás',
+      texto: 'Excelente profissional, recomendo de olhos fechados.',
+      foto: 'https://lh3.googleusercontent.com/a/ACg8ocLfBSZyLs-DvEBur6HAwU0XDItuM0Ab692W7OoP57xxDPGo3g=w96-h96-p-rp-mo-br100',
+    },
+    {
+      nome: 'Rogério Rosa',
+      nota: 5,
+      data: '2 anos atrás',
+      texto: 'Simplesmente competente no que faz. Parabéns.',
+      foto: 'https://lh3.googleusercontent.com/a-/ALV-UjW9uZxpqyrQV0CuUZhvqR3UqEZPV8C993FEsSIWFZKwsoGXWnnA=w96-h96-p-rp-mo-ba12-br100',
+    },
+    {
+      nome: 'Ana Flávia Lima',
+      nota: 5,
+      data: '2 anos atrás',
+      texto: 'A melhor! Muito eficiente!',
+      foto: 'https://lh3.googleusercontent.com/a-/ALV-UjXvi091aK8kwA3il7W2Am_ZhbIhZkQqxlFgDaCu6qPfROyRHmf6YQ=w96-h96-p-rp-mo-br100',
+    },
+    {
+      nome: 'Marcos Toneli Goulard',
+      nota: 5,
+      data: '2 anos atrás',
+      texto: 'Excelente, muito profissional!',
+      foto: 'https://lh3.googleusercontent.com/a-/ALV-UjXozTOlozaEWo8nVPPB7E4J4jVQCKrYVKvJ4-f7rkqdEU_cRXPveg=w96-h96-p-rp-mo-br100',
     },
   ] as Avaliacao[],
 };

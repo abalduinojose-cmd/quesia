@@ -153,6 +153,29 @@ export default function Agendamento({
     if ((assuntos[a] ?? []).length === 0) setPasso(1);
   };
 
+  /* Atalho de fora: os cartões de área e o parâmetro ?area= da URL abrem o
+     wizard já na lista de temas daquela área, então só falta escolher o tema. */
+  useEffect(() => {
+    const abrir = (nome: string) => {
+      const achou = areasOpcoes.find(
+        (o) => o.toLowerCase() === nome.trim().toLowerCase()
+      );
+      if (!achou) return;
+      setPasso(0);
+      setErro(null);
+      setArea(achou);
+      setAssunto(null);
+      if ((assuntos[achou] ?? []).length === 0) setPasso(1);
+    };
+
+    const daUrl = new URLSearchParams(window.location.search).get('area');
+    if (daUrl) abrir(daUrl);
+
+    const ouvir = (e: Event) => abrir(String((e as CustomEvent).detail ?? ''));
+    window.addEventListener('qc:area', ouvir);
+    return () => window.removeEventListener('qc:area', ouvir);
+  }, [areasOpcoes, assuntos]);
+
   const validarNome = () => {
     const r = esquemaNome.safeParse(nome);
     setErro(r.success ? null : (r.error.issues[0]?.message ?? 'Confira o nome.'));
