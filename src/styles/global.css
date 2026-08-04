@@ -406,6 +406,51 @@ details.acordeao[open] {
 .medida { max-width: 62ch; }
 .medida-curta { max-width: 46ch; }
 
+/* ---------------------------------------------------------------------------
+   Painel da agenda: superfícies limpas, sem gradiente pesado
+--------------------------------------------------------------------------- */
+.bloco {
+  background: #FFFFFF;
+  border: 1px solid rgb(36 36 36 / 0.07);
+  border-radius: 1.25rem;
+}
+.bloco-titulo {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+.rotulo-secao {
+  font-size: 0.66rem;
+  font-weight: 550;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+}
+/* Interruptor de horário da grade fixa */
+.chip-hora {
+  border-radius: 0.65rem;
+  border: 1px solid rgb(36 36 36 / 0.1);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.82rem;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.chip-hora:hover { border-color: rgb(138 110 43 / 0.5); color: var(--color-ink); }
+.chip-hora[aria-pressed="true"] {
+  border-color: var(--color-gold-deep);
+  background: rgb(201 168 81 / 0.14);
+  color: var(--color-gold-deep);
+  font-weight: 600;
+}
+.chip-hora:disabled {
+  cursor: default;
+  border-color: rgb(36 36 36 / 0.06);
+  background: rgb(36 36 36 / 0.03);
+  color: rgb(36 36 36 / 0.3);
+}
+
 /* Painel da agenda: pontinho de status e setas de navegação */
 .ponto {
   display: inline-block;

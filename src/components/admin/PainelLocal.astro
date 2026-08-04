@@ -1,4 +1,4 @@
----
+﻿---
 /**
  * Painel sem banco: a grade fica no aparelho e a equipe publica o grade.json
  * à mão. Usado enquanto o Supabase não estiver configurado.
@@ -129,15 +129,15 @@ const urlGrade = withBase('/grade.json');
 
       <!-- Resumo -->
       <div class="mt-4 grid grid-cols-3 gap-3">
-        <div class="cartao rounded-2xl p-4 sm:p-5">
+        <div class="bloco p-4 sm:p-5">
           <p id="kpi-livres" class="font-display text-[1.7rem] leading-none text-ink">0</p>
           <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">horários livres</p>
         </div>
-        <div class="cartao rounded-2xl p-4 sm:p-5">
+        <div class="bloco p-4 sm:p-5">
           <p id="kpi-ocupados" class="font-display text-[1.7rem] leading-none text-[#2F7A49]">0</p>
           <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">atendimentos marcados</p>
         </div>
-        <div class="cartao rounded-2xl p-4 sm:p-5">
+        <div class="bloco p-4 sm:p-5">
           <p id="kpi-bloqueios" class="font-display text-[1.7rem] leading-none text-[#B4462F]">0</p>
           <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">dias bloqueados</p>
         </div>
@@ -161,7 +161,7 @@ const urlGrade = withBase('/grade.json');
       </div>
 
       <!-- Agenda da semana -->
-      <div class="cartao mt-6 rounded-3xl p-5 sm:p-6">
+      <div class="bloco mt-6 rounded-3xl p-5 sm:p-6">
         <div class="flex items-center justify-between gap-3">
           <button id="semana-anterior" type="button" class="seta" aria-label="Semana anterior">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -193,7 +193,7 @@ const urlGrade = withBase('/grade.json');
       <div id="detalhe-dia" class="mt-5"></div>
 
       <!-- Calendário do mês -->
-      <div class="cartao mt-6 rounded-3xl p-5 sm:p-6">
+      <div class="bloco mt-6 rounded-3xl p-5 sm:p-6">
         <div class="flex items-center justify-between gap-3">
           <button id="mes-anterior" type="button" class="seta" aria-label="Mês anterior">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -202,7 +202,7 @@ const urlGrade = withBase('/grade.json');
           </button>
           <div class="text-center">
             <p class="rotulo-caps text-gold-deep">Mês</p>
-            <p id="titulo-mes" class="font-display text-[1.15rem] capitalize leading-tight">-</p>
+            <p id="titulo-mes" class="font-display text-[1.15rem] leading-tight">-</p>
           </div>
           <button id="mes-proximo" type="button" class="seta" aria-label="Próximo mês">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -226,8 +226,9 @@ const urlGrade = withBase('/grade.json');
 
     <!-- ABA: CADASTROS -->
     <section id="painel-cadastros" class="hidden">
-      <h2 class="font-display text-[1.5rem]">Quem agendou</h2>
-      <p class="mt-1 text-sm text-ink-muted">
+      <p class="rotulo-secao">Fichas</p>
+      <h2 class="bloco-titulo mt-2">Quem agendou</h2>
+      <p class="mt-2 text-sm text-ink-muted">
         Ficha de cada atendimento marcado, com nome, contato e observações.
       </p>
       <div id="lista-cadastros" class="mt-5 flex flex-col gap-3"></div>
@@ -235,8 +236,9 @@ const urlGrade = withBase('/grade.json');
 
     <!-- ABA: GRADE FIXA -->
     <section id="painel-semana" class="hidden">
-      <h2 class="font-display text-[1.5rem]">Grade fixa da semana</h2>
-      <p class="mt-1 text-sm text-ink-muted">
+      <p class="rotulo-secao">Padrão semanal</p>
+      <h2 class="bloco-titulo mt-2">Grade fixa</h2>
+      <p class="mt-2 text-sm text-ink-muted">
         Vale para todas as semanas. Para abrir um dia avulso, use a agenda.
       </p>
       <div id="lista-semana" class="mt-5 flex flex-col gap-3"></div>
@@ -244,42 +246,64 @@ const urlGrade = withBase('/grade.json');
 
     <!-- ABA: AJUSTES -->
     <section id="painel-ajustes" class="hidden">
-      <h2 class="font-display text-[1.5rem]">Ajustes</h2>
-      <div class="cartao mt-5 flex flex-col gap-6 rounded-2xl p-6">
-        <label class="flex flex-col gap-2">
-          <span class="text-[0.95rem] font-medium">Antecedência mínima</span>
-          <span class="text-sm text-ink-muted">
-            Quanto tempo antes o cliente ainda pode escolher um horário.
+      <p class="rotulo-secao">Configuração</p>
+      <h2 class="bloco-titulo mt-2">Ajustes da agenda</h2>
+
+      <div class="mt-6 flex flex-col gap-3">
+        <label class="bloco flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6">
+          <span class="min-w-0">
+            <span class="block text-[0.95rem] font-medium">Antecedência mínima</span>
+            <span class="mt-0.5 block text-[0.85rem] text-ink-muted">
+              Quanto tempo antes o cliente ainda pode escolher um horário.
+            </span>
           </span>
-          <div class="mt-1 flex items-center gap-3">
+          <span class="flex shrink-0 items-center gap-2">
             <input id="in-antecedencia" type="number" min="0" max="168"
-              class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep" />
-            <span class="text-sm text-ink-muted">horas</span>
-          </div>
+              class="w-20 rounded-xl border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-center outline-none transition-colors focus:border-gold-deep" />
+            <span class="text-[0.85rem] text-ink-muted">horas</span>
+          </span>
         </label>
-        <label class="flex flex-col gap-2">
-          <span class="text-[0.95rem] font-medium">Janela de agendamento</span>
-          <span class="text-sm text-ink-muted">Quantos dias à frente aparecem no site.</span>
-          <div class="mt-1 flex items-center gap-3">
+
+        <label class="bloco flex flex-wrap items-center justify-between gap-4 p-5 sm:p-6">
+          <span class="min-w-0">
+            <span class="block text-[0.95rem] font-medium">Janela de agendamento</span>
+            <span class="mt-0.5 block text-[0.85rem] text-ink-muted">
+              Quantos dias à frente aparecem no site.
+            </span>
+          </span>
+          <span class="flex shrink-0 items-center gap-2">
             <input id="in-dias" type="number" min="7" max="90"
-              class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep" />
-            <span class="text-sm text-ink-muted">dias</span>
-          </div>
+              class="w-20 rounded-xl border border-ink/10 bg-ink/[0.03] px-3 py-2.5 text-center outline-none transition-colors focus:border-gold-deep" />
+            <span class="text-[0.85rem] text-ink-muted">dias</span>
+          </span>
         </label>
       </div>
 
-      <div class="mt-6 rounded-2xl border border-gold/30 bg-gold/[0.06] p-6">
-        <h3 class="font-display text-[1.2rem]">Como publicar</h3>
-        <ol class="mt-3 flex list-decimal flex-col gap-1.5 pl-5 text-[0.92rem] text-ink-muted">
-          <li>Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.</li>
-          <li>O arquivo <code class="rounded bg-ink/5 px-1.5 py-0.5">grade.json</code> é baixado.</li>
-          <li>No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5 py-0.5">docs</code> e envie o arquivo por cima do antigo.</li>
-          <li>Em 2 a 3 minutos o site mostra os horários novos.</li>
+      <div class="bloco mt-6 border-gold/25 bg-gold/[0.05] p-6">
+        <p class="rotulo-secao">Publicação</p>
+        <h3 class="bloco-titulo mt-2 text-[1.15rem]">Como as mudanças entram no site</h3>
+        <ol class="mt-4 flex flex-col gap-3">
+          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">1</span>
+            Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.
+          </li>
+          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">2</span>
+            O arquivo <code class="rounded bg-ink/5 px-1.5">grade.json</code> é baixado.
+          </li>
+          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">3</span>
+            No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5">docs</code> e envie por cima do antigo.
+          </li>
+          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">4</span>
+            Em 2 a 3 minutos o site mostra os horários novos.
+          </li>
         </ol>
       </div>
 
       <button id="btn-restaurar" type="button"
-        class="rotulo-caps mt-6 rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
+        class="rotulo-caps mt-6 rounded-full border border-ink/15 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
         Descartar mudanças não publicadas
       </button>
     </section>
@@ -604,7 +628,7 @@ const urlGrade = withBase('/grade.json');
       const livresDia = hs.filter((h) => statusDo(`${diaSelecionado}T${h}`) === 'livre').length;
 
       box.innerHTML = `
-        <div class="cartao rounded-3xl p-5 sm:p-6 ${bloqueado ? 'opacity-70' : ''}">
+        <div class="bloco p-5 sm:p-6 ${bloqueado ? 'opacity-70' : ''}">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p class="font-display text-[1.25rem] leading-tight">${porExtenso(diaSelecionado)}</p>
@@ -656,7 +680,9 @@ const urlGrade = withBase('/grade.json');
     }
 
     /* ---------------------------------------------------- Calendário do mês */
-    document.getElementById('titulo-mes').textContent = `${nomesMes[mesVisivel.getMonth()]} de ${mesVisivel.getFullYear()}`;
+    const rotuloMes = nomesMes[mesVisivel.getMonth()];
+    document.getElementById('titulo-mes').textContent =
+      `${rotuloMes[0].toUpperCase()}${rotuloMes.slice(1)} de ${mesVisivel.getFullYear()}`;
     const grid = document.getElementById('grade-mes');
     grid.innerHTML = '';
     const primeiro = new Date(mesVisivel.getFullYear(), mesVisivel.getMonth(), 1);
@@ -703,7 +729,7 @@ const urlGrade = withBase('/grade.json');
     const reservas = (grade.reservas || []).filter((r) => r.id.slice(0,10) >= chaveHoje).sort((a,b) => a.id.localeCompare(b.id));
     lista.innerHTML = '';
     if (!reservas.length) {
-      lista.innerHTML = `<div class="cartao rounded-2xl p-6">
+      lista.innerHTML = `<div class="bloco p-6">
         <p class="text-ink-muted">Nenhum cadastro ainda.</p>
         <p class="mt-2 text-[0.85rem] text-ink-muted">
           Quando alguém agendar pelo site, a mensagem chega no WhatsApp. Registre a
@@ -712,21 +738,31 @@ const urlGrade = withBase('/grade.json');
     }
     reservas.forEach((r) => {
       const [dataR, horaR] = r.id.split('T');
+      const dObj = doIso(dataR);
       const card = document.createElement('div');
-      card.className = 'cartao rounded-2xl p-5';
+      card.className = 'bloco flex gap-4 p-5 sm:gap-5 sm:p-6';
       card.innerHTML = `
-        <div class="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p class="font-display text-[1.2rem] leading-tight">${r.nome || 'Sem nome'}</p>
-            <p class="mt-1 text-[0.85rem] text-ink-muted">${porExtenso(dataR)} às ${horaR}</p>
-          </div>
-          <button type="button" data-editar="${r.id}"
-            class="rotulo-caps cursor-pointer rounded-full border border-ink/15 px-3.5 py-1.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
-            Abrir ficha
-          </button>
+        <div class="flex w-14 shrink-0 flex-col items-center justify-center rounded-2xl bg-gold/[0.10] py-3 text-gold-deep">
+          <span class="text-[0.6rem] uppercase tracking-[0.1em]">${diaCurto[dObj.getDay()]}</span>
+          <span class="font-display text-[1.4rem] leading-none">${dObj.getDate()}</span>
+          <span class="text-[0.6rem] uppercase tracking-[0.1em]">${mesCurto[dObj.getMonth()]}</span>
         </div>
-        ${r.contato ? `<p class="mt-3 text-[0.9rem]">${r.contato}</p>` : ''}
-        ${r.observacao ? `<p class="mt-1.5 text-[0.88rem] text-ink-muted">${r.observacao}</p>` : ''}`;
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="font-display text-[1.2rem] leading-tight">${r.nome || 'Sem nome'}</p>
+              <p class="mt-1 flex items-center gap-1.5 text-[0.82rem] text-ink-muted">
+                <span class="ponto bg-[#3E9A5F]"></span>${horaR}
+              </p>
+            </div>
+            <button type="button" data-editar="${r.id}"
+              class="rotulo-caps shrink-0 cursor-pointer rounded-full border border-ink/12 px-3.5 py-1.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
+              Abrir ficha
+            </button>
+          </div>
+          ${r.contato ? `<p class="mt-2.5 text-[0.88rem]">${r.contato}</p>` : ''}
+          ${r.observacao ? `<p class="mt-1 text-[0.86rem] text-ink-muted">${r.observacao}</p>` : ''}
+        </div>`;
       card.querySelector('[data-editar]').addEventListener('click', () => { diaSelecionado = dataR; abrirDialogoReserva(r.id, horaR); });
       lista.appendChild(card);
     });
@@ -737,16 +773,19 @@ const urlGrade = withBase('/grade.json');
     for (let dS = 0; dS < 7; dS++) {
       const ativos = grade.semana[String(dS)] || [];
       const linha = document.createElement('div');
-      linha.className = 'cartao rounded-2xl p-5';
+      linha.className = 'bloco px-5 py-5 sm:px-6';
       linha.innerHTML = `
         <div class="flex items-center justify-between gap-3">
-          <p class="font-display text-[1.15rem]">${nomesDia[dS]}</p>
+          <div class="flex items-center gap-3">
+            <span class="flex h-9 w-9 items-center justify-center rounded-full text-[0.68rem] font-semibold uppercase tracking-[0.08em] ${ativos.length ? 'bg-gold/15 text-gold-deep' : 'bg-ink/5 text-ink-muted'}">${diaCurto[dS]}</span>
+            <p class="font-display text-[1.15rem]">${nomesDia[dS]}</p>
+          </div>
           <div class="flex items-center gap-2">
-            <span class="text-[0.78rem] text-ink-muted">${ativos.length ? ativos.length + ' horários' : 'sem atendimento'}</span>
+            <span class="text-[0.76rem] text-ink-muted">${ativos.length ? ativos.length + ' horários' : 'sem atendimento'}</span>
             ${ativos.length ? `<button type="button" data-limpa="${dS}" class="rotulo-caps cursor-pointer rounded-full px-2.5 py-1 text-ink-muted transition-colors hover:text-[#B4462F]">limpar</button>` : ''}
           </div>
         </div>
-        <div class="mt-4 flex flex-wrap gap-2" data-dia="${dS}"></div>`;
+        <div class="mt-4 flex flex-wrap gap-1.5" data-dia="${dS}"></div>`;
       linha.querySelector('[data-limpa]')?.addEventListener('click', () => { grade.semana[String(dS)] = []; salvar(); });
       const cont = linha.querySelector('[data-dia]');
       HORAS.forEach((h) => {
@@ -754,8 +793,8 @@ const urlGrade = withBase('/grade.json');
         const b = document.createElement('button');
         b.type = 'button';
         b.textContent = h;
-        b.className = 'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
-          (on ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep' : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
+        b.className = 'chip-hora';
+        b.setAttribute('aria-pressed', String(on));
         b.addEventListener('click', () => {
           const lst = grade.semana[String(dS)] || [];
           grade.semana[String(dS)] = on ? lst.filter((x) => x !== h) : [...lst, h].sort();
