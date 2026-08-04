@@ -97,8 +97,15 @@ criar um agendamento, nunca alterar horários.
 - **Painel:** https://abalduinojose-cmd.github.io/quesia/admin
   Usuário `quesiaadv` · senha `123456` (trocar em `src/pages/admin.astro`,
   constantes `USUARIO` e `SENHA`).
-- Três abas: **Próximos dias** (marcar ocupado, bloquear data), **Grade fixa**
-  (horários de cada dia da semana) e **Ajustes** (antecedência e janela).
+- Quatro abas:
+  - **Calendário**: mês inteiro, com marcação de dias com atendimento,
+    bloqueados e a contagem de livres. Toque num dia para ver os horários,
+    abrir a ficha de quem agendou, bloquear a data ou **adicionar horários
+    avulsos** (um sábado pontual, por exemplo, sem mexer na grade fixa).
+  - **Cadastros**: ficha de cada atendimento marcado, com nome, contato e
+    observação.
+  - **Grade fixa**: horários que valem para todas as semanas.
+  - **Ajustes**: antecedência mínima e janela de dias.
 - A grade fica em `public/grade.json` e é lida **em tempo de execução**, então
   publicar horários novos NÃO exige recompilar o site.
 - No painel a equipe marca os horários de cada dia da semana, bloqueia datas

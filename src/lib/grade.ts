@@ -14,6 +14,19 @@ export interface Grade {
   bloqueios: string[];
   /** horários já tomados, "AAAA-MM-DDTHH:MM" */
   ocupados: string[];
+  /** dias avulsos abertos fora da grade fixa: { "AAAA-MM-DD": ["10:00"] } */
+  extras?: Record<string, string[]>;
+  /** quem reservou cada horário (preenchido pela equipe no painel) */
+  reservas?: Reserva[];
+}
+
+export interface Reserva {
+  /** "AAAA-MM-DDTHH:MM" */
+  id: string;
+  nome: string;
+  contato?: string;
+  observacao?: string;
+  criadoEm?: string;
 }
 
 export interface Dia {
@@ -33,7 +46,16 @@ export const gradePadrao: Grade = {
   semana: { '0': [], '1': [], '2': [], '3': [], '4': [], '5': [], '6': [] },
   bloqueios: [],
   ocupados: [],
+  extras: {},
+  reservas: [],
 };
+
+/** Horários de um dia: a grade fixa da semana mais os avulsos daquela data. */
+export function horariosDoDia(g: Grade, chave: string, diaSemana: number): string[] {
+  const fixos = g.semana[String(diaSemana)] ?? [];
+  const avulsos = g.extras?.[chave] ?? [];
+  return [...new Set([...fixos, ...avulsos])].sort();
+}
 
 export const nomesDia = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
 export const nomesDiaLongo = [
@@ -80,7 +102,7 @@ export function diasDisponiveis(g: Grade, agora = new Date()): Dia[] {
     const chave = iso(d);
     if (g.bloqueios.includes(chave)) continue;
 
-    const daSemana = g.semana[String(d.getDay())] ?? [];
+    const daSemana = horariosDoDia(g, chave, d.getDay());
     const horarios = daSemana
       .filter((h) => !g.ocupados.includes(`${chave}T${h}`))
       .filter((h) => {

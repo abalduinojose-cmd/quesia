@@ -597,17 +597,12 @@ export default function Agendamento({
       </div>
 
       {/* Sinais de confiança */}
-      <div className="grid grid-cols-1 gap-px border-t border-bone/10 bg-bone/10 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-px border-t border-bone/10 bg-bone/10 sm:grid-cols-2">
         {[
           {
             t: 'Sigilo profissional',
             d: 'O que você contar fica entre você e a advogada.',
             i: 'M12 2.5 5 5.5v5.2c0 4.3 2.9 8.3 7 9.3 4.1-1 7-5 7-9.3V5.5l-7-3Zm0 6.1a1.9 1.9 0 0 1 1 3.5v2a1 1 0 0 1-2 0v-2a1.9 1.9 0 0 1 1-3.5Z',
-          },
-          {
-            t: 'Sem compromisso',
-            d: 'Escolher um horário não gera custo nem vínculo.',
-            i: 'M12 2.5a9.5 9.5 0 1 1 0 19 9.5 9.5 0 0 1 0-19Zm0 2a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Zm-.9 3.4h1.8v4.7l3.1 1.9-.9 1.5-4-2.4V7.9Z',
           },
           {
             t: 'Resposta da advogada',
