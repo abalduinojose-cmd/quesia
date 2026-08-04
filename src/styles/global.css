@@ -216,6 +216,108 @@ header[id] {
 }
 .btn-contorno-claro:active { transform: scale(0.98); }
 
+/* Botão que fecha o agendamento: barra dourada larga, ícone em selo,
+   destino escrito embaixo e um brilho que atravessa no hover */
+.btn-final {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.6rem;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  background: linear-gradient(115deg, #DFC177 0%, #C9A851 55%, #A8873B 100%);
+  color: var(--color-ink);
+  text-align: left;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    0 16px 34px -18px rgb(201 168 81 / 0.9);
+  transition:
+    transform 0.35s var(--ease-editorial),
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+  cursor: pointer;
+}
+.btn-final:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.04);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    0 24px 46px -18px rgb(201 168 81 / 1);
+}
+.btn-final:active:not(:disabled) { transform: translateY(0) scale(0.99); }
+.btn-final:disabled { cursor: default; opacity: 0.72; }
+
+.btn-final .selo {
+  display: flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgb(36 36 36 / 0.13);
+}
+.btn-final .rotulo {
+  flex: 1;
+  min-width: 0;
+  font-size: clamp(0.82rem, 3.3vw, 0.98rem);
+  font-weight: 600;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.btn-final .linha-fina {
+  display: block;
+  overflow: hidden;
+  margin-top: 0.15rem;
+  font-size: 0.73rem;
+  font-weight: 400;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(36 36 36 / 0.62);
+}
+.btn-final .seta-final {
+  flex-shrink: 0;
+  transition: transform 0.35s var(--ease-editorial);
+}
+.btn-final:hover:not(:disabled) .seta-final { transform: translateX(3px); }
+
+.btn-final::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 38%,
+    rgb(255 255 255 / 0.4) 50%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+}
+.btn-final:hover:not(:disabled)::after {
+  animation: brilhoFinal 0.9s var(--ease-editorial);
+}
+@keyframes brilhoFinal {
+  to { transform: translateX(130%); }
+}
+
+/* Rodinha de espera do selo enquanto reserva o horário */
+.btn-final .giro {
+  display: block;
+  height: 1.15rem;
+  width: 1.15rem;
+  border-radius: 999px;
+  border: 2px solid rgb(36 36 36 / 0.25);
+  border-top-color: var(--color-ink);
+  animation: girando 0.7s linear infinite;
+}
+@keyframes girando {
+  to { transform: rotate(360deg); }
+}
+
 /* Botão principal do hero: mesmo dourado, um pouco maior e com halo */
 .btn-destaque {
   padding: 1.15rem 2.2rem;
