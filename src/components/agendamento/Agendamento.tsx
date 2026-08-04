@@ -15,10 +15,21 @@ import {
 } from '@/lib/supabase';
 
 /**
- * Agendamento em 4 passos: área, modalidade, dia e horário, dados.
+ * Agendamento em 5 passos: área, modalidade, dia e horário, valor, dados.
  * A grade vem de /grade.json em tempo de execução, então a equipe publica
  * novos horários sem recompilar o site.
  */
+
+export interface Honorarios {
+  valor: string;
+  pergunta: string;
+  texto: string;
+  opcaoSim: string;
+  opcaoNao: string;
+  recusaTitulo: string;
+  recusaTexto: string;
+  recusaLinks: readonly { rotulo: string; href: string }[];
+}
 
 interface Props {
   areasOpcoes: string[];
@@ -28,6 +39,7 @@ interface Props {
   aviso: string;
   numeroWhats: string;
   urlGrade: string;
+  honorarios: Honorarios;
   /** Cabeçalho de confiança: quem vai atender */
   foto?: string;
   advogada?: string;
@@ -40,7 +52,7 @@ const esquemaNome = z
   .min(2, 'Digite o seu nome para incluir na mensagem.')
   .max(80, 'Use um nome mais curto.');
 
-const rotulos = ['Assunto', 'Atendimento', 'Data', 'Dados'];
+const rotulos = ['Assunto', 'Atendimento', 'Data', 'Valor', 'Dados'];
 
 export default function Agendamento({
   areasOpcoes,
@@ -50,6 +62,7 @@ export default function Agendamento({
   aviso,
   numeroWhats,
   urlGrade,
+  honorarios,
   foto,
   advogada,
   oab,
@@ -60,11 +73,14 @@ export default function Agendamento({
   const [modalidade, setModalidade] = useState<string | null>(null);
   const [dia, setDia] = useState<string | null>(null);
   const [hora, setHora] = useState<string | null>(null);
+  const [cienteValor, setCienteValor] = useState<boolean | null>(null);
   const [nome, setNome] = useState('');
   const [resumo, setResumo] = useState('');
   const [erro, setErro] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
-  const [grade, setGrade] = useState<Grade>(gradePadrao);
+  /* A grade em si só alimenta a lista de dias; guardamos para recarregar
+     quando um horário some no meio do caminho. */
+  const [, setGrade] = useState<Grade>(gradePadrao);
   const [carregando, setCarregando] = useState(true);
   const [dias, setDias] = useState<Dia[]>([]);
   const tituloRef = useRef<HTMLHeadingElement>(null);
@@ -120,6 +136,11 @@ export default function Agendamento({
     if (passo === 0 && area) {
       setArea(null);
       setAssunto(null);
+      return;
+    }
+    /* No passo do valor, o voltar primeiro desfaz a recusa */
+    if (passo === 3 && cienteValor === false) {
+      setCienteValor(null);
       return;
     }
     setPasso((p) => Math.max(0, p - 1));
@@ -182,6 +203,7 @@ export default function Agendamento({
         ? `Data escolhida: ${descreveEscolha(dia, hora)}`
         : 'Data: prefiro combinar por aqui',
       `Nome: ${r.data}`,
+      `Ciente do valor da consulta: ${honorarios.valor}`,
     ];
     if (resumo.trim()) linhas.push(`Resumo: ${resumo.trim()}`);
     const url = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(linhas.join('\n'))}`;
@@ -239,6 +261,7 @@ export default function Agendamento({
     passo > 0 ? assunto : null,
     passo > 1 ? modalidade : null,
     passo > 2 && dia && hora ? descreveEscolha(dia, hora) : null,
+    passo > 3 ? `${honorarios.valor} · ciente` : null,
   ].filter(Boolean) as string[];
 
   const pergunta =
@@ -250,7 +273,11 @@ export default function Agendamento({
         ? 'Como você prefere ser atendido?'
         : passo === 2
           ? 'Escolha o melhor dia e horário'
-          : 'Para terminar, como a advogada deve te chamar?';
+          : passo === 3
+            ? cienteValor === false
+              ? honorarios.recusaTitulo
+              : honorarios.pergunta
+            : 'Para terminar, como a advogada deve te chamar?';
 
   return (
     <div className="cartao-escuro overflow-hidden rounded-3xl">
@@ -368,7 +395,7 @@ export default function Agendamento({
           </p>
         )}
 
-        <div key={`${passo}-${area ?? ''}`} className="pa-passo">
+        <div key={`${passo}-${area ?? ''}-${cienteValor}`} className="pa-passo">
           {passo === 0 &&
             !area &&
             escolha(areasOpcoes, area, escolherArea, 'sm:grid-cols-2')}
@@ -514,8 +541,86 @@ export default function Agendamento({
             </div>
           )}
 
-          {/* Passo 4: dados */}
-          {passo === 3 && (
+          {/* Passo 4: valor da consulta */}
+          {passo === 3 && cienteValor !== false && (
+            <div className="mt-8">
+              <p className="medida-curta text-[0.95rem] text-bone-muted">
+                {honorarios.texto}
+              </p>
+              <div className="mt-7 flex flex-col gap-2.5">
+                {[
+                  { rotulo: honorarios.opcaoSim, sim: true },
+                  { rotulo: honorarios.opcaoNao, sim: false },
+                ].map((o) => (
+                  <button
+                    key={o.rotulo}
+                    type="button"
+                    aria-pressed={cienteValor === o.sim}
+                    onClick={() => {
+                      setCienteValor(o.sim);
+                      if (o.sim) setPasso(4);
+                    }}
+                    className={`group flex cursor-pointer items-start gap-3.5 rounded-2xl border px-5 py-4 text-left text-[0.95rem] transition-all duration-300 ${
+                      cienteValor === o.sim
+                        ? 'border-gold bg-gold/10 text-gold'
+                        : 'border-bone/15 bg-white/[0.03] text-bone hover:border-gold/50 hover:bg-white/[0.06]'
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${
+                        cienteValor === o.sim
+                          ? 'border-gold'
+                          : 'border-bone/30 group-hover:border-gold/60'
+                      }`}
+                    >
+                      <span
+                        className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                          cienteValor === o.sim ? 'bg-gold' : 'bg-transparent'
+                        }`}
+                      />
+                    </span>
+                    <span className="flex-1">{o.rotulo}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Passo 4: quem não quer a consulta particular */}
+          {passo === 3 && cienteValor === false && (
+            <div className="mt-8 rounded-2xl border border-bone/15 bg-white/[0.03] p-6">
+              <p className="medida-curta text-[0.95rem] leading-relaxed text-bone-muted">
+                {honorarios.recusaTexto}
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {honorarios.recusaLinks.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full border border-gold/35 px-4 py-2 text-[0.85rem] text-gold transition-colors hover:bg-gold/10"
+                  >
+                    {l.rotulo}&nbsp;↗
+                  </a>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setCienteValor(true);
+                  setPasso(4);
+                }}
+                className="rotulo-caps mt-6 cursor-pointer text-bone-muted underline underline-offset-4 transition-colors hover:text-bone"
+              >
+                Quero seguir com a consulta particular
+              </button>
+            </div>
+          )}
+
+          {/* Passo 5: dados */}
+          {passo === 4 && (
             <div className="mt-8 flex flex-col gap-7">
               <div>
                 <label htmlFor="ag-nome" className="rotulo-caps text-bone-muted">

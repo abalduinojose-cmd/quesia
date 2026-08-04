@@ -140,8 +140,14 @@ visitantes seria necessário um backend (Supabase, por exemplo).
 - [ ] **Foto do Sobre**: usando `FOTOS/IMG_6381.jpg` do ensaio (mesa com
       livros). Para trocar, mude `ORIGEM_FOTO` em `scripts/fotos.mjs` e rode
       `npm run fotos`.
-- [ ] **Resend**: envio por e-mail fica como TODO comentado em
-      `src/components/agendamento/PreAgendamento.tsx`; hoje tudo sai via wa.me.
+- [ ] **Valor da consulta (R$ 150)**: pedido pelo cliente em 04/08/2026. Fica
+      no passo "Valor" do agendamento (`honorarios`, em `src/content/data.ts`),
+      não na home. Vale conferir com a advogada: o Provimento 205/2021 restringe
+      anúncio de honorários em publicidade, e este passo é público. Para tirar,
+      basta apagar o bloco `passo === 3` em `Agendamento.tsx` e a etapa 04 da
+      lista em `PreAgendamentoSecao.astro`.
+- [ ] **Resend**: envio por e-mail continua fora do ar; hoje tudo sai via wa.me
+      pelo wizard `src/components/agendamento/Agendamento.tsx`.
 
 ## Avaliações do Google (Provimento 205/2021)
 

@@ -1,5 +1,11 @@
 ---
-import { site, preAgendamento, assuntosPorArea, numeroCapitulo } from '@/content/data';
+import {
+  site,
+  preAgendamento,
+  honorarios,
+  assuntosPorArea,
+  numeroCapitulo,
+} from '@/content/data';
 import { withBase } from '@/lib/paths';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 import Agendamento from '@/components/agendamento/Agendamento';
@@ -22,6 +28,11 @@ const passos = [
   },
   {
     n: '04',
+    t: 'Confirme o valor da consulta',
+    d: `A consulta particular custa ${honorarios.valor}, combinado direto com a advogada.`,
+  },
+  {
+    n: '05',
     t: 'Confirme pelo WhatsApp',
     d: 'A mensagem chega pronta e a advogada confirma com você.',
   },
@@ -29,16 +40,16 @@ const passos = [
 ---
 
 <section
-  id="pre-agendamento"
-  aria-labelledby="pre-agendamento-titulo"
+  id="agendamento"
+  aria-labelledby="agendamento-titulo"
   class="overflow-hidden bg-ink text-bone"
 >
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
     <TituloSecao
-      numero={numeroCapitulo('pre-agendamento')}
+      numero={numeroCapitulo('agendamento')}
       eyebrow="Agendamento"
       tema="escuro"
-      tituloId="pre-agendamento-titulo"
+      tituloId="agendamento-titulo"
     >
       Agende seu atendimento em <span class="texto-ouro-claro">poucos toques</span>
     </TituloSecao>
@@ -78,6 +89,7 @@ const passos = [
             modalidades={[...preAgendamento.modalidades]}
             intro={preAgendamento.intro}
             aviso={preAgendamento.aviso}
+            honorarios={honorarios}
             numeroWhats={site.whatsapp.numero}
             urlGrade={withBase('/grade.json')}
             foto={withBase('/sobre/quesia-640.webp')}

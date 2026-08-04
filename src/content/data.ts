@@ -318,7 +318,7 @@ export const avaliacoes = {
 /** Seções que entram na navegação e na numeração de fundo */
 export const capitulos = [
   { id: 'sobre', titulo: 'Sobre a advogada', curto: 'Sobre' },
-  { id: 'pre-agendamento', titulo: 'Agendar atendimento', curto: 'Agendar' },
+  { id: 'agendamento', titulo: 'Agendar atendimento', curto: 'Agendar' },
   { id: 'areas', titulo: 'Áreas de atuação', curto: 'Áreas' },
   { id: 'como-funciona', titulo: 'Como funciona', curto: 'Como funciona' },
   { id: 'formacao', titulo: 'Formação e atuação', curto: 'Formação' },
@@ -326,7 +326,7 @@ export const capitulos = [
     ? [{ id: 'avaliacoes', titulo: 'O que dizem os clientes', curto: 'Avaliações' }]
     : []),
   { id: 'faq', titulo: 'Perguntas frequentes', curto: 'FAQ' },
-  { id: 'contato', titulo: 'Contato e pré-agendamento', curto: 'Contato' },
+  { id: 'contato', titulo: 'Contato e agendamento', curto: 'Contato' },
 ];
 
 export const hero = {
@@ -453,7 +453,7 @@ export const faq: PerguntaFaq[] = [
   {
     pergunta: 'Como funciona a primeira conversa?',
     resposta:
-      'Você pode chamar no WhatsApp ou usar o pré-agendamento aqui do site. Na conversa, a advogada entende o seu caso, orienta sobre os documentos necessários e explica os próximos passos, sem juridiquês.',
+      'Você pode chamar no WhatsApp ou usar o agendamento aqui do site. Na conversa, a advogada entende o seu caso, orienta sobre os documentos necessários e explica os próximos passos, sem juridiquês.',
   },
   {
     pergunta: 'A doutora atende online?',
@@ -502,10 +502,31 @@ export const preAgendamento = {
     'O horário fica reservado após a confirmação da advogada pelo WhatsApp.',
 } as const;
 
+/**
+ * Passo do valor da consulta, exibido antes dos dados pessoais.
+ * Quem responde "não" recebe os caminhos de atendimento gratuito em vez do
+ * formulário, para não ocupar um horário pago sem querer.
+ */
+export const honorarios = {
+  valor: 'R$ 150',
+  pergunta: 'A consulta particular custa R$ 150. Podemos seguir?',
+  texto:
+    'É uma hora de atendimento com a advogada, com análise dos seus documentos e orientação sobre os próximos passos. O pagamento é combinado direto com ela.',
+  opcaoSim: 'Sim, entendo o valor do serviço especializado.',
+  opcaoNao: 'Não, estou buscando apenas orientações gratuitas.',
+  recusaTitulo: 'Sem problema, aqui vão os caminhos gratuitos',
+  recusaTexto:
+    'Para atendimento sem custo, procure a Defensoria Pública ou o serviço de assistência judiciária da OAB. Se mudar de ideia e quiser a consulta particular, é só voltar e escolher a primeira opção.',
+  recusaLinks: [
+    { rotulo: 'Defensoria Pública do Rio de Janeiro', href: 'https://www.defensoria.rj.def.br/' },
+    { rotulo: 'OAB Petrópolis', href: 'https://www.oabpetropolis.org.br/' },
+  ],
+} as const;
+
 export const contato = {
   headline: 'Vamos conversar sobre o seu caso?',
   texto:
-    'O atendimento é humano do primeiro ao último contato. Use o pré-agendamento, o botão verde do WhatsApp ou visite o escritório.',
+    'O atendimento é humano do primeiro ao último contato. Use o agendamento, o botão verde do WhatsApp ou visite o escritório.',
 } as const;
 
 export const rodape = {

@@ -21,10 +21,10 @@ export interface DadosAgendamento {
   resumo?: string;
 }
 
-/** Mensagem estruturada do wizard de pré-agendamento. */
+/** Mensagem estruturada do wizard de agendamento. */
 export function waMensagemAgendamento(d: DadosAgendamento): string {
   const linhas = [
-    'Olá, Dra. Quesia! Vim pelo site e gostaria de um pré-agendamento.',
+    'Olá, Dra. Quesia! Vim pelo site e gostaria de agendar um atendimento.',
     `Área: ${d.area}`,
     `Atendimento: ${d.modalidade}`,
     `Nome: ${d.nome}`,

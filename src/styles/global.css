@@ -216,6 +216,41 @@ header[id] {
 }
 .btn-contorno-claro:active { transform: scale(0.98); }
 
+/* Botão principal do hero: mesmo dourado, um pouco maior e com halo */
+.btn-destaque {
+  padding: 1.15rem 2.2rem;
+  font-size: 0.82rem;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    0 18px 40px -16px rgb(201 168 81 / 0.8),
+    0 0 0 1px rgb(201 168 81 / 0.35),
+    0 0 0 7px rgb(201 168 81 / 0.12);
+}
+.btn-destaque svg { flex-shrink: 0; }
+
+/* Entrada do título do hero: cada palavra sobe com um leve atraso.
+   Roda sempre, junto com a mídia de fundo, e não pela via do .anima. */
+.titulo-hero .palavra {
+  display: inline-block;
+  animation: entraPalavra 0.85s var(--ease-editorial) both;
+}
+.titulo-hero .palavra:nth-child(1) { animation-delay: 0.10s; }
+.titulo-hero .palavra:nth-child(2) { animation-delay: 0.19s; }
+.titulo-hero .palavra:nth-child(3) { animation-delay: 0.28s; }
+.titulo-hero .palavra:nth-child(4) { animation-delay: 0.37s; }
+.titulo-hero .palavra:nth-child(5) { animation-delay: 0.46s; }
+
+@keyframes entraPalavra {
+  from {
+    opacity: 0;
+    transform: translateY(0.38em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Numeração gigante apagada atrás das seções */
 .numeral-fantasma {
   position: absolute;

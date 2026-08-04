@@ -1,5 +1,5 @@
 ---
-import { site, hero, avaliacoes } from '@/content/data';
+import { hero, avaliacoes } from '@/content/data';
 import { waLink, waMensagemPadrao } from '@/lib/wa';
 import { withBase } from '@/lib/paths';
 import IconeWhats from '@/components/ui/IconeWhats.astro';
@@ -48,10 +48,12 @@ import IconeWhats from '@/components/ui/IconeWhats.astro';
     class="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col justify-end px-5 pb-16 pt-32 sm:px-8 md:justify-center md:pb-24 lg:px-12"
   >
     <h1
-      class="anima max-w-[13ch] font-display text-[clamp(3.1rem,7.2vw,6rem)] leading-[1.04] [text-shadow:0_2px_28px_rgb(0_0_0/0.35)]"
+      class="titulo-hero max-w-[13ch] font-display text-[clamp(2.65rem,6.1vw,5rem)] leading-[1.06] [text-shadow:0_2px_28px_rgb(0_0_0/0.35)]"
     >
-      Defendendo seus <span class="texto-ouro-claro">direitos</span> com
-      <span class="texto-ouro-claro">paixão</span>
+      <span class="palavra">Defendendo</span> <span class="palavra">seus</span>
+      <span class="palavra texto-ouro-claro">direitos</span>
+      <span class="palavra">com</span>
+      <span class="palavra texto-ouro-claro">paixão</span>
     </h1>
 
     <p
@@ -62,17 +64,29 @@ import IconeWhats from '@/components/ui/IconeWhats.astro';
       {hero.subResto}
     </p>
 
-    <div class="anima mt-9 flex flex-wrap items-center gap-4" style="--anima-delay: 260ms">
+    <div
+      class="anima mt-9 flex w-full flex-col items-stretch gap-3.5 sm:w-auto sm:flex-row sm:items-center sm:gap-4"
+      style="--anima-delay: 260ms"
+    >
+      <a href="#agendamento" class="btn-ouro btn-destaque rotulo-caps">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M8 3v3m8-3v3M3.5 9.5h17M5 6h14a1.5 1.5 0 0 1 1.5 1.5V19A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6Z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"></path>
+        </svg>
+        Fazer agendamento
+      </a>
       <a
         href={waLink(waMensagemPadrao)}
         target="_blank"
         rel="noopener noreferrer"
-        class="btn-ouro rotulo-caps"
+        class="btn-contorno-claro rotulo-caps justify-center"
       >
         <IconeWhats tamanho={17} />
         Conversar no WhatsApp
       </a>
-      <a href="#contato" class="btn-contorno-claro rotulo-caps">Fazer pré-agendamento</a>
     </div>
 
     <a

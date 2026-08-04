@@ -4,7 +4,13 @@
  * WhatsApp: abre direto na escolha da área, sem o resto do site pela frente.
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { site, preAgendamento, assuntosPorArea, avaliacoes } from '@/content/data';
+import {
+  site,
+  preAgendamento,
+  honorarios,
+  assuntosPorArea,
+  avaliacoes,
+} from '@/content/data';
 import { withBase } from '@/lib/paths';
 import Agendamento from '@/components/agendamento/Agendamento';
 ---
@@ -55,6 +61,7 @@ import Agendamento from '@/components/agendamento/Agendamento';
           modalidades={[...preAgendamento.modalidades]}
           intro={preAgendamento.intro}
           aviso={preAgendamento.aviso}
+          honorarios={honorarios}
           numeroWhats={site.whatsapp.numero}
           urlGrade={withBase('/grade.json')}
           foto={withBase('/sobre/quesia-640.webp')}
