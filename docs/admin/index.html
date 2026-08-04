@@ -1,87 +1,72 @@
-<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/agendar.CT5uvPMe.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --><div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-ink px-5"> <div class="absolute inset-0 bg-[radial-gradient(110%_75%_at_50%_0%,rgb(201_168_81/0.16),transparent_62%)]" aria-hidden="true"></div> <div class="relative w-full max-w-[23rem]"> <div class="rounded-3xl border border-bone/10 bg-white/[0.04] p-8 text-center backdrop-blur-sm sm:p-9"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="36" height="41" class="mx-auto h-10 w-auto"> <h1 class="mt-6 font-display text-[2rem] leading-none text-bone">Agenda</h1> <p class="mt-2 text-[0.88rem] text-bone-muted">
-Área restrita à equipe do escritório.
-</p> <form id="form-login" class="mt-8 flex flex-col gap-3.5 text-left"> <div class="campo"> <label for="usuario">Usuário</label> <input id="usuario" type="text" autocomplete="username"> </div> <div class="campo"> <label for="senha">Senha</label> <input id="senha" type="password" autocomplete="current-password"> </div> <p id="erro-login" class="hidden text-sm text-[#F2B8A2]">
+<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/agendar.C0Y4rmyw.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --><div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#141416] px-5"> <div class="absolute inset-0 bg-[radial-gradient(80%_55%_at_50%_-5%,rgb(201_168_81/0.28),transparent_70%),radial-gradient(60%_45%_at_85%_100%,rgb(201_168_81/0.10),transparent_65%)]" aria-hidden="true"></div> <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" aria-hidden="true"></div> <div class="relative w-full max-w-[23.5rem]"> <div class="rounded-[1.75rem] border border-bone/[0.09] bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-9 text-center shadow-[0_40px_80px_-40px_rgb(0_0_0/0.9)] backdrop-blur-md"> <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/25 bg-gold/[0.08]"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="30" height="34" class="h-8 w-auto"> </div> <h1 class="mt-6 font-display text-[2.1rem] leading-none text-bone">Agenda</h1> <p class="mt-2.5 text-[0.86rem] text-bone-muted">
+Área restrita à equipe do escritório
+</p> <form id="form-login" class="mt-9 flex flex-col gap-3 text-left"> <div class="campo"> <label for="usuario">Usuário</label> <input id="usuario" type="text" autocomplete="username"> </div> <div class="campo"> <label for="senha">Senha</label> <input id="senha" type="password" autocomplete="current-password"> </div> <p id="erro-login" class="hidden text-sm text-[#F2B8A2]">
 Usuário ou senha incorretos.
-</p> <button type="submit" class="btn-clean mt-2 w-full justify-center">
-Entrar
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M3 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </form> </div> </div> </div> <!-- Painel --> <div id="painel" class="hidden pb-28"> <header class="sticky top-0 z-30 border-b border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8"> <div class="flex items-center gap-3"> <img src="/quesia/logos/qc-mark.png" alt="" width="28" height="32" class="h-7 w-auto"> <div> <p class="font-display text-[1.1rem] leading-tight">Agenda</p> <p class="text-[0.72rem] text-ink-muted">
+</p> <button type="submit" class="btn-entrar mt-3"> <span>Entrar</span> <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M3 8h9M8.5 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </form> </div> </div> </div> <!-- Painel --> <div id="painel" class="hidden pb-28"> <header class="sticky top-0 z-30 border-b border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8"> <div class="flex items-center gap-3"> <img src="/quesia/logos/qc-mark.png" alt="" width="28" height="32" class="h-7 w-auto"> <div> <p class="font-display text-[1.1rem] leading-tight">Agenda</p> <p class="text-[0.72rem] text-ink-muted">
 Publicada em <span id="atualizado-em">-</span> </p> </div> </div> <div class="flex items-center gap-2"> <span id="selo-pendente" class="hidden rounded-full bg-[#B4462F]/12 px-3 py-1.5 text-[0.72rem] font-medium text-[#B4462F]">
 não publicado
 </span> <a href="/quesia/" class="rotulo-caps hidden rounded-full border border-ink/20 px-4 py-2 text-ink-muted transition-colors hover:border-ink hover:text-ink sm:inline-block">
 Ver site
 </a> <button id="btn-sair" type="button" class="rotulo-caps rounded-full px-3 py-2 text-ink-muted transition-colors hover:text-ink">
 Sair
-</button> </div> </div> <div class="mx-auto w-full max-w-5xl overflow-x-auto px-5 sm:px-8"> <div class="flex gap-1" role="tablist"> <button type="button" data-aba="calendario" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">
-Calendário
-</button> <button type="button" data-aba="cadastros" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">
-Cadastros
-</button> <button type="button" data-aba="semana" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">
-Grade fixa
-</button> <button type="button" data-aba="ajustes" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">
-Ajustes
-</button> </div> </div> </header> <main class="mx-auto w-full max-w-5xl px-5 py-8 sm:px-8"> <!-- Resumo --> <div class="grid grid-cols-3 gap-3"> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-livres" class="font-display text-[1.7rem] leading-none">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">horários livres</p> </div> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-ocupados" class="font-display text-[1.7rem] leading-none">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">
-horários ocupados
-</p> </div> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-bloqueios" class="font-display text-[1.7rem] leading-none">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">dias bloqueados</p> </div> </div> <!-- Link de agendamento --> <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-gold/[0.07] px-5 py-4"> <div class="min-w-0"> <p class="text-[0.88rem] font-medium">Link de agendamento</p> <p id="link-agendar" class="truncate text-[0.78rem] text-ink-muted"></p> </div> <button id="btn-copiar" type="button" class="rotulo-caps shrink-0 cursor-pointer rounded-full border border-gold-deep/40 px-4 py-2 text-gold-deep transition-colors hover:bg-gold-deep hover:text-bone">
+</button> </div> </div> <div class="mx-auto w-full max-w-5xl overflow-x-auto px-5 sm:px-8"> <div class="flex gap-1" role="tablist"> <button type="button" data-aba="calendario" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">Agenda</button> <button type="button" data-aba="cadastros" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">Cadastros</button> <button type="button" data-aba="semana" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">Grade fixa</button> <button type="button" data-aba="ajustes" class="aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors" role="tab">Ajustes</button> </div> </div> </header> <main class="mx-auto w-full max-w-5xl px-5 py-7 sm:px-8"> <!-- ABA: AGENDA --> <section id="painel-calendario"> <!-- Atendimentos de hoje --> <div id="painel-hoje" class="rounded-3xl bg-ink p-6 text-bone sm:p-7"></div> <!-- Resumo --> <div class="mt-4 grid grid-cols-3 gap-3"> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-livres" class="font-display text-[1.7rem] leading-none text-ink">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">horários livres</p> </div> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-ocupados" class="font-display text-[1.7rem] leading-none text-[#2F7A49]">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">atendimentos marcados</p> </div> <div class="cartao rounded-2xl p-4 sm:p-5"> <p id="kpi-bloqueios" class="font-display text-[1.7rem] leading-none text-[#B4462F]">0</p> <p class="mt-1.5 text-[0.72rem] leading-tight text-ink-muted">dias bloqueados</p> </div> </div> <!-- Link de agendamento --> <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gold/25 bg-gold/[0.07] px-5 py-4"> <div class="min-w-0"> <p class="text-[0.88rem] font-medium">Link de agendamento</p> <p id="link-agendar" class="truncate text-[0.78rem] text-ink-muted"></p> </div> <button id="btn-copiar" type="button" class="rotulo-caps shrink-0 cursor-pointer rounded-full border border-gold-deep/40 px-4 py-2 text-gold-deep transition-colors hover:bg-gold-deep hover:text-bone">
 Copiar
-</button> </div> <!-- ABA: CALENDÁRIO --> <section id="painel-calendario" class="mt-8"> <div class="cartao rounded-2xl p-5 sm:p-6"> <div class="flex items-center justify-between gap-3"> <button id="mes-anterior" type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-ink/15 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep" aria-label="Mês anterior"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M10 2 4 8l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> <p id="titulo-mes" class="font-display text-[1.3rem] capitalize">-</p> <button id="mes-proximo" type="button" class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-ink/15 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep" aria-label="Próximo mês"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M6 2l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </div> <div class="mt-5 grid grid-cols-7 gap-1 text-center"> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">dom</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">seg</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">ter</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">qua</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">qui</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">sex</span> <span class="rotulo-caps py-1 text-[0.6rem] text-ink-muted">sáb</span> </div> <div id="grade-mes" class="mt-1 grid grid-cols-7 gap-1"></div> <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-gold-soft pt-4 text-[0.72rem] text-ink-muted"> <span class="flex items-center gap-1.5"> <span class="h-2.5 w-2.5 rounded-full bg-gold-deep" aria-hidden="true"></span>
-com atendimento
-</span> <span class="flex items-center gap-1.5"> <span class="h-2.5 w-2.5 rounded-full bg-[#B4462F]" aria-hidden="true"></span>
-bloqueado
-</span> <span class="flex items-center gap-1.5"> <span class="h-2.5 w-2.5 rounded-full border border-ink/25" aria-hidden="true"></span>
-sem atendimento
-</span> </div> </div> <!-- Dia selecionado --> <div id="detalhe-dia" class="mt-5"></div> </section> <!-- ABA: CADASTROS --> <section id="painel-cadastros" class="mt-8 hidden"> <h2 class="font-display text-[1.4rem]">Quem agendou</h2> <p class="mt-1 text-sm text-ink-muted">
+</button> </div> <!-- Agenda da semana --> <div class="cartao mt-6 rounded-3xl p-5 sm:p-6"> <div class="flex items-center justify-between gap-3"> <button id="semana-anterior" type="button" class="seta" aria-label="Semana anterior"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M10 2 4 8l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> <div class="text-center"> <p class="rotulo-caps text-gold-deep">Semana</p> <p id="titulo-semana" class="font-display text-[1.15rem] leading-tight">-</p> </div> <button id="semana-proxima" type="button" class="seta" aria-label="Próxima semana"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M6 2l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </div> <div id="grade-semana" class="sem-scrollbar mt-5 grid grid-cols-7 gap-2 overflow-x-auto"></div> <div class="mt-5 flex flex-wrap gap-x-5 gap-y-2 border-t border-gold-soft pt-4 text-[0.72rem] text-ink-muted"> <span class="flex items-center gap-1.5"><span class="ponto bg-[#3E9A5F]"></span>atendimento marcado</span> <span class="flex items-center gap-1.5"><span class="ponto bg-gold-deep"></span>livre</span> <span class="flex items-center gap-1.5"><span class="ponto bg-ink/30"></span>fechado</span> <span class="flex items-center gap-1.5"><span class="ponto bg-[#B4462F]"></span>dia bloqueado</span> </div> </div> <!-- Dia selecionado --> <div id="detalhe-dia" class="mt-5"></div> <!-- Calendário do mês --> <div class="cartao mt-6 rounded-3xl p-5 sm:p-6"> <div class="flex items-center justify-between gap-3"> <button id="mes-anterior" type="button" class="seta" aria-label="Mês anterior"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M10 2 4 8l6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> <div class="text-center"> <p class="rotulo-caps text-gold-deep">Mês</p> <p id="titulo-mes" class="font-display text-[1.15rem] capitalize leading-tight">-</p> </div> <button id="mes-proximo" type="button" class="seta" aria-label="Próximo mês"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M6 2l6 6-6 6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path> </svg> </button> </div> <div class="mt-5 grid grid-cols-7 gap-1 text-center"> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">dom</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">seg</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">ter</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">qua</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">qui</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">sex</span> <span class="rotulo-caps py-1 text-[0.58rem] text-ink-muted">sáb</span> </div> <div id="grade-mes" class="mt-1 grid grid-cols-7 gap-1"></div> </div> </section> <!-- ABA: CADASTROS --> <section id="painel-cadastros" class="hidden"> <h2 class="font-display text-[1.5rem]">Quem agendou</h2> <p class="mt-1 text-sm text-ink-muted">
 Ficha de cada atendimento marcado, com nome, contato e observações.
-</p> <div id="lista-cadastros" class="mt-5 flex flex-col gap-3"></div> </section> <!-- ABA: GRADE FIXA --> <section id="painel-semana" class="mt-8 hidden"> <h2 class="font-display text-[1.4rem]">Grade fixa da semana</h2> <p class="mt-1 text-sm text-ink-muted">
-Vale para todas as semanas. Para abrir um dia avulso, use o calendário.
-</p> <div id="lista-semana" class="mt-5 flex flex-col gap-3"></div> </section> <!-- ABA: AJUSTES --> <section id="painel-ajustes" class="mt-8 hidden"> <h2 class="font-display text-[1.4rem]">Ajustes</h2> <div class="cartao mt-5 flex flex-col gap-6 rounded-2xl p-6"> <label class="flex flex-col gap-2"> <span class="text-[0.95rem] font-medium">Antecedência mínima</span> <span class="text-sm text-ink-muted">
+</p> <div id="lista-cadastros" class="mt-5 flex flex-col gap-3"></div> </section> <!-- ABA: GRADE FIXA --> <section id="painel-semana" class="hidden"> <h2 class="font-display text-[1.5rem]">Grade fixa da semana</h2> <p class="mt-1 text-sm text-ink-muted">
+Vale para todas as semanas. Para abrir um dia avulso, use a agenda.
+</p> <div id="lista-semana" class="mt-5 flex flex-col gap-3"></div> </section> <!-- ABA: AJUSTES --> <section id="painel-ajustes" class="hidden"> <h2 class="font-display text-[1.5rem]">Ajustes</h2> <div class="cartao mt-5 flex flex-col gap-6 rounded-2xl p-6"> <label class="flex flex-col gap-2"> <span class="text-[0.95rem] font-medium">Antecedência mínima</span> <span class="text-sm text-ink-muted">
 Quanto tempo antes o cliente ainda pode escolher um horário.
-</span> <div class="mt-1 flex items-center gap-3"> <input id="in-antecedencia" type="number" min="0" max="168" class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"> <span class="text-sm text-ink-muted">horas</span> </div> </label> <label class="flex flex-col gap-2"> <span class="text-[0.95rem] font-medium">Janela de agendamento</span> <span class="text-sm text-ink-muted">
-Quantos dias à frente aparecem no site.
-</span> <div class="mt-1 flex items-center gap-3"> <input id="in-dias" type="number" min="7" max="90" class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"> <span class="text-sm text-ink-muted">dias</span> </div> </label> </div> <div class="mt-6 rounded-2xl border border-gold/30 bg-gold/[0.06] p-6"> <h3 class="font-display text-[1.2rem]">Como publicar</h3> <ol class="mt-3 flex list-decimal flex-col gap-1.5 pl-5 text-[0.92rem] text-ink-muted"> <li>Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.</li> <li>O arquivo <code class="rounded bg-ink/5 px-1.5 py-0.5">grade.json</code> é baixado.</li> <li>
-No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5 py-0.5">docs</code>
-e envie o arquivo por cima do antigo.
-</li> <li>Em 2 a 3 minutos o site mostra os horários novos.</li> </ol> </div> <button id="btn-restaurar" type="button" class="rotulo-caps mt-6 rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
+</span> <div class="mt-1 flex items-center gap-3"> <input id="in-antecedencia" type="number" min="0" max="168" class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"> <span class="text-sm text-ink-muted">horas</span> </div> </label> <label class="flex flex-col gap-2"> <span class="text-[0.95rem] font-medium">Janela de agendamento</span> <span class="text-sm text-ink-muted">Quantos dias à frente aparecem no site.</span> <div class="mt-1 flex items-center gap-3"> <input id="in-dias" type="number" min="7" max="90" class="w-28 rounded-xl border border-ink/15 bg-bone px-4 py-3 outline-none focus:border-gold-deep"> <span class="text-sm text-ink-muted">dias</span> </div> </label> </div> <div class="mt-6 rounded-2xl border border-gold/30 bg-gold/[0.06] p-6"> <h3 class="font-display text-[1.2rem]">Como publicar</h3> <ol class="mt-3 flex list-decimal flex-col gap-1.5 pl-5 text-[0.92rem] text-ink-muted"> <li>Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.</li> <li>O arquivo <code class="rounded bg-ink/5 px-1.5 py-0.5">grade.json</code> é baixado.</li> <li>No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5 py-0.5">docs</code> e envie o arquivo por cima do antigo.</li> <li>Em 2 a 3 minutos o site mostra os horários novos.</li> </ol> </div> <button id="btn-restaurar" type="button" class="rotulo-caps mt-6 rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
 Descartar mudanças não publicadas
-</button> </section> </main> <!-- Barra de publicação --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3 sm:px-8"> <div class="flex items-center gap-2.5"> <span id="ponto-estado" class="h-2 w-2 shrink-0 rounded-full bg-[#3E9A5F]" aria-hidden="true"></span> <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">Tudo publicado.</p> </div> <button id="btn-publicar" type="button" class="group flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-40"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M8 11V2m0 0L4.5 5.5M8 2l3.5 3.5M2.5 10.5v2A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> <span id="rotulo-publicar">Publicar</span> </button> </div> </div> <div id="aviso" class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-6 py-3 text-sm text-bone opacity-0 transition-opacity duration-300"></div> </div> <!-- Ficha de reserva --> <dialog id="dialogo-reserva" class="w-[min(92vw,26rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" id="form-reserva" class="p-7"> <p id="reserva-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Quem vai ser atendido</h3> <div class="mt-5 flex flex-col gap-3.5"> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Nome</span> <input id="reserva-nome" type="text" class="rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"> </label> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Telefone ou e-mail</span> <input id="reserva-contato" type="text" class="rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"> </label> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Observação</span> <textarea id="reserva-obs" rows="2" class="resize-none rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"></textarea> </label> </div> <div class="mt-6 flex flex-wrap gap-2"> <button id="reserva-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar</button> <button id="reserva-liberar" type="button" class="rotulo-caps rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
+</button> </section> </main> <!-- Barra de publicação --> <div class="fixed inset-x-0 bottom-0 z-40 border-t border-gold-soft bg-bone/95 backdrop-blur"> <div class="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-5 py-3 sm:px-8"> <div class="flex items-center gap-2.5"> <span id="ponto-estado" class="h-2 w-2 shrink-0 rounded-full bg-[#3E9A5F]" aria-hidden="true"></span> <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">Tudo publicado.</p> </div> <button id="btn-publicar" type="button" class="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-40"> <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"> <path d="M8 11V2m0 0L4.5 5.5M8 2l3.5 3.5M2.5 10.5v2A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </svg> <span id="rotulo-publicar">Publicar</span> </button> </div> </div> <div id="aviso" class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full bg-ink px-6 py-3 text-sm text-bone opacity-0 transition-opacity duration-300"></div> </div> <!-- Ficha de reserva --> <dialog id="dialogo-reserva" class="w-[min(92vw,26rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" class="p-7"> <p id="reserva-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Quem vai ser atendido</h3> <div class="mt-5 flex flex-col gap-3.5"> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Nome</span> <input id="reserva-nome" type="text" class="rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"> </label> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Telefone ou e-mail</span> <input id="reserva-contato" type="text" class="rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"> </label> <label class="flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Observação</span> <textarea id="reserva-obs" rows="2" class="resize-none rounded-xl border border-ink/15 bg-white px-4 py-3 outline-none focus:border-gold-deep"></textarea> </label> </div> <div class="mt-6 flex flex-wrap gap-2"> <button id="reserva-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar</button> <button id="reserva-liberar" type="button" class="rotulo-caps rounded-full border border-ink/20 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
 Liberar horário
-</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">
-Fechar
-</button> </div> </form> </dialog> <!-- Abrir dia avulso --> <dialog id="dialogo-dia" class="w-[min(92vw,26rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" class="p-7"> <p id="dia-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Abrir atendimento neste dia</h3> <p class="mt-2 text-[0.9rem] text-ink-muted">
+</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <!-- Abrir dia avulso --> <dialog id="dialogo-dia" class="w-[min(92vw,26rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" class="p-7"> <p id="dia-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Abrir atendimento neste dia</h3> <p class="mt-2 text-[0.9rem] text-ink-muted">
 Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
-</p> <div id="dia-horarios" class="mt-5 flex flex-wrap gap-2"></div> <div class="mt-6 flex flex-wrap gap-2"> <button id="dia-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar dia</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">
-Fechar
-</button> </div> </form> </dialog> <script>(function(){const urlGrade = "/quesia/grade.json";
+</p> <div id="dia-horarios" class="mt-5 flex flex-wrap gap-2"></div> <div class="mt-6 flex flex-wrap gap-2"> <button id="dia-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar dia</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <script>(function(){const urlGrade = "/quesia/grade.json";
 
-  /* Acesso simples: evita mexida acidental de quem tem o link.
-     Não é proteção de verdade, o site é estático. */
   const USUARIO = 'quesiaadv';
   const SENHA = '123456';
   const CHAVE = 'qc-grade';
   const CHAVE_SUJO = 'qc-grade-sujo';
 
   const nomesDia = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const diaCurto = ['dom','seg','ter','qua','qui','sex','sáb'];
   const nomesMes = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
   const mesCurto = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
   const HORAS = [];
   for (let h = 7; h <= 20; h++) HORAS.push(String(h).padStart(2, '0') + ':00');
 
   let grade = null;
-  let mesVisivel = new Date();
-  mesVisivel.setDate(1);
+  let mesVisivel = new Date(); mesVisivel.setDate(1); mesVisivel.setHours(0,0,0,0);
+  let inicioSemana = null;
   let diaSelecionado = null;
   let slotEditando = null;
   let horariosNovoDia = [];
 
-  const iso = (d) =>
-    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  const doIso = (s) => { const [a, m, d] = s.split('-').map(Number); return new Date(a, m - 1, d); };
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const doIso = (s) => { const [a,m,d] = s.split('-').map(Number); return new Date(a, m-1, d); };
   const porExtenso = (s) => { const d = doIso(s); return `${nomesDia[d.getDay()]}, ${d.getDate()} de ${nomesMes[d.getMonth()]}`; };
+  const hojeZero = () => { const d = new Date(); d.setHours(0,0,0,0); return d; };
 
-  function horariosDoDia(chave, diaSemana) {
-    const fixos = grade.semana[String(diaSemana)] || [];
+  function horariosDoDia(chave, ds) {
+    const fixos = grade.semana[String(ds)] || [];
     const avulsos = (grade.extras && grade.extras[chave]) || [];
     return [...new Set([...fixos, ...avulsos])].sort();
   }
+  const reservaDe = (id) => (grade.reservas || []).find((r) => r.id === id);
+
+  /** livre · marcado (tem cliente) · fechado (ocupado sem nome) */
+  function statusDo(id) {
+    if (!grade.ocupados.includes(id)) return 'livre';
+    const r = reservaDe(id);
+    return r && r.nome ? 'marcado' : 'fechado';
+  }
+  const classeSlot = {
+    livre: 'border-gold-deep/30 bg-gold/[0.07] text-ink hover:border-gold-deep',
+    marcado: 'border-[#3E9A5F]/45 bg-[#3E9A5F]/12 text-[#2F7A49] hover:border-[#3E9A5F]',
+    fechado: 'border-ink/15 bg-ink/[0.04] text-ink-muted hover:border-ink/40',
+  };
 
   function avisar(texto) {
     const el = document.getElementById('aviso');
@@ -94,9 +79,7 @@ Fechar
   function marcarSujo(v) {
     localStorage.setItem(CHAVE_SUJO, v ? '1' : '');
     document.getElementById('selo-pendente').classList.toggle('hidden', !v);
-    document.getElementById('estado-publicacao').textContent = v
-      ? 'Mudanças ainda não publicadas.'
-      : 'Tudo publicado.';
+    document.getElementById('estado-publicacao').textContent = v ? 'Mudanças ainda não publicadas.' : 'Tudo publicado.';
     document.getElementById('ponto-estado').className =
       'h-2 w-2 shrink-0 rounded-full ' + (v ? 'bg-[#B4462F] animate-pulse' : 'bg-[#3E9A5F]');
     const btn = document.getElementById('btn-publicar');
@@ -118,83 +101,232 @@ Fechar
       grade = await r.json();
     }
     grade.semana = grade.semana || {};
-    /* filtra lixo de versões antigas ou de gravação interrompida */
     const valido = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}/.test(x);
     grade.bloqueios = (grade.bloqueios || []).filter(valido);
     grade.ocupados = (grade.ocupados || []).filter(valido);
     grade.extras = grade.extras || {};
     grade.reservas = (grade.reservas || []).filter((r) => r && valido(r.id));
+    if (!inicioSemana) {
+      const h = hojeZero();
+      inicioSemana = new Date(h);
+      inicioSemana.setDate(h.getDate() - h.getDay());
+    }
     marcarSujo(localStorage.getItem(CHAVE_SUJO) === '1');
     desenhar();
   }
 
   /* Abas */
-  const abas = {
-    calendario: 'painel-calendario',
-    cadastros: 'painel-cadastros',
-    semana: 'painel-semana',
-    ajustes: 'painel-ajustes',
-  };
+  const abas = { calendario: 'painel-calendario', cadastros: 'painel-cadastros', semana: 'painel-semana', ajustes: 'painel-ajustes' };
   function trocarAba(nome) {
-    Object.entries(abas).forEach(([k, id]) => {
-      document.getElementById(id).classList.toggle('hidden', k !== nome);
-    });
+    Object.entries(abas).forEach(([k, id]) => document.getElementById(id).classList.toggle('hidden', k !== nome));
     document.querySelectorAll('.aba').forEach((b) => {
       const on = b.dataset.aba === nome;
-      b.className =
-        'aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors ' +
+      b.className = 'aba rotulo-caps whitespace-nowrap border-b-2 px-4 py-3 transition-colors ' +
         (on ? 'border-gold-deep text-ink' : 'border-transparent text-ink-muted hover:text-ink');
       b.setAttribute('aria-selected', String(on));
     });
   }
-  document.querySelectorAll('.aba').forEach((b) =>
-    b.addEventListener('click', () => trocarAba(b.dataset.aba))
-  );
+  document.querySelectorAll('.aba').forEach((b) => b.addEventListener('click', () => trocarAba(b.dataset.aba)));
 
-  /* Navegação de mês */
-  document.getElementById('mes-anterior').addEventListener('click', () => {
-    mesVisivel.setMonth(mesVisivel.getMonth() - 1);
-    desenhar();
-  });
-  document.getElementById('mes-proximo').addEventListener('click', () => {
-    mesVisivel.setMonth(mesVisivel.getMonth() + 1);
-    desenhar();
-  });
+  /* Navegação */
+  document.getElementById('mes-anterior').addEventListener('click', () => { mesVisivel.setMonth(mesVisivel.getMonth()-1); desenhar(); });
+  document.getElementById('mes-proximo').addEventListener('click', () => { mesVisivel.setMonth(mesVisivel.getMonth()+1); desenhar(); });
+  document.getElementById('semana-anterior').addEventListener('click', () => { inicioSemana.setDate(inicioSemana.getDate()-7); desenhar(); });
+  document.getElementById('semana-proxima').addEventListener('click', () => { inicioSemana.setDate(inicioSemana.getDate()+7); desenhar(); });
 
   function desenhar() {
+    const hoje = hojeZero();
+    const chaveHoje = iso(hoje);
+
     document.getElementById('atualizado-em').textContent = grade.atualizadoEm || 'nunca publicada';
     document.getElementById('in-antecedencia').value = grade.antecedenciaHoras ?? 12;
     document.getElementById('in-dias').value = grade.diasFuturos ?? 30;
 
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
+    /* ------------------------------------------------ Atendimentos de hoje */
+    const cxHoje = document.getElementById('painel-hoje');
+    const bloqueadoHoje = grade.bloqueios.includes(chaveHoje);
+    const hsHoje = bloqueadoHoje ? [] : horariosDoDia(chaveHoje, hoje.getDay());
+    const marcadosHoje = hsHoje
+      .map((h) => ({ h, id: `${chaveHoje}T${h}`, r: reservaDe(`${chaveHoje}T${h}`) }))
+      .filter((x) => grade.ocupados.includes(x.id));
 
-    /* Resumo */
-    let livres = 0;
+    cxHoje.innerHTML = `
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p class="rotulo-caps text-gold">Hoje · ${nomesDia[hoje.getDay()]}, ${hoje.getDate()} de ${nomesMes[hoje.getMonth()]}</p>
+          <p class="mt-2 font-display text-[1.6rem] leading-tight">
+            ${marcadosHoje.length ? `${marcadosHoje.length} atendimento${marcadosHoje.length > 1 ? 's' : ''} marcado${marcadosHoje.length > 1 ? 's' : ''}` : bloqueadoHoje ? 'Dia bloqueado' : hsHoje.length ? 'Nenhum atendimento marcado' : 'Sem atendimento hoje'}
+          </p>
+        </div>
+        ${hsHoje.length ? `<span class="rounded-full border border-bone/20 px-3.5 py-1.5 text-[0.75rem] text-bone-muted">${hsHoje.length - marcadosHoje.length} livre${hsHoje.length - marcadosHoje.length === 1 ? '' : 's'}</span>` : ''}
+      </div>
+      ${marcadosHoje.length ? `<div class="mt-5 flex flex-col gap-2.5" id="hoje-lista"></div>` : ''}`;
+
+    if (marcadosHoje.length) {
+      const lista = document.getElementById('hoje-lista');
+      marcadosHoje.forEach(({ h, id, r }) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'flex w-full items-center gap-4 rounded-2xl border border-bone/12 bg-white/[0.04] px-4 py-3.5 text-left transition-colors hover:border-gold/50';
+        b.innerHTML = `
+          <span class="font-display text-[1.3rem] leading-none text-gold">${h}</span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-[0.95rem] text-bone">${r && r.nome ? r.nome : 'Horário fechado'}</span>
+            ${r && r.contato ? `<span class="block truncate text-[0.78rem] text-bone-muted">${r.contato}</span>` : ''}
+          </span>
+          <span class="shrink-0 rounded-full px-2.5 py-1 text-[0.68rem] ${r && r.nome ? 'bg-[#3E9A5F]/20 text-[#7FD6A0]' : 'bg-white/10 text-bone-muted'}">
+            ${r && r.nome ? 'marcado' : 'fechado'}
+          </span>`;
+        b.addEventListener('click', () => { diaSelecionado = chaveHoje; abrirDialogoReserva(id, h); });
+        lista.appendChild(b);
+      });
+    }
+
+    /* -------------------------------------------------------------- Resumo */
+    let livres = 0, marcados = 0;
     for (let i = 0; i < (grade.diasFuturos ?? 30); i++) {
-      const d = new Date(hoje);
-      d.setDate(d.getDate() + i);
+      const d = new Date(hoje); d.setDate(d.getDate() + i);
       const chave = iso(d);
       if (grade.bloqueios.includes(chave)) continue;
-      const hs = horariosDoDia(chave, d.getDay());
-      livres += hs.filter((h) => !grade.ocupados.includes(`${chave}T${h}`)).length;
+      horariosDoDia(chave, d.getDay()).forEach((h) => {
+        const st = statusDo(`${chave}T${h}`);
+        if (st === 'livre') livres++;
+        else if (st === 'marcado') marcados++;
+      });
     }
     document.getElementById('kpi-livres').textContent = livres;
-    document.getElementById('kpi-ocupados').textContent = grade.ocupados.length;
+    document.getElementById('kpi-ocupados').textContent = marcados;
     document.getElementById('kpi-bloqueios').textContent = grade.bloqueios.length;
 
-    /* Calendário do mês */
-    document.getElementById('titulo-mes').textContent =
-      `${nomesMes[mesVisivel.getMonth()]} de ${mesVisivel.getFullYear()}`;
+    /* ------------------------------------------------------ Agenda da semana */
+    const fimSemana = new Date(inicioSemana); fimSemana.setDate(inicioSemana.getDate() + 6);
+    document.getElementById('titulo-semana').textContent =
+      `${inicioSemana.getDate()} de ${mesCurto[inicioSemana.getMonth()]} a ${fimSemana.getDate()} de ${mesCurto[fimSemana.getMonth()]}`;
 
+    const gs = document.getElementById('grade-semana');
+    gs.innerHTML = '';
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(inicioSemana); d.setDate(inicioSemana.getDate() + i);
+      const chave = iso(d);
+      const passado = d < hoje;
+      const bloqueado = grade.bloqueios.includes(chave);
+      const hs = horariosDoDia(chave, d.getDay());
+      const ehHoje = chave === chaveHoje;
+
+      const col = document.createElement('div');
+      col.className = 'min-w-0';
+      col.innerHTML = `
+        <button type="button" data-dia="${chave}"
+          class="w-full rounded-xl border px-1 py-2 text-center transition-colors ${
+            ehHoje ? 'border-ink bg-ink text-bone'
+            : bloqueado ? 'border-[#B4462F]/40 bg-[#B4462F]/8 text-[#B4462F]'
+            : passado ? 'border-transparent text-ink-muted/40'
+            : 'border-ink/10 text-ink hover:border-gold-deep/50'}">
+          <span class="block text-[0.6rem] uppercase tracking-[0.1em] opacity-70">${diaCurto[d.getDay()]}</span>
+          <span class="block font-display text-[1.05rem] leading-tight">${d.getDate()}</span>
+        </button>
+        <div class="mt-1.5 flex flex-col gap-1" data-slots="${chave}"></div>`;
+
+      col.querySelector('[data-dia]').addEventListener('click', () => {
+        diaSelecionado = chave;
+        desenhar();
+        document.getElementById('detalhe-dia')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      const cont = col.querySelector('[data-slots]');
+      if (bloqueado) {
+        cont.innerHTML = '<span class="block rounded-lg bg-[#B4462F]/10 py-1 text-center text-[0.58rem] text-[#B4462F]">bloqueado</span>';
+      } else if (!hs.length) {
+        cont.innerHTML = '<span class="block py-1 text-center text-[0.58rem] text-ink-muted/50">·</span>';
+      } else {
+        hs.forEach((h) => {
+          const id = `${chave}T${h}`;
+          const st = statusDo(id);
+          const r = reservaDe(id);
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.disabled = passado;
+          b.title = r && r.nome ? `${h} · ${r.nome}` : h;
+          b.className = 'w-full rounded-lg border px-0.5 py-1 text-[0.62rem] leading-tight transition-colors ' +
+            (passado ? 'cursor-default border-transparent text-ink-muted/35' : classeSlot[st]);
+          b.textContent = h.slice(0, 5);
+          b.addEventListener('click', () => { diaSelecionado = chave; abrirDialogoReserva(id, h); });
+          cont.appendChild(b);
+        });
+      }
+      gs.appendChild(col);
+    }
+
+    /* ------------------------------------------------------- Dia selecionado */
+    const box = document.getElementById('detalhe-dia');
+    if (!diaSelecionado) {
+      box.innerHTML = '';
+    } else {
+      const d = doIso(diaSelecionado);
+      const bloqueado = grade.bloqueios.includes(diaSelecionado);
+      const hs = horariosDoDia(diaSelecionado, d.getDay());
+      const avulsos = (grade.extras && grade.extras[diaSelecionado]) || [];
+      const livresDia = hs.filter((h) => statusDo(`${diaSelecionado}T${h}`) === 'livre').length;
+
+      box.innerHTML = `
+        <div class="cartao rounded-3xl p-5 sm:p-6 ${bloqueado ? 'opacity-70' : ''}">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="font-display text-[1.25rem] leading-tight">${porExtenso(diaSelecionado)}</p>
+              <p class="mt-0.5 text-[0.78rem] text-ink-muted">
+                ${bloqueado ? 'dia bloqueado' : hs.length ? `${livresDia} de ${hs.length} livres` : 'sem atendimento neste dia'}
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" id="btn-abrir-dia"
+                class="rotulo-caps cursor-pointer rounded-full border border-gold-deep/40 px-3.5 py-1.5 text-gold-deep transition-colors hover:bg-gold-deep hover:text-bone">
+                ${avulsos.length ? 'Editar horários' : 'Adicionar horários'}
+              </button>
+              <button type="button" id="btn-bloq-dia"
+                class="rotulo-caps cursor-pointer rounded-full border px-3.5 py-1.5 transition-colors ${bloqueado ? 'border-[#B4462F] text-[#B4462F]' : 'border-ink/15 text-ink-muted hover:border-[#B4462F] hover:text-[#B4462F]'}">
+                ${bloqueado ? 'Liberar dia' : 'Bloquear dia'}
+              </button>
+            </div>
+          </div>
+          <div id="slots-dia" class="mt-5 grid gap-2 sm:grid-cols-2"></div>
+        </div>`;
+
+      document.getElementById('btn-bloq-dia').addEventListener('click', () => {
+        grade.bloqueios = bloqueado ? grade.bloqueios.filter((x) => x !== diaSelecionado) : [...grade.bloqueios, diaSelecionado];
+        salvar();
+      });
+      document.getElementById('btn-abrir-dia').addEventListener('click', abrirDialogoDia);
+
+      const slots = document.getElementById('slots-dia');
+      if (!hs.length) {
+        slots.innerHTML = '<p class="text-[0.9rem] text-ink-muted">Nenhum horário neste dia. Use "Adicionar horários" para abrir um atendimento avulso.</p>';
+      }
+      hs.forEach((h) => {
+        const id = `${diaSelecionado}T${h}`;
+        const st = statusDo(id);
+        const r = reservaDe(id);
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.disabled = bloqueado;
+        b.className = 'flex items-center gap-3.5 rounded-2xl border px-4 py-3 text-left transition-colors ' + classeSlot[st];
+        b.innerHTML = `
+          <span class="font-display text-[1.2rem] leading-none">${h}</span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-[0.88rem]">${r && r.nome ? r.nome : st === 'fechado' ? 'Horário fechado' : 'Livre'}</span>
+            ${r && r.contato ? `<span class="block truncate text-[0.74rem] opacity-75">${r.contato}</span>` : ''}
+          </span>`;
+        b.addEventListener('click', () => abrirDialogoReserva(id, h));
+        slots.appendChild(b);
+      });
+    }
+
+    /* ---------------------------------------------------- Calendário do mês */
+    document.getElementById('titulo-mes').textContent = `${nomesMes[mesVisivel.getMonth()]} de ${mesVisivel.getFullYear()}`;
     const grid = document.getElementById('grade-mes');
     grid.innerHTML = '';
     const primeiro = new Date(mesVisivel.getFullYear(), mesVisivel.getMonth(), 1);
     const ultimo = new Date(mesVisivel.getFullYear(), mesVisivel.getMonth() + 1, 0);
-
-    for (let i = 0; i < primeiro.getDay(); i++) {
-      grid.appendChild(document.createElement('span'));
-    }
+    for (let i = 0; i < primeiro.getDay(); i++) grid.appendChild(document.createElement('span'));
 
     for (let dia = 1; dia <= ultimo.getDate(); dia++) {
       const d = new Date(mesVisivel.getFullYear(), mesVisivel.getMonth(), dia);
@@ -202,123 +334,46 @@ Fechar
       const passado = d < hoje;
       const bloqueado = grade.bloqueios.includes(chave);
       const hs = horariosDoDia(chave, d.getDay());
-      const ocupadosDia = hs.filter((h) => grade.ocupados.includes(`${chave}T${h}`)).length;
-      const temAtendimento = hs.length > 0;
-      const ehHoje = chave === iso(hoje);
+      const marcadosDia = hs.filter((h) => statusDo(`${chave}T${h}`) === 'marcado').length;
+      const livresDia = hs.filter((h) => statusDo(`${chave}T${h}`) === 'livre').length;
+      const ehHoje = chave === chaveHoje;
       const ativo = chave === diaSelecionado;
 
       const b = document.createElement('button');
       b.type = 'button';
       b.disabled = passado;
-      b.className =
-        'relative flex aspect-square cursor-pointer flex-col items-center justify-center rounded-xl border text-[0.9rem] transition-colors ' +
-        (passado
-          ? 'cursor-default border-transparent text-ink-muted/35'
-          : ativo
-            ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep'
-            : bloqueado
-              ? 'border-[#B4462F]/35 bg-[#B4462F]/8 text-[#B4462F]'
-              : temAtendimento
-                ? 'border-gold-deep/30 bg-gold/[0.06] text-ink hover:border-gold-deep'
-                : 'border-ink/10 text-ink-muted hover:border-ink/30');
-      b.innerHTML =
-        `<span>${dia}</span>` +
-        (ehHoje ? '<span class="absolute bottom-1 h-1 w-1 rounded-full bg-ink"></span>' : '') +
-        (!passado && temAtendimento && !bloqueado
-          ? `<span class="mt-0.5 text-[0.58rem] leading-none ${ocupadosDia === hs.length ? 'text-[#B4462F]' : 'text-ink-muted'}">${hs.length - ocupadosDia}/${hs.length}</span>`
+      b.className = 'relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl border text-[0.88rem] transition-colors ' +
+        (passado ? 'cursor-default border-transparent text-ink-muted/30'
+          : ativo ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep'
+          : ehHoje ? 'border-ink bg-ink text-bone'
+          : bloqueado ? 'border-[#B4462F]/35 bg-[#B4462F]/8 text-[#B4462F]'
+          : hs.length ? 'border-ink/10 text-ink hover:border-gold-deep/60'
+          : 'border-transparent text-ink-muted/60 hover:border-ink/15');
+      b.innerHTML = `<span>${dia}</span>` +
+        (!passado && hs.length && !bloqueado
+          ? `<span class="flex gap-0.5">${marcadosDia ? `<span class="ponto bg-[#3E9A5F]"></span>` : ''}${livresDia ? `<span class="ponto ${ehHoje ? 'bg-gold' : 'bg-gold-deep'}"></span>` : ''}</span>`
           : '');
       b.addEventListener('click', () => {
         diaSelecionado = chave;
+        const nova = new Date(d); nova.setDate(d.getDate() - d.getDay());
+        inicioSemana = nova;
         desenhar();
-        document.getElementById('detalhe-dia')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        document.getElementById('detalhe-dia')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
       grid.appendChild(b);
     }
 
-    /* Dia selecionado */
-    const box = document.getElementById('detalhe-dia');
-    if (!diaSelecionado) {
-      box.innerHTML =
-        '<div class="cartao rounded-2xl p-6 text-center text-ink-muted">Toque num dia do calendário para ver e ajustar os horários.</div>';
-    } else {
-      const d = doIso(diaSelecionado);
-      const bloqueado = grade.bloqueios.includes(diaSelecionado);
-      const hs = horariosDoDia(diaSelecionado, d.getDay());
-      const avulsos = (grade.extras && grade.extras[diaSelecionado]) || [];
-
-      box.innerHTML = `
-        <div class="cartao rounded-2xl p-5 sm:p-6 ${bloqueado ? 'opacity-70' : ''}">
-          <div class="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p class="font-display text-[1.25rem] leading-tight">${porExtenso(diaSelecionado)}</p>
-              <p class="mt-0.5 text-[0.78rem] text-ink-muted">
-                ${bloqueado ? 'dia bloqueado' : hs.length ? `${hs.filter((h) => !grade.ocupados.includes(`${diaSelecionado}T${h}`)).length} de ${hs.length} livres` : 'sem atendimento neste dia'}
-              </p>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <button type="button" id="btn-abrir-dia" class="rotulo-caps cursor-pointer rounded-full border border-gold-deep/40 px-3.5 py-1.5 text-gold-deep transition-colors hover:bg-gold-deep hover:text-bone">
-                ${avulsos.length ? 'Editar dia avulso' : 'Adicionar horários'}
-              </button>
-              <button type="button" id="btn-bloq-dia" class="rotulo-caps cursor-pointer rounded-full border px-3.5 py-1.5 transition-colors ${bloqueado ? 'border-[#B4462F] text-[#B4462F]' : 'border-ink/15 text-ink-muted hover:border-[#B4462F] hover:text-[#B4462F]'}">
-                ${bloqueado ? 'Liberar dia' : 'Bloquear dia'}
-              </button>
-            </div>
-          </div>
-          <div id="slots-dia" class="mt-5 flex flex-wrap gap-2"></div>
-        </div>`;
-
-      document.getElementById('btn-bloq-dia').addEventListener('click', () => {
-        grade.bloqueios = bloqueado
-          ? grade.bloqueios.filter((x) => x !== diaSelecionado)
-          : [...grade.bloqueios, diaSelecionado];
-        salvar();
-      });
-      document.getElementById('btn-abrir-dia').addEventListener('click', () => abrirDialogoDia());
-
-      const slots = document.getElementById('slots-dia');
-      if (!hs.length) {
-        slots.innerHTML =
-          '<p class="text-[0.9rem] text-ink-muted">Nenhum horário neste dia. Use "Adicionar horários" para abrir um atendimento avulso.</p>';
-      }
-      hs.forEach((h) => {
-        const id = `${diaSelecionado}T${h}`;
-        const ocupado = grade.ocupados.includes(id);
-        const reserva = (grade.reservas || []).find((r) => r.id === id);
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.disabled = bloqueado;
-        b.className =
-          'cursor-pointer rounded-xl border px-3.5 py-2.5 text-left text-sm transition-colors ' +
-          (ocupado
-            ? 'border-[#B4462F]/45 bg-[#B4462F]/10 text-[#B4462F]'
-            : 'border-ink/12 text-ink hover:border-gold-deep/60 hover:bg-gold/8');
-        b.innerHTML =
-          `<span class="font-medium">${h}</span>` +
-          (reserva && reserva.nome
-            ? `<span class="block text-[0.72rem] opacity-80">${reserva.nome}</span>`
-            : ocupado
-              ? '<span class="block text-[0.72rem] opacity-80">ocupado</span>'
-              : '');
-        b.addEventListener('click', () => abrirDialogoReserva(id, h));
-        slots.appendChild(b);
-      });
-    }
-
-    /* Cadastros */
+    /* ----------------------------------------------------------- Cadastros */
     const lista = document.getElementById('lista-cadastros');
-    const reservas = (grade.reservas || [])
-      .filter((r) => r.id.slice(0, 10) >= iso(hoje))
-      .sort((a, b) => a.id.localeCompare(b.id));
+    const reservas = (grade.reservas || []).filter((r) => r.id.slice(0,10) >= chaveHoje).sort((a,b) => a.id.localeCompare(b.id));
     lista.innerHTML = '';
     if (!reservas.length) {
       lista.innerHTML = `<div class="cartao rounded-2xl p-6">
         <p class="text-ink-muted">Nenhum cadastro ainda.</p>
         <p class="mt-2 text-[0.85rem] text-ink-muted">
           Quando alguém agendar pelo site, a mensagem chega no WhatsApp. Registre a
-          pessoa aqui tocando no horário dela, no calendário, para manter a ficha
-          completa.
-        </p>
-      </div>`;
+          pessoa aqui tocando no horário dela, na agenda, para manter a ficha completa.
+        </p></div>`;
     }
     reservas.forEach((r) => {
       const [dataR, horaR] = r.id.split('T');
@@ -330,20 +385,18 @@ Fechar
             <p class="font-display text-[1.2rem] leading-tight">${r.nome || 'Sem nome'}</p>
             <p class="mt-1 text-[0.85rem] text-ink-muted">${porExtenso(dataR)} às ${horaR}</p>
           </div>
-          <button type="button" data-editar="${r.id}" class="rotulo-caps cursor-pointer rounded-full border border-ink/15 px-3.5 py-1.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
+          <button type="button" data-editar="${r.id}"
+            class="rotulo-caps cursor-pointer rounded-full border border-ink/15 px-3.5 py-1.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
             Abrir ficha
           </button>
         </div>
         ${r.contato ? `<p class="mt-3 text-[0.9rem]">${r.contato}</p>` : ''}
         ${r.observacao ? `<p class="mt-1.5 text-[0.88rem] text-ink-muted">${r.observacao}</p>` : ''}`;
-      card.querySelector('[data-editar]').addEventListener('click', () => {
-        diaSelecionado = dataR;
-        abrirDialogoReserva(r.id, horaR);
-      });
+      card.querySelector('[data-editar]').addEventListener('click', () => { diaSelecionado = dataR; abrirDialogoReserva(r.id, horaR); });
       lista.appendChild(card);
     });
 
-    /* Grade fixa */
+    /* ---------------------------------------------------------- Grade fixa */
     const cx = document.getElementById('lista-semana');
     cx.innerHTML = '';
     for (let dS = 0; dS < 7; dS++) {
@@ -359,21 +412,15 @@ Fechar
           </div>
         </div>
         <div class="mt-4 flex flex-wrap gap-2" data-dia="${dS}"></div>`;
-      linha.querySelector('[data-limpa]')?.addEventListener('click', () => {
-        grade.semana[String(dS)] = [];
-        salvar();
-      });
+      linha.querySelector('[data-limpa]')?.addEventListener('click', () => { grade.semana[String(dS)] = []; salvar(); });
       const cont = linha.querySelector('[data-dia]');
       HORAS.forEach((h) => {
         const on = ativos.includes(h);
         const b = document.createElement('button');
         b.type = 'button';
         b.textContent = h;
-        b.className =
-          'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
-          (on
-            ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep'
-            : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
+        b.className = 'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
+          (on ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep' : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
         b.addEventListener('click', () => {
           const lst = grade.semana[String(dS)] || [];
           grade.semana[String(dS)] = on ? lst.filter((x) => x !== h) : [...lst, h].sort();
@@ -389,14 +436,12 @@ Fechar
   const dlgReserva = document.getElementById('dialogo-reserva');
   function abrirDialogoReserva(id, hora) {
     slotEditando = id;
-    const r = (grade.reservas || []).find((x) => x.id === id) || {};
-    document.getElementById('reserva-quando').textContent =
-      `${porExtenso(id.slice(0, 10))} · ${hora}`;
+    const r = reservaDe(id) || {};
+    document.getElementById('reserva-quando').textContent = `${porExtenso(id.slice(0,10))} · ${hora}`;
     document.getElementById('reserva-nome').value = r.nome || '';
     document.getElementById('reserva-contato').value = r.contato || '';
     document.getElementById('reserva-obs').value = r.observacao || '';
-    document.getElementById('reserva-liberar').style.display =
-      grade.ocupados.includes(id) ? '' : 'none';
+    document.getElementById('reserva-liberar').style.display = grade.ocupados.includes(id) ? '' : 'none';
     dlgReserva.showModal();
   }
 
@@ -407,18 +452,12 @@ Fechar
     const obs = document.getElementById('reserva-obs').value.trim();
     grade.reservas = (grade.reservas || []).filter((r) => r.id !== slotEditando);
     if (nome || contato || obs) {
-      grade.reservas.push({
-        id: slotEditando,
-        nome,
-        contato,
-        observacao: obs,
-        criadoEm: new Date().toISOString(),
-      });
+      grade.reservas.push({ id: slotEditando, nome, contato, observacao: obs, criadoEm: new Date().toISOString() });
     }
     if (!grade.ocupados.includes(slotEditando)) grade.ocupados.push(slotEditando);
     dlgReserva.close();
     salvar();
-    avisar('Horário reservado');
+    avisar(nome ? `Atendimento de ${nome} marcado` : 'Horário fechado');
   });
 
   document.getElementById('reserva-liberar').addEventListener('click', () => {
@@ -430,9 +469,10 @@ Fechar
     avisar('Horário liberado');
   });
 
-  /* Abrir dia avulso */
+  /* Dia avulso */
   const dlgDia = document.getElementById('dialogo-dia');
   function abrirDialogoDia() {
+    if (!diaSelecionado) return;
     const d = doIso(diaSelecionado);
     horariosNovoDia = [...((grade.extras && grade.extras[diaSelecionado]) || [])];
     document.getElementById('dia-quando').textContent = porExtenso(diaSelecionado);
@@ -448,19 +488,14 @@ Fechar
       b.title = naGradeFixa ? 'já vem da grade fixa' : '';
       const pinta = () => {
         const on = horariosNovoDia.includes(h);
-        b.className =
-          'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
-          (naGradeFixa
-            ? 'cursor-default border-ink/10 bg-ink/5 text-ink-muted/60'
-            : on
-              ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep'
-              : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
+        b.className = 'cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors ' +
+          (naGradeFixa ? 'cursor-default border-ink/10 bg-ink/5 text-ink-muted/60'
+            : on ? 'border-gold-deep bg-gold/15 font-medium text-gold-deep'
+            : 'border-ink/12 text-ink-muted hover:border-gold-deep/50');
       };
       pinta();
       b.addEventListener('click', () => {
-        horariosNovoDia = horariosNovoDia.includes(h)
-          ? horariosNovoDia.filter((x) => x !== h)
-          : [...horariosNovoDia, h].sort();
+        horariosNovoDia = horariosNovoDia.includes(h) ? horariosNovoDia.filter((x) => x !== h) : [...horariosNovoDia, h].sort();
         pinta();
       });
       cont.appendChild(b);
@@ -478,7 +513,7 @@ Fechar
     avisar(horariosNovoDia.length ? 'Dia aberto para atendimento' : 'Dia avulso removido');
   });
 
-  /* Link de agendamento */
+  /* Link */
   const linkAgendar = new URL(urlGrade.replace(/grade\.json$/, 'agendar'), location.origin).toString();
   document.getElementById('link-agendar').textContent = linkAgendar;
   document.getElementById('btn-copiar').addEventListener('click', async () => {
@@ -491,12 +526,8 @@ Fechar
     e.preventDefault();
     const u = document.getElementById('usuario').value.trim();
     const s = document.getElementById('senha').value;
-    if (u === USUARIO && s === SENHA) {
-      sessionStorage.setItem('qc-admin', '1');
-      entrar();
-    } else {
-      document.getElementById('erro-login').classList.remove('hidden');
-    }
+    if (u === USUARIO && s === SENHA) { sessionStorage.setItem('qc-admin', '1'); entrar(); }
+    else document.getElementById('erro-login').classList.remove('hidden');
   });
 
   function entrar() {
@@ -514,35 +545,23 @@ Fechar
 
   /* Ajustes */
   document.getElementById('in-antecedencia').addEventListener('change', (e) => {
-    grade.antecedenciaHoras = Number(e.target.value) || 0;
-    salvar();
-    avisar('Antecedência atualizada');
+    grade.antecedenciaHoras = Number(e.target.value) || 0; salvar(); avisar('Antecedência atualizada');
   });
   document.getElementById('in-dias').addEventListener('change', (e) => {
-    grade.diasFuturos = Number(e.target.value) || 30;
-    salvar();
-    avisar('Janela atualizada');
+    grade.diasFuturos = Number(e.target.value) || 30; salvar(); avisar('Janela atualizada');
   });
-
   document.getElementById('btn-restaurar').addEventListener('click', async () => {
-    localStorage.removeItem(CHAVE);
-    localStorage.removeItem(CHAVE_SUJO);
-    grade = null;
-    await carregar();
-    avisar('Voltou para a grade publicada');
+    localStorage.removeItem(CHAVE); localStorage.removeItem(CHAVE_SUJO);
+    grade = null; await carregar(); avisar('Voltou para a grade publicada');
   });
 
   /* Publicar */
   document.getElementById('btn-publicar').addEventListener('click', () => {
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-    const chaveHoje = iso(hoje);
-    grade.ocupados = grade.ocupados.filter((x) => x.slice(0, 10) >= chaveHoje);
+    const chaveHoje = iso(hojeZero());
+    grade.ocupados = grade.ocupados.filter((x) => x.slice(0,10) >= chaveHoje);
     grade.bloqueios = grade.bloqueios.filter((x) => x >= chaveHoje);
-    grade.reservas = (grade.reservas || []).filter((r) => r.id.slice(0, 10) >= chaveHoje);
-    Object.keys(grade.extras || {}).forEach((k) => {
-      if (k < chaveHoje) delete grade.extras[k];
-    });
+    grade.reservas = (grade.reservas || []).filter((r) => r.id.slice(0,10) >= chaveHoje);
+    Object.keys(grade.extras || {}).forEach((k) => { if (k < chaveHoje) delete grade.extras[k]; });
     grade.atualizadoEm = chaveHoje;
     localStorage.setItem(CHAVE, JSON.stringify(grade));
     marcarSujo(false);

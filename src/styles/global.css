@@ -406,6 +406,56 @@ details.acordeao[open] {
 .medida { max-width: 62ch; }
 .medida-curta { max-width: 46ch; }
 
+/* Painel da agenda: pontinho de status e setas de navegação */
+.ponto {
+  display: inline-block;
+  height: 0.375rem;
+  width: 0.375rem;
+  border-radius: 999px;
+}
+.seta {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgb(36 36 36 / 0.12);
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+}
+.seta:hover {
+  border-color: var(--color-gold-deep);
+  color: var(--color-gold-deep);
+  background: rgb(201 168 81 / 0.08);
+}
+
+/* Botão de entrar do painel */
+.btn-entrar {
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  padding: 1rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  background: linear-gradient(115deg, #EFD9A4 0%, #C9A851 55%, #A8873B 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.5),
+    0 16px 34px -18px rgb(201 168 81 / 0.9);
+  transition: transform 0.3s var(--ease-editorial), filter 0.3s ease;
+}
+.btn-entrar:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.btn-entrar:active { transform: scale(0.985); }
+.btn-entrar svg { transition: transform 0.3s var(--ease-editorial); }
+.btn-entrar:hover svg { transform: translateX(3px); }
+
 /* Campo do painel da agenda: rótulo fixo dentro da caixa */
 .campo {
   border-radius: 0.75rem;
