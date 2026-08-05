@@ -758,6 +758,59 @@ details.acordeao[open] {
 /* ---------------------------------------------------------------------------
    Painel da agenda: superfícies limpas, sem gradiente pesado
 --------------------------------------------------------------------------- */
+
+/* Navegação: fita rolável no celular, coluna fixa a partir de lg. Todo o
+   estado visual vem do aria-selected, então o JS só troca o atributo. */
+.nav-painel {
+  display: flex;
+  gap: 0.35rem;
+  overflow-x: auto;
+  padding: 0.75rem 0 0.25rem;
+}
+.aba {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: 0.85rem;
+  /* 0.74rem mantém o alvo de toque em 44px no celular */
+  padding: 0.74rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.aba:hover { color: var(--color-ink); background: rgb(36 36 36 / 0.04); }
+.aba[aria-selected="true"] {
+  background: var(--color-ink);
+  color: var(--color-bone);
+}
+.aba[aria-selected="true"] .aba-icone { color: var(--color-gold); }
+.aba-icone { flex-shrink: 0; opacity: 0.9; }
+
+@media (min-width: 1024px) {
+  .nav-painel {
+    position: sticky;
+    top: 5.4rem;
+    flex-direction: column;
+    align-self: start;
+    gap: 0.25rem;
+    overflow: visible;
+    padding: 2rem 0 0;
+  }
+  .aba {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.78rem 1.05rem;
+  }
+}
+
 .bloco {
   background: #FFFFFF;
   border: 1px solid rgb(36 36 36 / 0.07);

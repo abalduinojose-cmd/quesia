@@ -563,6 +563,17 @@ export const servicosExtras = {
  */
 export const areasSoAgenda = [
   {
+    tituloCurto: 'Trabalhista',
+    topicos: [
+      'Verbas rescisórias e acerto de contas',
+      'Horas extras e adicional noturno',
+      'Reconhecimento de vínculo de emprego',
+      'Rescisão indireta e reversão de justa causa',
+      'Acidente de trabalho, insalubridade e periculosidade',
+      'Assédio moral e danos morais',
+    ],
+  },
+  {
     tituloCurto: 'Tributário',
     topicos: [
       'Isenção de imposto de renda por doença grave',
@@ -574,6 +585,18 @@ export const areasSoAgenda = [
     ],
   },
 ] as const;
+
+/** Emoji de cada área, só para dar rosto às opções do agendamento. */
+export const emojiArea: Record<string, string> = {
+  'Previdenciário': '🛡️',
+  'Imobiliário': '🏠',
+  'Sucessório': '📜',
+  'Consultoria jurídica': '💬',
+  'Holding familiar': '🏛️',
+  'Trabalhista': '💼',
+  'Tributário': '🧾',
+  'Outro assunto': '💭',
+};
 
 /** Assuntos de cada área, para o segundo filtro do agendamento. */
 export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([

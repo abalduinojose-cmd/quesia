@@ -40,6 +40,8 @@ interface Props {
   numeroWhats: string;
   urlGrade: string;
   honorarios: Honorarios;
+  /** Emoji por área, só nas opções do primeiro passo */
+  emojis?: Record<string, string>;
   /** Cabeçalho de confiança: quem vai atender */
   foto?: string;
   advogada?: string;
@@ -63,6 +65,7 @@ export default function Agendamento({
   numeroWhats,
   urlGrade,
   honorarios,
+  emojis,
   foto,
   advogada,
   oab,
@@ -258,7 +261,19 @@ export default function Agendamento({
               : 'border-bone/15 bg-white/[0.03] text-bone hover:border-gold/50 hover:bg-white/[0.06]'
           }`}
         >
-          {o}
+          <span className="flex min-w-0 items-center gap-3">
+            {emojis?.[o] && (
+              <span
+                aria-hidden="true"
+                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[1.05rem] transition-colors duration-300 ${
+                  valor === o ? 'bg-gold/20' : 'bg-white/[0.06] group-hover:bg-gold/12'
+                }`}
+              >
+                {emojis[o]}
+              </span>
+            )}
+            <span className="min-w-0">{o}</span>
+          </span>
           <span
             aria-hidden="true"
             className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all duration-300 ${

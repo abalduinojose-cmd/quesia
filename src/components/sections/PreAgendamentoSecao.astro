@@ -11,6 +11,7 @@ import {
   preAgendamento,
   honorarios,
   assuntosPorArea,
+  emojiArea,
   numeroCapitulo,
 } from '@/content/data';
 import { withBase } from '@/lib/paths';
@@ -117,6 +118,7 @@ const passos = [
             intro={preAgendamento.intro}
             aviso={preAgendamento.aviso}
             honorarios={honorarios}
+            emojis={emojiArea}
             numeroWhats={site.whatsapp.numero}
             urlGrade={withBase('/grade.json')}
             foto={withBase('/sobre/quesia-640.webp')}
