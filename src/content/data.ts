@@ -531,6 +531,7 @@ export const servicosExtras = {
     {
       id: 'juridico',
       titulo: 'Assessoria e consultoria jurídica',
+      tituloCurto: 'Consultoria jurídica',
       lede: 'Para quem prefere um parecer antes de decidir, em vez de um processo depois do problema.',
       icone: 'M6.6 3.6h7.5l3.9 3.9v12.9H6.6V3.6Zm7.5 0v3.9h3.9M9.6 12.2h5.2m-5.2 3.5h5.2',
       topicos: [
@@ -543,6 +544,7 @@ export const servicosExtras = {
     {
       id: 'holding',
       titulo: 'Holding familiar e patrimonial',
+      tituloCurto: 'Holding familiar',
       lede: 'Organização do patrimônio da família ainda em vida, com as regras da sucessão combinadas entre todos.',
       icone: 'M9.2 3.6h5.6v3.4H9.2zM3.6 14.9h5.6v3.4H3.6zM14.8 14.9h5.6v3.4h-5.6zM12 7v3.9M6.4 14.9v-4h11.2v4',
       topicos: [
@@ -558,15 +560,23 @@ export const servicosExtras = {
 /** Assuntos de cada área, para o segundo filtro do agendamento. */
 export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([
   ...areas.map((a) => [a.tituloCurto, [...a.topicos, `Outro tema de ${a.tituloCurto}`]]),
-  /* "Outro assunto" recebe os serviços complementares do fim da página */
-  ['Outro assunto', [...servicosExtras.itens.map((s) => s.titulo), 'Outro tema']],
+  ...servicosExtras.itens.map((s) => [
+    s.tituloCurto,
+    [...s.topicos, `Outro tema de ${s.tituloCurto}`],
+  ]),
+  ['Outro assunto', []],
 ]);
 
 export const preAgendamento = {
   titulo: 'Agendamento',
   intro:
     'Escolha a área, o tipo de atendimento e o melhor horário. A mensagem chega pronta no WhatsApp e a advogada confirma com você.',
-  areas: [...areas.map((a) => a.tituloCurto), 'Outro assunto'],
+  /* As três frentes principais primeiro, depois os serviços complementares */
+  areas: [
+    ...areas.map((a) => a.tituloCurto),
+    ...servicosExtras.itens.map((s) => s.tituloCurto),
+    'Outro assunto',
+  ],
   modalidades: [
     'Presencial em Pedro do Rio',
     'Online',

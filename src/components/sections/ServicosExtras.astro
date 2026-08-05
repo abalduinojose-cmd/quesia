@@ -1,8 +1,8 @@
 ---
 /**
- * Serviços complementares no fim da página. Deliberadamente mais discreto que
- * a seção de Áreas: sem cartão, sem sombra, só tipografia e fio dourado, para
- * não competir com as três frentes principais.
+ * Serviços complementares no fim da página. Painel branco chapado, sem sombra
+ * e sem gradiente, para ficar mais leve que os cartões das três frentes
+ * principais e não competir com eles.
  */
 import { servicosExtras, numeroCapitulo } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
@@ -10,27 +10,38 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
 
 <section id="holding" aria-labelledby="holding-titulo" class="overflow-hidden bg-bone">
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
-    <TituloSecao
-      numero={numeroCapitulo('holding')}
-      eyebrow={servicosExtras.eyebrow}
-      tituloId="holding-titulo"
-    >
-      Consultoria jurídica e <span class="texto-ouro">holding familiar</span>
-    </TituloSecao>
-
-    <p class="anima medida mt-6 text-[1rem] text-ink-muted" style="--anima-delay: 120ms">
-      {servicosExtras.lede}
-    </p>
-
-    <div class="mt-14 grid gap-x-16 gap-y-12 border-t border-gold-soft pt-12 md:grid-cols-2">
-      {servicosExtras.itens.map((s, i) => (
-        <div
-          class={`anima ${i > 0 ? 'border-t border-gold-soft pt-12 md:border-l md:border-t-0 md:pl-16 md:pt-0' : ''}`}
-          style={`--anima-delay: ${i * 120}ms`}
+    <!-- Cabeçalho em duas colunas: título à esquerda, contexto à direita -->
+    <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-16">
+      <div class="lg:col-span-7">
+        <TituloSecao
+          numero={numeroCapitulo('holding')}
+          eyebrow={servicosExtras.eyebrow}
+          tituloId="holding-titulo"
         >
-          <div class="flex items-center gap-4">
-            <span class="text-gold-deep" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          Consultoria jurídica e <span class="texto-ouro">holding familiar</span>
+        </TituloSecao>
+      </div>
+      <p
+        class="anima text-[0.98rem] leading-relaxed text-ink-muted lg:col-span-5 lg:pb-2"
+        style="--anima-delay: 140ms"
+      >
+        {servicosExtras.lede}
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-5 md:grid-cols-2 lg:gap-6">
+      {servicosExtras.itens.map((s, i) => (
+        <article
+          class="painel-leve anima flex flex-col p-8 sm:p-9"
+          style={`--anima-delay: ${i * 120}ms`}
+          aria-labelledby={`servico-${s.id}`}
+        >
+          <div class="flex items-center justify-between gap-4">
+            <span
+              class="flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/35 text-gold-deep"
+              aria-hidden="true"
+            >
+              <svg width="23" height="23" viewBox="0 0 24 24" fill="none">
                 <path
                   d={s.icone}
                   stroke="currentColor"
@@ -40,21 +51,26 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
                 ></path>
               </svg>
             </span>
-            <span class="texto-ouro font-display italic text-[1.1rem]" aria-hidden="true">
+            <span class="texto-ouro font-display italic text-[1.15rem]" aria-hidden="true">
               {String(i + 1).padStart(2, '0')}
             </span>
           </div>
 
-          <h3 class="mt-5 font-display text-[1.5rem] leading-snug text-ink">
+          <h3
+            id={`servico-${s.id}`}
+            class="mt-7 font-display text-[1.62rem] leading-snug text-ink"
+          >
             {s.titulo}
           </h3>
           <p class="mt-3 text-[0.95rem] leading-relaxed text-ink-muted">{s.lede}</p>
 
-          <ul class="mt-7 flex flex-col gap-3.5" role="list">
+          <ul class="mt-7 flex flex-col" role="list">
             {s.topicos.map((t) => (
-              <li class="flex items-baseline gap-3 text-[0.93rem] text-ink">
+              <li
+                class="flex items-baseline gap-3.5 border-t border-gold-soft py-3.5 text-[0.92rem] text-ink"
+              >
                 <span
-                  class="h-px w-4 shrink-0 -translate-y-[3px] bg-gold"
+                  class="h-1 w-1 shrink-0 -translate-y-[3px] rounded-full bg-gold-deep/60"
                   aria-hidden="true"
                 >
                 </span>
@@ -62,31 +78,37 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
               </li>
             ))}
           </ul>
-        </div>
-      ))}
-    </div>
 
-    <div
-      class="anima mt-14 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-gold-soft pt-8"
-      style="--anima-delay: 240ms"
-    >
-      <p class="text-[0.95rem] text-ink-muted">
-        Precisa de um destes dois? A conversa começa igual.
-      </p>
-      <a
-        href="#agendamento"
-        data-abre-area="Outro assunto"
-        class="link-draw rotulo-caps text-gold-deep"
-      >
-        Agendar sobre estes temas&nbsp;&nbsp;→
-      </a>
+          <a
+            href="#agendamento"
+            data-abre-area={s.tituloCurto}
+            class="link-servico mt-auto flex items-center justify-between gap-4 border-t border-gold-soft pt-6"
+          >
+            <span class="rotulo-caps text-gold-deep">Agendar sobre isso</span>
+            <span
+              class="seta-servico flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-gold/35 text-gold-deep"
+              aria-hidden="true"
+            >
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path
+                  d="M3 8h9M8.5 4l4 4-4 4"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </span>
+          </a>
+        </article>
+      ))}
     </div>
   </div>
 </section>
 
 <script>
-  /* Mesma ponte dos cartões de área: abre o agendamento já em "Outro assunto",
-     onde os dois serviços aparecem como tema. */
+  /* Mesma ponte dos cartões de área: cada painel abre o agendamento já na
+     lista de temas do seu próprio serviço. */
   document.querySelectorAll<HTMLAnchorElement>('#holding [data-abre-area]').forEach((a) => {
     a.addEventListener('click', () => {
       window.dispatchEvent(

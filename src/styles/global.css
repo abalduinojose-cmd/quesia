@@ -353,6 +353,38 @@ header[id] {
   }
 }
 
+/* Painel chapado dos serviços complementares: sem gradiente e sem sombra em
+   repouso, para pesar menos que o .cartao das áreas principais */
+.painel-leve {
+  border-radius: 1.75rem;
+  border: 1px solid rgb(201 168 81 / 0.22);
+  background: #FFFFFF;
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    transform 0.4s var(--ease-editorial);
+}
+.painel-leve:hover {
+  border-color: rgb(201 168 81 / 0.55);
+  box-shadow: 0 20px 44px -32px rgb(36 36 36 / 0.35);
+  transform: translateY(-2px);
+}
+
+.link-servico .seta-servico {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    transform 0.35s var(--ease-editorial);
+}
+.link-servico:hover .seta-servico,
+.link-servico:focus-visible .seta-servico {
+  background: var(--color-gold-deep);
+  border-color: var(--color-gold-deep);
+  color: var(--color-bone);
+  transform: translateX(3px);
+}
+
 /* Numeração gigante apagada atrás das seções */
 .numeral-fantasma {
   position: absolute;
