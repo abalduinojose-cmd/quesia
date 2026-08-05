@@ -362,6 +362,7 @@ export const capitulos = [
     ? [{ id: 'avaliacoes', titulo: 'O que dizem os clientes', curto: 'Avaliações' }]
     : []),
   { id: 'faq', titulo: 'Perguntas frequentes', curto: 'FAQ' },
+  { id: 'holding', titulo: 'Consultoria jurídica e holding', curto: 'Holding' },
   { id: 'contato', titulo: 'Contato e agendamento', curto: 'Contato' },
 ];
 
@@ -518,10 +519,47 @@ export const faq: PerguntaFaq[] = [
   },
 ];
 
+/**
+ * Serviços complementares, fora das três frentes principais. Ficam no fim da
+ * página de propósito, a pedido do cliente em 04/08/2026.
+ */
+export const servicosExtras = {
+  eyebrow: 'Também atendo',
+  lede:
+    'Não são o foco do escritório, mas chegam com frequência junto dos casos de família e de imóvel. Quando fazem sentido para o seu caso, a condução é a mesma: técnica e conversa franca.',
+  itens: [
+    {
+      id: 'juridico',
+      titulo: 'Assessoria e consultoria jurídica',
+      lede: 'Para quem prefere um parecer antes de decidir, em vez de um processo depois do problema.',
+      icone: 'M6.6 3.6h7.5l3.9 3.9v12.9H6.6V3.6Zm7.5 0v3.9h3.9M9.6 12.2h5.2m-5.2 3.5h5.2',
+      topicos: [
+        'Leitura de contratos antes da assinatura',
+        'Pareceres e orientação preventiva',
+        'Acompanhamento de pequenos negócios',
+        'Notificações extrajudiciais e acordos',
+      ],
+    },
+    {
+      id: 'holding',
+      titulo: 'Holding familiar e patrimonial',
+      lede: 'Organização do patrimônio da família ainda em vida, com as regras da sucessão combinadas entre todos.',
+      icone: 'M9.2 3.6h5.6v3.4H9.2zM3.6 14.9h5.6v3.4H3.6zM14.8 14.9h5.6v3.4h-5.6zM12 7v3.9M6.4 14.9v-4h11.2v4',
+      topicos: [
+        'Estudo do patrimônio e da estrutura familiar',
+        'Constituição da holding e integralização de bens',
+        'Doação de quotas com reserva de usufruto',
+        'Acordo de sócios e regras de sucessão',
+      ],
+    },
+  ],
+} as const;
+
 /** Assuntos de cada área, para o segundo filtro do agendamento. */
 export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([
   ...areas.map((a) => [a.tituloCurto, [...a.topicos, `Outro tema de ${a.tituloCurto}`]]),
-  ['Outro assunto', []],
+  /* "Outro assunto" recebe os serviços complementares do fim da página */
+  ['Outro assunto', [...servicosExtras.itens.map((s) => s.titulo), 'Outro tema']],
 ]);
 
 export const preAgendamento = {

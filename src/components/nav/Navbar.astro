@@ -27,9 +27,12 @@ import IconeWhats from '@/components/ui/IconeWhats.astro';
       <span class="nav-tinta rotulo-caps hidden sm:block">{site.nome}</span>
     </a>
 
-    <div class="hidden items-center gap-7 lg:flex">
+    <div class="hidden items-center gap-5 lg:flex xl:gap-7">
       {capitulos.map((c) => (
-        <a href={`#${c.id}`} class="nav-tinta-suave link-draw text-[0.9rem]">
+        <a
+          href={`#${c.id}`}
+          class="nav-tinta-suave link-draw whitespace-nowrap text-[0.9rem]"
+        >
           {c.curto}
         </a>
       ))}

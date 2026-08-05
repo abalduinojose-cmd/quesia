@@ -290,7 +290,9 @@ export default function Agendamento({
   const pergunta =
     passo === 0
       ? area
-        ? `O que você precisa em ${area}?`
+        ? area === 'Outro assunto'
+          ? 'Sobre o que você quer falar?'
+          : `O que você precisa em ${area}?`
         : 'Qual área tem a ver com o seu caso?'
       : passo === 1
         ? 'Como você prefere ser atendido?'

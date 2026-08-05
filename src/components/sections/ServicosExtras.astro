@@ -1,0 +1,97 @@
+---
+/**
+ * Serviços complementares no fim da página. Deliberadamente mais discreto que
+ * a seção de Áreas: sem cartão, sem sombra, só tipografia e fio dourado, para
+ * não competir com as três frentes principais.
+ */
+import { servicosExtras, numeroCapitulo } from '@/content/data';
+import TituloSecao from '@/components/ui/TituloSecao.astro';
+---
+
+<section id="holding" aria-labelledby="holding-titulo" class="overflow-hidden bg-bone">
+  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
+    <TituloSecao
+      numero={numeroCapitulo('holding')}
+      eyebrow={servicosExtras.eyebrow}
+      tituloId="holding-titulo"
+    >
+      Consultoria jurídica e <span class="texto-ouro">holding familiar</span>
+    </TituloSecao>
+
+    <p class="anima medida mt-6 text-[1rem] text-ink-muted" style="--anima-delay: 120ms">
+      {servicosExtras.lede}
+    </p>
+
+    <div class="mt-14 grid gap-x-16 gap-y-12 border-t border-gold-soft pt-12 md:grid-cols-2">
+      {servicosExtras.itens.map((s, i) => (
+        <div
+          class={`anima ${i > 0 ? 'border-t border-gold-soft pt-12 md:border-l md:border-t-0 md:pl-16 md:pt-0' : ''}`}
+          style={`--anima-delay: ${i * 120}ms`}
+        >
+          <div class="flex items-center gap-4">
+            <span class="text-gold-deep" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path
+                  d={s.icone}
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+            </span>
+            <span class="texto-ouro font-display italic text-[1.1rem]" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+          </div>
+
+          <h3 class="mt-5 font-display text-[1.5rem] leading-snug text-ink">
+            {s.titulo}
+          </h3>
+          <p class="mt-3 text-[0.95rem] leading-relaxed text-ink-muted">{s.lede}</p>
+
+          <ul class="mt-7 flex flex-col gap-3.5" role="list">
+            {s.topicos.map((t) => (
+              <li class="flex items-baseline gap-3 text-[0.93rem] text-ink">
+                <span
+                  class="h-px w-4 shrink-0 -translate-y-[3px] bg-gold"
+                  aria-hidden="true"
+                >
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div
+      class="anima mt-14 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-gold-soft pt-8"
+      style="--anima-delay: 240ms"
+    >
+      <p class="text-[0.95rem] text-ink-muted">
+        Precisa de um destes dois? A conversa começa igual.
+      </p>
+      <a
+        href="#agendamento"
+        data-abre-area="Outro assunto"
+        class="link-draw rotulo-caps text-gold-deep"
+      >
+        Agendar sobre estes temas&nbsp;&nbsp;→
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Mesma ponte dos cartões de área: abre o agendamento já em "Outro assunto",
+     onde os dois serviços aparecem como tema. */
+  document.querySelectorAll<HTMLAnchorElement>('#holding [data-abre-area]').forEach((a) => {
+    a.addEventListener('click', () => {
+      window.dispatchEvent(
+        new CustomEvent('qc:area', { detail: a.dataset.abreArea })
+      );
+    });
+  });
+</script>
