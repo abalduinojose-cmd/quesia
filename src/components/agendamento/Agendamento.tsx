@@ -240,13 +240,19 @@ export default function Agendamento({
     colunas: string
   ) => (
     <div className={`mt-8 grid gap-3 ${colunas}`}>
-      {opcoes.map((o) => (
+      {opcoes.map((o, i) => (
         <button
           key={o}
           type="button"
           aria-pressed={valor === o}
           onClick={() => aoEscolher(o)}
+          /* com número ímpar de opções, a última ocupa a linha inteira em vez
+             de deixar um buraco ao lado */
           className={`group flex cursor-pointer items-center justify-between gap-3 rounded-2xl border px-5 py-4 text-left text-[0.95rem] transition-all duration-300 ${
+            colunas.includes('cols-2') && opcoes.length % 2 === 1 && i === opcoes.length - 1
+              ? 'sm:col-span-2'
+              : ''
+          } ${
             valor === o
               ? 'border-gold bg-gold/10 text-gold'
               : 'border-bone/15 bg-white/[0.03] text-bone hover:border-gold/50 hover:bg-white/[0.06]'

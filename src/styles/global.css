@@ -353,6 +353,186 @@ header[id] {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Seção de agendamento: fundo em camadas, trilha dos passos e selo do WhatsApp
+--------------------------------------------------------------------------- */
+
+/* Entrada escalonada da trilha. Fica FORA do bloco de reduced-motion de
+   propósito: é o momento de movimento que dá caráter à seção, e a máquina do
+   cliente roda com movimento reduzido ligado. */
+.js .anima-passo {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s var(--ease-editorial),
+    transform 0.7s var(--ease-editorial);
+  transition-delay: var(--anima-delay, 0ms);
+}
+.js .anima-passo.in {
+  opacity: 1;
+  transform: none;
+}
+
+.atmosfera-agenda {
+  isolation: isolate;
+}
+
+/* Dois focos de luz dourada, um em cima à esquerda e outro embaixo à direita */
+.brilho-agenda {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 48% at 8% -6%, rgb(201 168 81 / 0.22), transparent 68%),
+    radial-gradient(52% 44% at 96% 104%, rgb(201 168 81 / 0.14), transparent 66%);
+}
+
+/* Malha fina de cartório, quase invisível, só para o fundo ter textura */
+.malha-agenda {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(250 249 249 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(250 249 249 / 0.045) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(78% 62% at 50% 34%, #000 20%, transparent 78%);
+}
+
+/* Fio de luz no topo, acento afiado em vez de dourado espalhado */
+.fio-luz {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 1px;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgb(201 168 81 / 0.55) 28%,
+    rgb(227 200 131 / 0.85) 50%,
+    rgb(201 168 81 / 0.55) 72%,
+    transparent
+  );
+}
+
+/* Halo atrás do cartão do agendamento */
+.halo-wizard {
+  position: absolute;
+  inset: -8% -6%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(58% 46% at 50% 42%, rgb(201 168 81 / 0.20), transparent 72%);
+  filter: blur(22px);
+}
+
+/* Trilha vertical dos passos */
+.trilha {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2.1rem;
+  padding-left: 3.5rem;
+}
+.trilha::before {
+  content: "";
+  position: absolute;
+  left: 0.72rem;
+  top: 0.55rem;
+  bottom: 0.9rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    rgb(201 168 81 / 0.55),
+    rgb(201 168 81 / 0.18) 65%,
+    transparent
+  );
+}
+
+.trilha-item {
+  position: relative;
+}
+.trilha-no {
+  position: absolute;
+  left: -3.5rem;
+  top: 0.42rem;
+  height: 0.45rem;
+  width: 0.45rem;
+  border-radius: 999px;
+  background: var(--color-gold);
+  box-shadow: 0 0 0 4px rgb(201 168 81 / 0.14);
+  transform: translateX(0.5rem);
+}
+/* Numeral grande e fino contra título compacto: o contraste de peso é o que
+   dá caráter à lista, em vez de mais uma bolinha numerada */
+.trilha-numero {
+  position: absolute;
+  left: -2.15rem;
+  top: -0.35rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.05rem;
+  line-height: 1;
+  color: rgb(201 168 81 / 0.75);
+}
+.trilha-texto {
+  min-width: 0;
+}
+
+/* Selo do WhatsApp no fim da coluna esquerda */
+.selo-whats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgb(250 249 249 / 0.14);
+  background: rgb(250 249 249 / 0.04);
+  padding: 0.8rem 1.4rem 0.8rem 1.1rem;
+  color: var(--color-bone-muted);
+  transition:
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    transform 0.35s var(--ease-editorial);
+}
+.selo-whats:hover {
+  border-color: rgb(37 211 102 / 0.55);
+  background: rgb(37 211 102 / 0.08);
+  transform: translateY(-1px);
+}
+.pulso-verde {
+  position: relative;
+  height: 0.5rem;
+  width: 0.5rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #25D366;
+}
+.pulso-verde::after {
+  content: "";
+  position: absolute;
+  inset: -0.3rem;
+  border-radius: 999px;
+  border: 1px solid rgb(37 211 102 / 0.5);
+  animation: pulsoVerde 2.4s ease-out infinite;
+}
+@keyframes pulsoVerde {
+  0% { opacity: 0.9; transform: scale(0.7); }
+  70%, 100% { opacity: 0; transform: scale(1.35); }
+}
+
+@media (max-width: 640px) {
+  .trilha { padding-left: 2.9rem; gap: 1.9rem; }
+  .trilha::before { left: 0.6rem; }
+  .trilha-no { left: -2.9rem; }
+  .trilha-numero { left: -1.75rem; font-size: 0.95rem; }
+  .selo-whats { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
+}
+
 /* Painel chapado dos serviços complementares: sem gradiente e sem sombra em
    repouso, para pesar menos que o .cartao das áreas principais */
 .painel-leve {

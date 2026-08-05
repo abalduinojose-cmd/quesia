@@ -1,4 +1,11 @@
 ---
+/**
+ * Seção de agendamento remodelada seguindo o guia de estética de frontend do
+ * cookbook da Anthropic: fundo com atmosfera em camadas no lugar de cor
+ * chapada, tipografia com contraste extremo (numeral gigante e fino contra
+ * título compacto), dourado como acento afiado e não distribuído, e uma
+ * entrada única e orquestrada com atraso escalonado.
+ */
 import {
   site,
   preAgendamento,
@@ -13,12 +20,12 @@ import Agendamento from '@/components/agendamento/Agendamento';
 const passos = [
   {
     n: '01',
-    t: 'Escolha a área e o assunto',
-    d: 'Previdenciário, Imobiliário ou Sucessório, e o tema exato do seu caso.',
+    t: 'Escolha a área e o tema',
+    d: 'Da aposentadoria ao inventário, incluindo consultoria, holding e tributário.',
   },
   {
     n: '02',
-    t: 'Diga como prefere ser atendido',
+    t: 'Diga como prefere ser atendida',
     d: 'Presencial em Pedro do Rio, online ou qualquer uma das opções.',
   },
   {
@@ -42,9 +49,16 @@ const passos = [
 <section
   id="agendamento"
   aria-labelledby="agendamento-titulo"
-  class="overflow-hidden bg-ink text-bone"
+  class="atmosfera-agenda relative overflow-hidden bg-ink text-bone"
 >
-  <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+  <!-- Camadas de fundo: brilho dourado, malha fina e fio de luz no topo -->
+  <div class="brilho-agenda" aria-hidden="true"></div>
+  <div class="malha-agenda" aria-hidden="true"></div>
+  <div class="fio-luz" aria-hidden="true"></div>
+
+  <div
+    class="relative z-10 mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32"
+  >
     <TituloSecao
       numero={numeroCapitulo('agendamento')}
       eyebrow="Agendamento"
@@ -54,34 +68,47 @@ const passos = [
       Agende seu atendimento em <span class="texto-ouro-claro">poucos toques</span>
     </TituloSecao>
 
-    <div class="mt-14 grid gap-14 lg:grid-cols-12 lg:gap-16">
+    <div class="mt-16 grid gap-16 lg:grid-cols-12 lg:gap-14 xl:gap-16">
       <div class="lg:col-span-5">
-        <p class="anima medida-curta text-bone-muted">{preAgendamento.intro}</p>
+        <p class="anima medida-curta text-[1.02rem] leading-relaxed text-bone-muted">
+          {preAgendamento.intro}
+        </p>
 
-        <ol class="mt-10 flex flex-col gap-7" role="list">
+        <!-- Trilha vertical: fio dourado ligando os cinco passos -->
+        <ol class="trilha mt-12" role="list">
           {passos.map((p, i) => (
-            <li class="anima flex gap-5" style={`--anima-delay: ${i * 100}ms`}>
-              <span
-                class="texto-ouro-claro font-display italic text-[1.6rem] leading-none"
-                aria-hidden="true"
-              >
-                {p.n}
-              </span>
-              <div>
-                <p class="font-display text-[1.24rem] leading-snug text-bone">{p.t}</p>
-                <p class="mt-1.5 text-[0.93rem] text-bone-muted">{p.d}</p>
+            <li class="anima-passo trilha-item" style={`--anima-delay: ${140 + i * 90}ms`}>
+              <span class="trilha-no" aria-hidden="true"></span>
+              <span class="trilha-numero" aria-hidden="true">{p.n}</span>
+              <div class="trilha-texto">
+                <p class="font-display text-[1.3rem] leading-tight text-bone">{p.t}</p>
+                <p class="mt-2 text-[0.92rem] leading-relaxed text-bone-muted">{p.d}</p>
               </div>
             </li>
           ))}
         </ol>
 
-        <p class="anima rotulo-caps mt-11 text-bone-muted" style="--anima-delay: 420ms">
-          Confirmação pelo WhatsApp {site.whatsapp.display}
-        </p>
+        <a
+          href={`https://wa.me/${site.whatsapp.numero}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="anima-passo selo-whats mt-12"
+          style="--anima-delay: 620ms"
+        >
+          <span class="pulso-verde" aria-hidden="true"></span>
+          <span class="rotulo-caps">Confirmação pelo WhatsApp</span>
+          <span class="font-display text-[1.05rem] leading-none text-bone">
+            {site.whatsapp.display}
+          </span>
+        </a>
       </div>
 
-      <div class="anima lg:col-span-7" style="--anima-delay: 140ms">
-        <div class="rounded-[calc(1.5rem+1px)] bg-gradient-to-br from-gold/45 via-bone/10 to-transparent p-px shadow-[0_30px_70px_-40px_rgb(0_0_0/0.9)]">
+      <div class="anima relative lg:col-span-7" style="--anima-delay: 220ms">
+        <!-- Halo dourado atrás do cartão, para ele virar o foco da seção -->
+        <div class="halo-wizard" aria-hidden="true"></div>
+        <div
+          class="relative rounded-[calc(1.5rem+1px)] bg-gradient-to-br from-gold/55 via-bone/10 to-transparent p-px shadow-[0_40px_90px_-45px_rgb(0_0_0/0.95)]"
+        >
           <Agendamento
             client:load
             areasOpcoes={[...preAgendamento.areas]}

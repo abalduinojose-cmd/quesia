@@ -90,26 +90,46 @@ const jsonLd = JSON.stringify(jsonLdAttorney(canonical, logoAbs, ogImage));
 
       const reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      /* Reveals: adiciona .in quando o elemento entra na viewport */
+      /* Reveals: adiciona .in quando o elemento entra na viewport. O observer
+         roda sempre; quem decide se há transição é o CSS. As classes .anima*
+         ficam paradas sob reduced-motion, e .anima-passo anima para todos,
+         mesma regra da mídia de fundo. */
       const alvos = document.querySelectorAll(
-        '.anima, .anima-fade, .anima-mask, .anima-wipe, .anima-color, .anima-draw'
+        '.anima, .anima-passo, .anima-fade, .anima-mask, .anima-wipe, .anima-color, .anima-draw'
       );
-      if (reduz) {
-        alvos.forEach((el) => el.classList.add('in'));
-      } else {
-        const io = new IntersectionObserver(
-          (entradas) => {
-            for (const e of entradas) {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
+      const io = new IntersectionObserver(
+        (entradas) => {
+          for (const e of entradas) {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
             }
-          },
-          { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
-        );
-        alvos.forEach((el) => io.observe(el));
-      }
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
+      );
+      alvos.forEach((el) => io.observe(el));
+
+      /* Rede de segurança: em aba que o navegador não pinta, o observer não
+         dispara e o que depende de .in ficaria invisível para sempre. Esta
+         varredura usa a mesma borda do observer, some sozinha quando todos
+         já apareceram e custa quase nada enquanto isso. */
+      let pendentes = Array.from(alvos);
+      const varrer = () => {
+        const borda = window.innerHeight * 0.88;
+        pendentes = pendentes.filter((el) => {
+          if (el.classList.contains('in')) return false;
+          const r = el.getBoundingClientRect();
+          if (r.top < borda && r.bottom > 0) {
+            el.classList.add('in');
+            return false;
+          }
+          return true;
+        });
+        if (!pendentes.length) window.removeEventListener('scroll', varrer);
+      };
+      window.addEventListener('scroll', varrer, { passive: true });
+      window.setTimeout(varrer, 1200);
 
       /* Contadores numéricos */
       const contadores = document.querySelectorAll<HTMLElement>('[data-count-to]');

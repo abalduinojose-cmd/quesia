@@ -557,12 +557,34 @@ export const servicosExtras = {
   ],
 } as const;
 
+/**
+ * Frentes que entram só nas opções do agendamento, sem painel próprio na
+ * página. Pedido do cliente em 04/08/2026.
+ */
+export const areasSoAgenda = [
+  {
+    tituloCurto: 'Tributário',
+    topicos: [
+      'Isenção de imposto de renda por doença grave',
+      'Restituição de imposto pago a mais',
+      'ITBI na compra e venda de imóvel',
+      'ITCMD em doação e inventário',
+      'Parcelamento e negociação de dívida fiscal',
+      'Defesa em autuação e execução fiscal',
+    ],
+  },
+] as const;
+
 /** Assuntos de cada área, para o segundo filtro do agendamento. */
 export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([
   ...areas.map((a) => [a.tituloCurto, [...a.topicos, `Outro tema de ${a.tituloCurto}`]]),
   ...servicosExtras.itens.map((s) => [
     s.tituloCurto,
     [...s.topicos, `Outro tema de ${s.tituloCurto}`],
+  ]),
+  ...areasSoAgenda.map((a) => [
+    a.tituloCurto,
+    [...a.topicos, `Outro tema de ${a.tituloCurto}`],
   ]),
   ['Outro assunto', []],
 ]);
@@ -571,10 +593,11 @@ export const preAgendamento = {
   titulo: 'Agendamento',
   intro:
     'Escolha a área, o tipo de atendimento e o melhor horário. A mensagem chega pronta no WhatsApp e a advogada confirma com você.',
-  /* As três frentes principais primeiro, depois os serviços complementares */
+  /* As três frentes principais primeiro, depois as complementares */
   areas: [
     ...areas.map((a) => a.tituloCurto),
     ...servicosExtras.itens.map((s) => s.tituloCurto),
+    ...areasSoAgenda.map((a) => a.tituloCurto),
     'Outro assunto',
   ],
   modalidades: [
