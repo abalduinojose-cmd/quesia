@@ -853,6 +853,27 @@ details.acordeao[open] {
   color: rgb(36 36 36 / 0.3);
 }
 
+/* Abre o diálogo de horário quebrado; tracejado para não parecer um horário */
+.chip-novo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 0.65rem;
+  border: 1px dashed rgb(138 110 43 / 0.45);
+  padding: 0.5rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 550;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.chip-novo:hover {
+  border-style: solid;
+  background: rgb(201 168 81 / 0.1);
+}
+
 /* Painel da agenda: pontinho de status e setas de navegação */
 .ponto {
   display: inline-block;

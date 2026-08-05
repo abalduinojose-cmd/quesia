@@ -520,6 +520,29 @@ const urlGrade = withBase('/grade.json');
   </form>
 </dialog>
 
+<!-- Criar horário na grade fixa -->
+<dialog id="dialogo-hora"
+  class="w-[min(92vw,23rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50">
+  <form method="dialog" class="p-7">
+    <p id="hora-quando" class="rotulo-caps text-gold-deep">-</p>
+    <h3 class="mt-2 font-display text-[1.4rem]">Criar horário</h3>
+    <p class="mt-2 text-[0.9rem] text-ink-muted">
+      Vale para todas as semanas neste dia. Serve para horários quebrados, como
+      13:30, ou fora da faixa das 7h às 20h.
+    </p>
+    <label class="mt-5 flex flex-col gap-1.5">
+      <span class="rotulo-caps text-ink-muted">Horário</span>
+      <input id="hora-nova" type="time" step="300"
+        class="w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-[1.05rem] outline-none focus:border-gold-deep" />
+    </label>
+    <p id="hora-erro" class="mt-2 hidden text-sm text-[#B4462F]"></p>
+    <div class="mt-6 flex flex-wrap gap-2">
+      <button id="hora-salvar" type="button" class="btn-clean text-[0.9rem]">Criar</button>
+      <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button>
+    </div>
+  </form>
+</dialog>
+
 <script define:vars={{ urlGrade }}>
   const USUARIO = 'quesiaadv';
   const SENHA = '123456';
@@ -997,12 +1020,15 @@ const urlGrade = withBase('/grade.json');
         <div class="mt-4 flex flex-wrap gap-1.5" data-dia="${dS}"></div>`;
       linha.querySelector('[data-limpa]')?.addEventListener('click', () => { grade.semana[String(dS)] = []; salvar(); });
       const cont = linha.querySelector('[data-dia]');
-      HORAS.forEach((h) => {
+      /* às horas cheias somam-se as criadas à mão, que podem ter minuto */
+      const lista = [...new Set([...HORAS, ...ativos])].sort();
+      lista.forEach((h) => {
         const on = ativos.includes(h);
         const b = document.createElement('button');
         b.type = 'button';
         b.textContent = h;
         b.className = 'chip-hora';
+        if (!HORAS.includes(h)) b.title = 'Horário criado à mão. Toque para remover.';
         b.setAttribute('aria-pressed', String(on));
         b.addEventListener('click', () => {
           const lst = grade.semana[String(dS)] || [];
@@ -1011,6 +1037,17 @@ const urlGrade = withBase('/grade.json');
         });
         cont.appendChild(b);
       });
+
+      const novo = document.createElement('button');
+      novo.type = 'button';
+      novo.className = 'chip-novo';
+      novo.innerHTML =
+        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">' +
+        '<path d="M6 1.5v9M1.5 6h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>' +
+        '</svg>criar horário';
+      novo.addEventListener('click', () => abrirDialogoHora(dS));
+      cont.appendChild(novo);
+
       cx.appendChild(linha);
     }
 
@@ -1086,6 +1123,39 @@ const urlGrade = withBase('/grade.json');
     avisar('Horário liberado');
   });
 
+  /* Horário criado à mão na grade fixa */
+  const dlgHora = document.getElementById('dialogo-hora');
+  let diaSemanaEditando = null;
+
+  function abrirDialogoHora(dS) {
+    diaSemanaEditando = dS;
+    document.getElementById('hora-quando').textContent = `Toda ${nomesDia[dS].toLowerCase()}`;
+    document.getElementById('hora-nova').value = '';
+    document.getElementById('hora-erro').classList.add('hidden');
+    dlgHora.showModal();
+  }
+
+  document.getElementById('hora-salvar').addEventListener('click', () => {
+    if (diaSemanaEditando === null) { dlgHora.close(); return; }
+    const campo = document.getElementById('hora-nova');
+    const erro = document.getElementById('hora-erro');
+    const h = campo.value;
+
+    const mostrarErro = (texto) => {
+      erro.textContent = texto;
+      erro.classList.remove('hidden');
+      campo.focus();
+    };
+    if (!/^\d{2}:\d{2}$/.test(h)) { mostrarErro('Escolha um horário.'); return; }
+    const atuais = grade.semana[String(diaSemanaEditando)] || [];
+    if (atuais.includes(h)) { mostrarErro('Esse horário já está ligado neste dia.'); return; }
+
+    grade.semana[String(diaSemanaEditando)] = [...atuais, h].sort();
+    dlgHora.close();
+    salvar();
+    avisar(`${h} criado para toda ${nomesDia[diaSemanaEditando].toLowerCase()}`);
+  });
+
   /* Dia avulso */
   const dlgDia = document.getElementById('dialogo-dia');
   function abrirDialogoDia() {
@@ -1096,7 +1166,9 @@ const urlGrade = withBase('/grade.json');
     const cont = document.getElementById('dia-horarios');
     cont.innerHTML = '';
     const fixos = grade.semana[String(d.getDay())] || [];
-    HORAS.forEach((h) => {
+    /* inclui os horários quebrados da grade fixa e os já avulsos deste dia,
+       senão eles sumiriam da lista e pareceriam não existir */
+    [...new Set([...HORAS, ...fixos, ...horariosNovoDia])].sort().forEach((h) => {
       const naGradeFixa = fixos.includes(h);
       const b = document.createElement('button');
       b.type = 'button';

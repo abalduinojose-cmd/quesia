@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/agendar.BgGgK_Jp.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --><div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#141416] px-5"> <div class="absolute inset-0 bg-[radial-gradient(80%_55%_at_50%_-5%,rgb(201_168_81/0.28),transparent_70%),radial-gradient(60%_45%_at_85%_100%,rgb(201_168_81/0.10),transparent_65%)]" aria-hidden="true"></div> <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" aria-hidden="true"></div> <div class="relative w-full max-w-[23.5rem]"> <div class="rounded-[1.75rem] border border-bone/[0.09] bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-9 text-center shadow-[0_40px_80px_-40px_rgb(0_0_0/0.9)] backdrop-blur-md"> <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/25 bg-gold/[0.08]"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="30" height="34" class="h-8 w-auto"> </div> <h1 class="mt-6 font-display text-[2.1rem] leading-none text-bone">Agenda</h1> <p class="mt-2.5 text-[0.86rem] text-bone-muted">
+<!DOCTYPE html><html lang="pt-BR"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Agenda · Quesia Constâncio Advocacia</title><link rel="icon" type="image/png" href="/quesia/favicon.png"><link rel="stylesheet" href="/quesia/assets/agendar.vK_f1oYZ.css"></head> <body class="min-h-dvh bg-bone-dim text-ink"> <!-- Entrada --><div id="tela-login" class="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-[#141416] px-5"> <div class="absolute inset-0 bg-[radial-gradient(80%_55%_at_50%_-5%,rgb(201_168_81/0.28),transparent_70%),radial-gradient(60%_45%_at_85%_100%,rgb(201_168_81/0.10),transparent_65%)]" aria-hidden="true"></div> <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" aria-hidden="true"></div> <div class="relative w-full max-w-[23.5rem]"> <div class="rounded-[1.75rem] border border-bone/[0.09] bg-gradient-to-b from-white/[0.07] to-white/[0.02] p-9 text-center shadow-[0_40px_80px_-40px_rgb(0_0_0/0.9)] backdrop-blur-md"> <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-gold/25 bg-gold/[0.08]"> <img src="/quesia/logos/qc-mark-bone.png" alt="" width="30" height="34" class="h-8 w-auto"> </div> <h1 class="mt-6 font-display text-[2.1rem] leading-none text-bone">Agenda</h1> <p class="mt-2.5 text-[0.86rem] text-bone-muted">
 Área restrita à equipe do escritório
 </p> <form id="form-login" class="mt-9 flex flex-col gap-3 text-left"> <div class="campo"> <label for="usuario">Usuário</label> <input id="usuario" type="text" autocomplete="username"> </div> <div class="campo"> <label for="senha">Senha</label> <input id="senha" type="password" autocomplete="current-password"> </div> <p id="erro-login" class="hidden text-sm text-[#F2B8A2]">
 Usuário ou senha incorretos.
@@ -60,7 +60,10 @@ Chamar no WhatsApp
 Liberar horário
 </button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <!-- Abrir dia avulso --> <dialog id="dialogo-dia" class="w-[min(92vw,26rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" class="p-7"> <p id="dia-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Abrir atendimento neste dia</h3> <p class="mt-2 text-[0.9rem] text-ink-muted">
 Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
-</p> <div id="dia-horarios" class="mt-5 flex flex-wrap gap-2"></div> <div class="mt-6 flex flex-wrap gap-2"> <button id="dia-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar dia</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <script>(function(){const urlGrade = "/quesia/grade.json";
+</p> <div id="dia-horarios" class="mt-5 flex flex-wrap gap-2"></div> <div class="mt-6 flex flex-wrap gap-2"> <button id="dia-salvar" type="button" class="btn-clean text-[0.9rem]">Salvar dia</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <!-- Criar horário na grade fixa --> <dialog id="dialogo-hora" class="w-[min(92vw,23rem)] rounded-3xl border border-gold-soft bg-bone p-0 text-ink backdrop:bg-black/50"> <form method="dialog" class="p-7"> <p id="hora-quando" class="rotulo-caps text-gold-deep">-</p> <h3 class="mt-2 font-display text-[1.4rem]">Criar horário</h3> <p class="mt-2 text-[0.9rem] text-ink-muted">
+Vale para todas as semanas neste dia. Serve para horários quebrados, como
+      13:30, ou fora da faixa das 7h às 20h.
+</p> <label class="mt-5 flex flex-col gap-1.5"> <span class="rotulo-caps text-ink-muted">Horário</span> <input id="hora-nova" type="time" step="300" class="w-full rounded-xl border border-ink/15 bg-white px-4 py-3 text-[1.05rem] outline-none focus:border-gold-deep"> </label> <p id="hora-erro" class="mt-2 hidden text-sm text-[#B4462F]"></p> <div class="mt-6 flex flex-wrap gap-2"> <button id="hora-salvar" type="button" class="btn-clean text-[0.9rem]">Criar</button> <button value="cancelar" class="rotulo-caps ml-auto rounded-full px-4 py-2.5 text-ink-muted">Fechar</button> </div> </form> </dialog> <script>(function(){const urlGrade = "/quesia/grade.json";
 
   const USUARIO = 'quesiaadv';
   const SENHA = '123456';
@@ -538,12 +541,15 @@ Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
         <div class="mt-4 flex flex-wrap gap-1.5" data-dia="${dS}"></div>`;
       linha.querySelector('[data-limpa]')?.addEventListener('click', () => { grade.semana[String(dS)] = []; salvar(); });
       const cont = linha.querySelector('[data-dia]');
-      HORAS.forEach((h) => {
+      /* às horas cheias somam-se as criadas à mão, que podem ter minuto */
+      const lista = [...new Set([...HORAS, ...ativos])].sort();
+      lista.forEach((h) => {
         const on = ativos.includes(h);
         const b = document.createElement('button');
         b.type = 'button';
         b.textContent = h;
         b.className = 'chip-hora';
+        if (!HORAS.includes(h)) b.title = 'Horário criado à mão. Toque para remover.';
         b.setAttribute('aria-pressed', String(on));
         b.addEventListener('click', () => {
           const lst = grade.semana[String(dS)] || [];
@@ -552,6 +558,17 @@ Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
         });
         cont.appendChild(b);
       });
+
+      const novo = document.createElement('button');
+      novo.type = 'button';
+      novo.className = 'chip-novo';
+      novo.innerHTML =
+        '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">' +
+        '<path d="M6 1.5v9M1.5 6h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>' +
+        '</svg>criar horário';
+      novo.addEventListener('click', () => abrirDialogoHora(dS));
+      cont.appendChild(novo);
+
       cx.appendChild(linha);
     }
 
@@ -627,6 +644,39 @@ Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
     avisar('Horário liberado');
   });
 
+  /* Horário criado à mão na grade fixa */
+  const dlgHora = document.getElementById('dialogo-hora');
+  let diaSemanaEditando = null;
+
+  function abrirDialogoHora(dS) {
+    diaSemanaEditando = dS;
+    document.getElementById('hora-quando').textContent = `Toda ${nomesDia[dS].toLowerCase()}`;
+    document.getElementById('hora-nova').value = '';
+    document.getElementById('hora-erro').classList.add('hidden');
+    dlgHora.showModal();
+  }
+
+  document.getElementById('hora-salvar').addEventListener('click', () => {
+    if (diaSemanaEditando === null) { dlgHora.close(); return; }
+    const campo = document.getElementById('hora-nova');
+    const erro = document.getElementById('hora-erro');
+    const h = campo.value;
+
+    const mostrarErro = (texto) => {
+      erro.textContent = texto;
+      erro.classList.remove('hidden');
+      campo.focus();
+    };
+    if (!/^\d{2}:\d{2}$/.test(h)) { mostrarErro('Escolha um horário.'); return; }
+    const atuais = grade.semana[String(diaSemanaEditando)] || [];
+    if (atuais.includes(h)) { mostrarErro('Esse horário já está ligado neste dia.'); return; }
+
+    grade.semana[String(diaSemanaEditando)] = [...atuais, h].sort();
+    dlgHora.close();
+    salvar();
+    avisar(`${h} criado para toda ${nomesDia[diaSemanaEditando].toLowerCase()}`);
+  });
+
   /* Dia avulso */
   const dlgDia = document.getElementById('dialogo-dia');
   function abrirDialogoDia() {
@@ -637,7 +687,9 @@ Escolha os horários. Vale só para esta data, sem mexer na grade fixa.
     const cont = document.getElementById('dia-horarios');
     cont.innerHTML = '';
     const fixos = grade.semana[String(d.getDay())] || [];
-    HORAS.forEach((h) => {
+    /* inclui os horários quebrados da grade fixa e os já avulsos deste dia,
+       senão eles sumiriam da lista e pareceriam não existir */
+    [...new Set([...HORAS, ...fixos, ...horariosNovoDia])].sort().forEach((h) => {
       const naGradeFixa = fixos.includes(h);
       const b = document.createElement('button');
       b.type = 'button';
