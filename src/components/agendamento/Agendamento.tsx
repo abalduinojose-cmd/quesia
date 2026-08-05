@@ -40,8 +40,8 @@ interface Props {
   numeroWhats: string;
   urlGrade: string;
   honorarios: Honorarios;
-  /** Emoji por área, só nas opções do primeiro passo */
-  emojis?: Record<string, string>;
+  /** Traçado do ícone por área, só nas opções do primeiro passo */
+  icones?: Record<string, string>;
   /** Cabeçalho de confiança: quem vai atender */
   foto?: string;
   advogada?: string;
@@ -65,7 +65,7 @@ export default function Agendamento({
   numeroWhats,
   urlGrade,
   honorarios,
-  emojis,
+  icones,
   foto,
   advogada,
   oab,
@@ -261,15 +261,25 @@ export default function Agendamento({
               : 'border-bone/15 bg-white/[0.03] text-bone hover:border-gold/50 hover:bg-white/[0.06]'
           }`}
         >
-          <span className="flex min-w-0 items-center gap-3">
-            {emojis?.[o] && (
+          <span className="flex min-w-0 items-center gap-3.5">
+            {icones?.[o] && (
               <span
                 aria-hidden="true"
-                className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[1.05rem] transition-colors duration-300 ${
-                  valor === o ? 'bg-gold/20' : 'bg-white/[0.06] group-hover:bg-gold/12'
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300 ${
+                  valor === o
+                    ? 'border-gold/45 bg-gold/15 text-gold'
+                    : 'border-bone/12 bg-white/[0.04] text-bone-muted group-hover:border-gold/35 group-hover:text-gold'
                 }`}
               >
-                {emojis[o]}
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d={icones[o]}
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </span>
             )}
             <span className="min-w-0">{o}</span>

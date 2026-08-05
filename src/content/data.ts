@@ -586,16 +586,34 @@ export const areasSoAgenda = [
   },
 ] as const;
 
-/** Emoji de cada área, só para dar rosto às opções do agendamento. */
-export const emojiArea: Record<string, string> = {
-  'Previdenciário': '🛡️',
-  'Imobiliário': '🏠',
-  'Sucessório': '📜',
-  'Consultoria jurídica': '💬',
-  'Holding familiar': '🏛️',
-  'Trabalhista': '💼',
-  'Tributário': '🧾',
-  'Outro assunto': '💭',
+/**
+ * Ícone de cada área nas opções do agendamento. Traço fino de 1,5, mesmo
+ * desenho dos cartões de área, para não destoar do resto do site.
+ */
+export const iconeArea: Record<string, string> = {
+  /* escudo com visto: o benefício que protege */
+  'Previdenciário':
+    'M12 3c3.5 2.2 6.8 2.6 9 2.6 0 7.8-3.4 13-9 15.4C6.4 18.6 3 13.4 3 5.6c2.2 0 5.5-.4 9-2.6Zm-3 9.2 2.2 2.2L15 10.6',
+  /* casa */
+  'Imobiliário': 'M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5M9.8 20v-6h4.4v6',
+  /* geração que se ramifica */
+  'Sucessório':
+    'M12 4.5a2.6 2.6 0 1 1 0 5.2 2.6 2.6 0 0 1 0-5.2ZM5.5 14.3a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8Zm13 0a2.4 2.4 0 1 1 0 4.8 2.4 2.4 0 0 1 0-4.8ZM12 9.7v3m0 0-4.6 2.6M12 12.7l4.6 2.6',
+  /* parecer em folha timbrada */
+  'Consultoria jurídica':
+    'M6.6 3.6h7.5l3.9 3.9v12.9H6.6V3.6Zm7.5 0v3.9h3.9M9.6 12.2h5.2m-5.2 3.5h5.2',
+  /* organograma da holding */
+  'Holding familiar':
+    'M9.2 3.6h5.6v3.4H9.2zM3.6 14.9h5.6v3.4H3.6zM14.8 14.9h5.6v3.4h-5.6zM12 7v3.9M6.4 14.9v-4h11.2v4',
+  /* maleta de trabalho */
+  'Trabalhista':
+    'M9.2 6.8V5.7A1.7 1.7 0 0 1 10.9 4h2.2a1.7 1.7 0 0 1 1.7 1.7v1.1M4.5 8.5A1.7 1.7 0 0 1 6.2 6.8h11.6a1.7 1.7 0 0 1 1.7 1.7v9.8a1.7 1.7 0 0 1-1.7 1.7H6.2a1.7 1.7 0 0 1-1.7-1.7V8.5Zm0 4.3h15',
+  /* recibo com valores */
+  'Tributário':
+    'M6.8 3.8h10.4v16.4l-2.1-1.3-2.1 1.3-2.1-1.3-2.1 1.3-2-1.3V3.8Zm2.6 4.4h5.2m-5.2 3.6h5.2m-5.2 3.6h3.2',
+  /* pergunta em aberto */
+  'Outro assunto':
+    'M12 3.8a8.2 8.2 0 1 1 0 16.4 8.2 8.2 0 0 1 0-16.4Zm-1.85 6.05a1.85 1.85 0 1 1 2.6 1.7c-.5.3-.75.7-.75 1.25v.5m0 2.6h.01',
 };
 
 /** Assuntos de cada área, para o segundo filtro do agendamento. */
