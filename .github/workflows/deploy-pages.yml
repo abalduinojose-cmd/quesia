@@ -32,7 +32,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -44,3 +44,8 @@ jobs:
 
       - id: deploy
         uses: actions/deploy-pages@v4
+        with:
+          # O padrão da ação é 10 min. A publicação chegou a
+          # deployment_in_progress e foi cortada nesse limite, então damos
+          # 40 min antes de desistir.
+          timeout: 2400000
