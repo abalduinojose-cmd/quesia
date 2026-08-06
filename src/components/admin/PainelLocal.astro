@@ -1,9 +1,11 @@
 ﻿---
 /**
- * Painel sem banco: a grade fica no aparelho e a equipe publica o grade.json
- * à mão. Usado enquanto o Supabase não estiver configurado.
+ * Painel da agenda. Funciona nos dois modos:
+ *  - com Supabase: login por e-mail, grade e pedidos no banco, salva sozinho;
+ *  - sem Supabase: login fixo, tudo no navegador e publicação do grade.json.
  */
 import { withBase } from '@/lib/paths';
+import { temSupabase } from '@/lib/supabase';
 
 const urlGrade = withBase('/grade.json');
 ---
@@ -46,8 +48,12 @@ const urlGrade = withBase('/grade.json');
 
       <form id="form-login" class="mt-9 flex flex-col gap-3 text-left">
         <div class="campo">
-          <label for="usuario">Usuário</label>
-          <input id="usuario" type="text" autocomplete="username" />
+          <label for="usuario">{temSupabase ? 'E-mail' : 'Usuário'}</label>
+          <input
+            id="usuario"
+            type={temSupabase ? 'email' : 'text'}
+            autocomplete="username"
+          />
         </div>
         <div class="campo">
           <label for="senha">Senha</label>
@@ -451,14 +457,26 @@ const urlGrade = withBase('/grade.json');
         <span id="ponto-estado" class="h-2 w-2 shrink-0 rounded-full bg-[#3E9A5F]" aria-hidden="true"></span>
         <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">Tudo publicado.</p>
       </div>
-      <button id="btn-publicar" type="button"
-        class="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-40">
-        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 11V2m0 0L4.5 5.5M8 2l3.5 3.5M2.5 10.5v2A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5v-2"
-            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-        <span id="rotulo-publicar">Publicar</span>
-      </button>
+      {
+        !temSupabase && (
+          <button
+            id="btn-publicar"
+            type="button"
+            class="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-40"
+          >
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M8 11V2m0 0L4.5 5.5M8 2l3.5 3.5M2.5 10.5v2A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5v-2"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span id="rotulo-publicar">Publicar</span>
+          </button>
+        )
+      }
     </div>
   </div>
 
@@ -549,7 +567,26 @@ const urlGrade = withBase('/grade.json');
   </form>
 </dialog>
 
-<script define:vars={{ urlGrade }}>
+<span id="cfg-painel" data-url-grade={urlGrade} hidden></span>
+
+<script>
+  // @ts-nocheck
+  /* JavaScript puro de ~1000 linhas, herdado de quando este script era inline.
+     A verificação é feita no navegador, não pelo compilador. */
+  import {
+    temSupabase,
+    supabase,
+    lerGradeRemota,
+    salvarGradeRemota,
+    listarAgendamentos,
+    mudarSituacao,
+  } from '@/lib/supabase';
+
+  const urlGrade = document.getElementById('cfg-painel').dataset.urlGrade;
+
+  /* Sem banco, o painel segue com o login fixo e guarda tudo no navegador.
+     Com banco, quem manda é o login do Supabase: o RLS só libera escrita
+     para usuário autenticado. */
   const USUARIO = 'quesiaadv';
   const SENHA = '123456';
   const CHAVE = 'qc-grade';
@@ -569,6 +606,7 @@ const urlGrade = withBase('/grade.json');
   let slotEditando = null;
   let horariosNovoDia = [];
   let buscaCadastro = '';
+  let pedidos = [];
 
   const iso = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   const doIso = (s) => { const [a,m,d] = s.split('-').map(Number); return new Date(a, m-1, d); };
@@ -619,7 +657,10 @@ const urlGrade = withBase('/grade.json');
     el._t = setTimeout(() => (el.style.opacity = '0'), 2400);
   }
 
+  /* Com banco não existe "publicar": a barra de baixo só relata o estado do
+     salvamento automático. Sem banco, segue o fluxo de baixar o grade.json. */
   function marcarSujo(v) {
+    if (temSupabase) return;
     localStorage.setItem(CHAVE_SUJO, v ? '1' : '');
     document.getElementById('selo-pendente').classList.toggle('hidden', !v);
     document.getElementById('estado-publicacao').textContent = v ? 'Mudanças ainda não publicadas.' : 'Tudo publicado.';
@@ -630,31 +671,72 @@ const urlGrade = withBase('/grade.json');
     document.getElementById('rotulo-publicar').textContent = v ? 'Publicar' : 'Publicado';
   }
 
+  function estadoBanco(texto, cor) {
+    document.getElementById('estado-publicacao').textContent = texto;
+    document.getElementById('ponto-estado').className =
+      'h-2 w-2 shrink-0 rounded-full ' + cor;
+  }
+
+  /* Grava no banco sem atropelar: junta as mudanças rápidas em uma escrita só */
+  let timerBanco = null;
+  function agendarGravacao() {
+    estadoBanco('Salvando…', 'bg-[#C9A851] animate-pulse');
+    clearTimeout(timerBanco);
+    timerBanco = setTimeout(async () => {
+      const erro = await salvarGradeRemota(grade);
+      if (erro) {
+        estadoBanco('Não salvou. Confira a conexão.', 'bg-[#B4462F] animate-pulse');
+        avisar('Erro ao salvar: ' + erro);
+      } else {
+        estadoBanco('Salvo automaticamente.', 'bg-[#3E9A5F]');
+      }
+    }, 600);
+  }
+
   function salvar() {
-    localStorage.setItem(CHAVE, JSON.stringify(grade));
-    marcarSujo(true);
+    if (temSupabase) {
+      agendarGravacao();
+    } else {
+      localStorage.setItem(CHAVE, JSON.stringify(grade));
+      marcarSujo(true);
+    }
     desenhar();
   }
 
-  async function carregar() {
-    const local = localStorage.getItem(CHAVE);
-    if (local) { try { grade = JSON.parse(local); } catch { grade = null; } }
-    if (!grade) {
-      const r = await fetch(urlGrade, { cache: 'no-store' });
-      grade = await r.json();
-    }
+  function sanear() {
     grade.semana = grade.semana || {};
     const valido = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}/.test(x);
     grade.bloqueios = (grade.bloqueios || []).filter(valido);
     grade.ocupados = (grade.ocupados || []).filter(valido);
     grade.extras = grade.extras || {};
     grade.reservas = (grade.reservas || []).filter((r) => r && valido(r.id));
+  }
+
+  async function carregar() {
+    if (temSupabase) {
+      grade = await lerGradeRemota();
+      if (!grade) {
+        const r = await fetch(urlGrade, { cache: 'no-store' });
+        grade = await r.json();
+      }
+      pedidos = await listarAgendamentos();
+    } else {
+      const local = localStorage.getItem(CHAVE);
+      if (local) { try { grade = JSON.parse(local); } catch { grade = null; } }
+      if (!grade) {
+        const r = await fetch(urlGrade, { cache: 'no-store' });
+        grade = await r.json();
+      }
+      pedidos = lerPedidosLocais();
+    }
+    sanear();
     if (!inicioSemana) {
       const h = hojeZero();
       inicioSemana = new Date(h);
       inicioSemana.setDate(h.getDate() - h.getDay());
     }
-    marcarSujo(localStorage.getItem(CHAVE_SUJO) === '1');
+    if (temSupabase) estadoBanco('Salvo automaticamente.', 'bg-[#3E9A5F]');
+    else marcarSujo(localStorage.getItem(CHAVE_SUJO) === '1');
     desenhar();
   }
 
@@ -1140,21 +1222,32 @@ const urlGrade = withBase('/grade.json');
   ------------------------------------------------------------------------- */
   const CHAVE_PEDIDOS = 'qc-agendamentos-demo';
 
-  function lerPedidos() {
+  function lerPedidosLocais() {
     try {
       const cru = JSON.parse(localStorage.getItem(CHAVE_PEDIDOS) || '[]');
       return Array.isArray(cru) ? cru : [];
     } catch { return []; }
   }
-  function gravarPedidos(lista) {
+
+  /** Marca a situação do pedido no banco ou no navegador, conforme o modo. */
+  async function marcarPedido(id, situacao) {
+    if (temSupabase) {
+      const erro = await mudarSituacao(id, situacao);
+      if (erro) { avisar('Erro: ' + erro); return false; }
+      pedidos = await listarAgendamentos();
+      return true;
+    }
+    const lista = lerPedidosLocais().map((x) => (x.id === id ? { ...x, situacao } : x));
     localStorage.setItem(CHAVE_PEDIDOS, JSON.stringify(lista));
+    pedidos = lista;
+    return true;
   }
 
   function desenharPedidos(chaveHoje) {
-    const pedidos = lerPedidos()
+    const visiveis = (pedidos || [])
       .filter((p) => p && p.data >= chaveHoje && p.situacao !== 'cancelado')
       .sort((a, b) => `${a.data}${a.hora}`.localeCompare(`${b.data}${b.hora}`));
-    const novos = pedidos.filter((p) => p.situacao === 'pendente');
+    const novos = visiveis.filter((p) => p.situacao === 'pendente');
 
     /* selo no topo da aba Agenda */
     const selo = document.getElementById('selo-pedidos');
@@ -1177,7 +1270,7 @@ const urlGrade = withBase('/grade.json');
 
     /* lista completa na aba Cadastros */
     const caixa = document.getElementById('caixa-pedidos');
-    if (!pedidos.length) { caixa.innerHTML = ''; return; }
+    if (!visiveis.length) { caixa.innerHTML = ''; return; }
 
     caixa.innerHTML = `
       <p class="rotulo-secao">Vindos do site</p>
@@ -1188,7 +1281,7 @@ const urlGrade = withBase('/grade.json');
       <div id="lista-pedidos" class="mt-5 flex flex-col gap-3"></div>`;
 
     const lista = document.getElementById('lista-pedidos');
-    pedidos.forEach((p) => {
+    visiveis.forEach((p) => {
       const d = doIso(p.data);
       const zap = linkWhats(p.contato);
       const cartao = document.createElement('div');
@@ -1228,8 +1321,9 @@ const urlGrade = withBase('/grade.json');
           </div>
         </div>`;
 
-      cartao.querySelector('[data-confirmar]')?.addEventListener('click', () => {
+      cartao.querySelector('[data-confirmar]')?.addEventListener('click', async () => {
         const id = `${p.data}T${p.hora}`;
+        if (!(await marcarPedido(p.id, 'confirmado'))) return;
         grade.reservas = (grade.reservas || []).filter((r) => r.id !== id);
         grade.reservas.push({
           id, nome: p.nome, contato: p.contato,
@@ -1237,16 +1331,15 @@ const urlGrade = withBase('/grade.json');
           criadoEm: new Date().toISOString(),
         });
         if (!grade.ocupados.includes(id)) grade.ocupados.push(id);
-        gravarPedidos(lerPedidos().map((x) => (x.id === p.id ? { ...x, situacao: 'confirmado' } : x)));
         salvar();
         avisar(`${p.nome} marcado em ${p.hora}`);
       });
 
-      cartao.querySelector('[data-recusar]').addEventListener('click', () => {
+      cartao.querySelector('[data-recusar]').addEventListener('click', async () => {
         const id = `${p.data}T${p.hora}`;
+        if (!(await marcarPedido(p.id, 'cancelado'))) return;
         grade.ocupados = grade.ocupados.filter((x) => x !== id);
         grade.reservas = (grade.reservas || []).filter((r) => r.id !== id);
-        gravarPedidos(lerPedidos().map((x) => (x.id === p.id ? { ...x, situacao: 'cancelado' } : x)));
         salvar();
         avisar('Pedido cancelado, horário liberado');
       });
@@ -1387,26 +1480,10 @@ const urlGrade = withBase('/grade.json');
   }
   conferirTrava();
 
-  formLogin.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (conferirTrava()) return;
-
-    const u = document.getElementById('usuario').value.trim();
-    const s = document.getElementById('senha').value;
-
-    if (u === USUARIO && s === SENHA) {
-      localStorage.removeItem(CHAVE_TENT);
-      localStorage.removeItem(CHAVE_TRAVA);
-      erroLogin.classList.add('hidden');
-      sessionStorage.setItem('qc-admin', '1');
-      entrar();
-      return;
-    }
-
+  function contarErro(mensagem) {
     const n = tentativas() + 1;
     localStorage.setItem(CHAVE_TENT, String(n));
     document.getElementById('senha').value = '';
-
     if (n >= MAX_TENTATIVAS) {
       localStorage.setItem(CHAVE_TRAVA, String(Date.now() + ESPERA_MS));
       localStorage.setItem(CHAVE_TENT, '0');
@@ -1414,9 +1491,40 @@ const urlGrade = withBase('/grade.json');
       return;
     }
     const faltam = MAX_TENTATIVAS - n;
-    mostrarErro(
-      `Usuário ou senha incorretos. ${faltam} tentativa${faltam > 1 ? 's' : ''} restante${faltam > 1 ? 's' : ''}.`
-    );
+    mostrarErro(`${mensagem} ${faltam} tentativa${faltam > 1 ? 's' : ''} restante${faltam > 1 ? 's' : ''}.`);
+  }
+
+  function aceitarEntrada() {
+    localStorage.removeItem(CHAVE_TENT);
+    localStorage.removeItem(CHAVE_TRAVA);
+    erroLogin.classList.add('hidden');
+    entrar();
+  }
+
+  formLogin.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (conferirTrava()) return;
+
+    const u = document.getElementById('usuario').value.trim();
+    const s = document.getElementById('senha').value;
+
+    /* Com banco, quem valida é o Supabase: o RLS só libera escrita para
+       sessão autenticada, então login de mentira não adiantaria nada. */
+    if (temSupabase) {
+      btnEntrar.disabled = true;
+      const { error } = await supabase().auth.signInWithPassword({ email: u, password: s });
+      btnEntrar.disabled = false;
+      if (error) { contarErro('E-mail ou senha incorretos.'); return; }
+      aceitarEntrada();
+      return;
+    }
+
+    if (u === USUARIO && s === SENHA) {
+      sessionStorage.setItem('qc-admin', '1');
+      aceitarEntrada();
+      return;
+    }
+    contarErro('Usuário ou senha incorretos.');
   });
 
   function entrar() {
@@ -1425,10 +1533,17 @@ const urlGrade = withBase('/grade.json');
     trocarAba('calendario');
     carregar();
   }
-  if (sessionStorage.getItem('qc-admin') === '1') entrar();
 
-  document.getElementById('btn-sair').addEventListener('click', () => {
+  if (temSupabase) {
+    /* sessão do Supabase sobrevive ao recarregamento */
+    supabase().auth.getSession().then(({ data }) => { if (data.session) entrar(); });
+  } else if (sessionStorage.getItem('qc-admin') === '1') {
+    entrar();
+  }
+
+  document.getElementById('btn-sair').addEventListener('click', async () => {
     sessionStorage.removeItem('qc-admin');
+    if (temSupabase) await supabase().auth.signOut();
     location.reload();
   });
 
@@ -1440,6 +1555,10 @@ const urlGrade = withBase('/grade.json');
     grade.diasFuturos = Number(e.target.value) || 30; salvar(); avisar('Janela atualizada');
   });
   document.getElementById('btn-restaurar').addEventListener('click', async () => {
+    if (temSupabase) {
+      grade = null; await carregar(); avisar('Recarregado do banco');
+      return;
+    }
     localStorage.removeItem(CHAVE); localStorage.removeItem(CHAVE_SUJO);
     grade = null; await carregar(); avisar('Voltou para a grade publicada');
   });
@@ -1562,8 +1681,8 @@ const urlGrade = withBase('/grade.json');
     e.target.value = '';
   });
 
-  /* Publicar */
-  document.getElementById('btn-publicar').addEventListener('click', () => {
+  /* Publicar: só existe no modo sem banco */
+  document.getElementById('btn-publicar')?.addEventListener('click', () => {
     const chaveHoje = iso(hojeZero());
     grade.ocupados = grade.ocupados.filter((x) => x.slice(0,10) >= chaveHoje);
     grade.bloqueios = grade.bloqueios.filter((x) => x >= chaveHoje);
