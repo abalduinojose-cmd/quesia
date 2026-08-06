@@ -703,6 +703,13 @@ const urlGrade = withBase('/grade.json');
     desenhar();
   }
 
+  /* O Postgres devolve time como "14:00:00"; a grade trabalha em "14:00".
+     Sem cortar os segundos, o id da reserva não casa com nenhum horário e o
+     atendimento confirmado não aparece na agenda. */
+  function normalizarPedidos(lista) {
+    return (lista || []).map((p) => ({ ...p, hora: String(p.hora || '').slice(0, 5) }));
+  }
+
   function sanear() {
     grade.semana = grade.semana || {};
     const valido = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}/.test(x);
@@ -719,7 +726,7 @@ const urlGrade = withBase('/grade.json');
         const r = await fetch(urlGrade, { cache: 'no-store' });
         grade = await r.json();
       }
-      pedidos = await listarAgendamentos();
+      pedidos = normalizarPedidos(await listarAgendamentos());
     } else {
       const local = localStorage.getItem(CHAVE);
       if (local) { try { grade = JSON.parse(local); } catch { grade = null; } }
@@ -727,7 +734,7 @@ const urlGrade = withBase('/grade.json');
         const r = await fetch(urlGrade, { cache: 'no-store' });
         grade = await r.json();
       }
-      pedidos = lerPedidosLocais();
+      pedidos = normalizarPedidos(lerPedidosLocais());
     }
     sanear();
     if (!inicioSemana) {
@@ -1234,12 +1241,12 @@ const urlGrade = withBase('/grade.json');
     if (temSupabase) {
       const erro = await mudarSituacao(id, situacao);
       if (erro) { avisar('Erro: ' + erro); return false; }
-      pedidos = await listarAgendamentos();
+      pedidos = normalizarPedidos(await listarAgendamentos());
       return true;
     }
     const lista = lerPedidosLocais().map((x) => (x.id === id ? { ...x, situacao } : x));
     localStorage.setItem(CHAVE_PEDIDOS, JSON.stringify(lista));
-    pedidos = lista;
+    pedidos = normalizarPedidos(lista);
     return true;
   }
 
