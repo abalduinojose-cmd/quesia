@@ -89,19 +89,13 @@ const passos = [
           ))}
         </ol>
 
-        <a
-          href={`https://wa.me/${site.whatsapp.numero}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="anima-passo selo-whats mt-12"
-          style="--anima-delay: 620ms"
-        >
+        <p class="anima-passo selo-whats mt-12" style="--anima-delay: 620ms">
           <span class="pulso-verde" aria-hidden="true"></span>
-          <span class="rotulo-caps">Prefere falar antes?</span>
+          <span class="rotulo-caps">Confirmação em até</span>
           <span class="font-display text-[1.05rem] leading-none text-bone">
-            {site.whatsapp.display}
+            1 dia útil
           </span>
-        </a>
+        </p>
       </div>
 
       <div class="anima relative lg:col-span-7" style="--anima-delay: 220ms">
@@ -119,7 +113,6 @@ const passos = [
             aviso={preAgendamento.aviso}
             honorarios={honorarios}
             icones={iconeArea}
-            numeroWhats={site.whatsapp.numero}
             urlGrade={withBase('/grade.json')}
             foto={withBase('/sobre/quesia-640.webp')}
             advogada={`Dra. ${site.nome}`}

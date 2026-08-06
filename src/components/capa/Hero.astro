@@ -1,8 +1,6 @@
 ---
 import { hero, avaliacoes } from '@/content/data';
-import { waLink, waMensagemPadrao } from '@/lib/wa';
 import { withBase } from '@/lib/paths';
-import IconeWhats from '@/components/ui/IconeWhats.astro';
 ---
 
 <header id="topo" class="relative flex min-h-[100dvh] overflow-hidden bg-ink text-bone">
@@ -78,15 +76,11 @@ import IconeWhats from '@/components/ui/IconeWhats.astro';
         </svg>
         Fazer agendamento
       </a>
-      <a
-        href={waLink(waMensagemPadrao)}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-contorno-claro rotulo-caps justify-center"
-      >
-        <IconeWhats tamanho={17} />
-        Conversar no WhatsApp
+      <a href="#areas" class="btn-contorno-claro rotulo-caps justify-center">
+        Ver áreas de atuação
       </a>
+      <!-- O botão do WhatsApp saiu daqui: o site inteiro passa pelo
+           agendamento e só o rodapé abre conversa direta. -->
     </div>
 
     <a

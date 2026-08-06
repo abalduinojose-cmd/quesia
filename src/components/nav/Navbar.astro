@@ -1,8 +1,6 @@
 ---
 import { capitulos, site } from '@/content/data';
-import { waLink, waMensagemPadrao } from '@/lib/wa';
 import { withBase } from '@/lib/paths';
-import IconeWhats from '@/components/ui/IconeWhats.astro';
 ---
 
 <nav id="navbar" class="fixed inset-x-0 top-0 z-50" aria-label="Navegação do site">
@@ -151,13 +149,10 @@ import IconeWhats from '@/components/ui/IconeWhats.astro';
       Agendar atendimento
     </a>
     <a
-      href={waLink(waMensagemPadrao)}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="flex w-full items-center justify-center gap-2.5 rounded-full border border-bone/20 px-5 py-3.5 text-[0.92rem] text-bone-muted transition-colors duration-300 hover:border-[#25D366] hover:text-[#25D366]"
+      href="#agendamento"
+      class="flex w-full items-center justify-center gap-2.5 rounded-full border border-bone/20 px-5 py-3.5 text-[0.92rem] text-bone-muted transition-colors duration-300 hover:border-gold hover:text-gold"
     >
-      <IconeWhats tamanho={17} />
-      {site.whatsapp.display}
+      Ver horários livres
     </a>
   </div>
 </aside>

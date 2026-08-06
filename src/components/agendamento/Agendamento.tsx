@@ -37,7 +37,6 @@ interface Props {
   modalidades: string[];
   intro: string;
   aviso: string;
-  numeroWhats: string;
   urlGrade: string;
   honorarios: Honorarios;
   /** Traçado do ícone por área, só nas opções do primeiro passo */
@@ -75,7 +74,6 @@ export default function Agendamento({
   modalidades,
   intro,
   aviso,
-  numeroWhats,
   urlGrade,
   honorarios,
   icones,
@@ -587,14 +585,6 @@ export default function Agendamento({
                     Não há horários abertos no momento. A agenda costuma receber
                     datas novas toda semana, vale voltar em alguns dias.
                   </p>
-                  <a
-                    href={`https://wa.me/${numeroWhats}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rotulo-caps mt-5 inline-block text-gold underline underline-offset-4"
-                  >
-                    Falar com a advogada
-                  </a>
                 </div>
               )}
 

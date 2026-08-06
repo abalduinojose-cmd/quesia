@@ -1,10 +1,6 @@
 ---
 import { faq, numeroCapitulo } from '@/content/data';
-import { waLink } from '@/lib/wa';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
-import IconeWhats from '@/components/ui/IconeWhats.astro';
-
-const waDuvida = waLink('Olá, Dra. Quesia! Vim pelo site e fiquei com uma dúvida.');
 ---
 
 <section id="faq" aria-labelledby="faq-titulo" class="overflow-hidden bg-bone-dim">
@@ -27,16 +23,17 @@ const waDuvida = waLink('Olá, Dra. Quesia! Vim pelo site e fiquei com uma dúvi
             Não achou a sua dúvida?
           </p>
           <p class="mt-2 text-[0.95rem] text-ink-muted">
-            Perguntar não custa nada e a resposta vem da própria advogada.
+            Marque um horário e pergunte direto para a advogada.
           </p>
-          <a
-            href={waDuvida}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-5 inline-flex items-center gap-2.5 rounded-full bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.98]"
-          >
-            <IconeWhats tamanho={17} />
-            Perguntar no WhatsApp
+          <a href="#agendamento" class="btn-clean mt-5 text-[0.9rem]">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M8 3v3m8-3v3M3.5 9.5h17M5 6h14a1.5 1.5 0 0 1 1.5 1.5V19A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"></path>
+            </svg>
+            Agendar atendimento
           </a>
         </div>
       </div>

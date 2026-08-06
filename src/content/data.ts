@@ -674,7 +674,7 @@ export const honorarios = {
 export const contato = {
   headline: 'Vamos conversar sobre o seu caso?',
   texto:
-    'O atendimento é humano do primeiro ao último contato. Use o agendamento, o botão verde do WhatsApp ou visite o escritório.',
+    'O atendimento é humano do primeiro ao último contato. Escolha um horário na agenda ou visite o escritório em Pedro do Rio.',
 } as const;
 
 export const rodape = {

@@ -1,14 +1,16 @@
 ---
-/* Leva ao agendamento: o cliente monta a mensagem e chega no WhatsApp
-   com área, modalidade e nome já preenchidos. */
-import IconeWhats from '@/components/ui/IconeWhats.astro';
+/* Atalho fixo para a seção de agendamento. Não abre o WhatsApp: quem faz
+   isso, no site inteiro, é só o rodapé. */
 ---
 
-<a
-  href="#agendamento"
-  class="fab-whats fab-pulso"
-  aria-label="Fazer agendamento pelo WhatsApp"
->
-  <IconeWhats tamanho={23} />
+<a href="#agendamento" class="fab-whats fab-pulso" aria-label="Ir para o agendamento">
+  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M8 3v3m8-3v3M3.5 9.5h17M5 6h14a1.5 1.5 0 0 1 1.5 1.5V19A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6Zm3.8 8.4 2 2 4-4"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
   <span class="fab-rotulo rotulo-caps">Fazer agendamento</span>
 </a>
