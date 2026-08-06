@@ -56,6 +56,7 @@ create table if not exists public.agendamentos (
   data       date not null,
   hora       time not null,
   nome       text not null,
+  contato    text not null,
   area       text not null,
   assunto    text,
   modalidade text not null,
@@ -64,6 +65,10 @@ create table if not exists public.agendamentos (
              check (situacao in ('pendente','confirmado','cancelado')),
   criado_em  timestamptz not null default now()
 );
+
+-- Para quem já tinha a tabela sem a coluna de contato.
+alter table public.agendamentos
+  add column if not exists contato text not null default '';
 
 -- Impede dois agendamentos no mesmo horário (o cancelado libera a vaga).
 drop index if exists agendamentos_horario_unico;
@@ -80,12 +85,28 @@ create policy "agendamento criar"
   to anon, authenticated
   with check (true);
 
--- O site precisa saber quais horários já foram tomados (só data e hora).
+-- ATENÇÃO: o visitante NÃO pode ler a tabela. A política antiga liberava
+-- SELECT para anon, e RLS trabalha por linha, não por coluna: qualquer pessoa
+-- conseguiria puxar nome, telefone e resumo do caso de todo mundo. Removida.
 drop policy if exists "agendamento ver ocupados" on public.agendamentos;
-create policy "agendamento ver ocupados"
-  on public.agendamentos for select
-  to anon
-  using (data >= current_date);
+
+-- O site só precisa saber QUAIS horários estão tomados, sem quem os tomou.
+-- Por isso vem de uma função que devolve apenas data e hora.
+create or replace function public.horarios_ocupados()
+returns table (data date, hora time)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select a.data, a.hora
+  from public.agendamentos a
+  where a.situacao <> 'cancelado'
+    and a.data >= current_date;
+$$;
+
+revoke all on function public.horarios_ocupados() from public;
+grant execute on function public.horarios_ocupados() to anon, authenticated;
 
 -- A equipe logada vê e administra tudo.
 drop policy if exists "agendamento equipe" on public.agendamentos;

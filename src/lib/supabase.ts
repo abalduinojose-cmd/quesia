@@ -61,6 +61,7 @@ export interface Agendamento {
   data: string; // AAAA-MM-DD
   hora: string; // HH:MM
   nome: string;
+  contato: string; // telefone ou e-mail, para a advogada retornar
   area: string;
   assunto: string | null;
   modalidade: string;
@@ -69,11 +70,46 @@ export interface Agendamento {
   criado_em?: string;
 }
 
+/* ---------------------------------------------------------------------------
+   Modo demonstração
+   Enquanto o banco não estiver ligado, o agendamento fica guardado só neste
+   navegador. Serve para a advogada testar o fluxo inteiro; NÃO é armazenamento
+   de verdade e a tela diz isso ao cliente com todas as letras.
+--------------------------------------------------------------------------- */
+export const CHAVE_DEMO = 'qc-agendamentos-demo';
+
+function lerDemo(): Agendamento[] {
+  if (typeof localStorage === 'undefined') return [];
+  try {
+    const cru = JSON.parse(localStorage.getItem(CHAVE_DEMO) ?? '[]');
+    return Array.isArray(cru) ? (cru as Agendamento[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function gravarDemo(lista: Agendamento[]): void {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(CHAVE_DEMO, JSON.stringify(lista));
+}
+
 export async function criarAgendamento(
   a: Agendamento
-): Promise<{ ok: boolean; erro?: string }> {
+): Promise<{ ok: boolean; erro?: string; demo?: boolean }> {
   const sb = supabase();
-  if (!sb) return { ok: false, erro: 'Supabase não configurado' };
+
+  if (!sb) {
+    const lista = lerDemo();
+    if (lista.some((x) => x.data === a.data && x.hora === a.hora && x.situacao !== 'cancelado')) {
+      return { ok: false, erro: 'ocupado' };
+    }
+    gravarDemo([
+      ...lista,
+      { ...a, id: Date.now(), situacao: 'pendente', criado_em: new Date().toISOString() },
+    ]);
+    return { ok: true, demo: true };
+  }
+
   const { error } = await sb.from('agendamentos').insert({ ...a, situacao: 'pendente' });
   if (error) {
     /* violação de unicidade: alguém pegou o horário primeiro */
@@ -83,24 +119,33 @@ export async function criarAgendamento(
   return { ok: true };
 }
 
-/** Horários já tomados, para sumirem da agenda do site. */
+/**
+ * Horários já tomados, para sumirem da agenda do site.
+ * Vem da função horarios_ocupados, que devolve só data e hora: o visitante
+ * nunca enxerga nome, contato ou resumo de quem agendou.
+ */
 export async function lerHorariosTomados(): Promise<string[]> {
   const sb = supabase();
-  if (!sb) return [];
-  const hoje = new Date();
-  hoje.setHours(0, 0, 0, 0);
-  const { data, error } = await sb
-    .from('agendamentos')
-    .select('data, hora')
-    .neq('situacao', 'cancelado')
-    .gte('data', hoje.toISOString().slice(0, 10));
+  if (!sb) {
+    return lerDemo()
+      .filter((a) => a.situacao !== 'cancelado')
+      .map((a) => `${a.data}T${a.hora.slice(0, 5)}`);
+  }
+  const { data, error } = await sb.rpc('horarios_ocupados');
   if (error || !data) return [];
-  return data.map((a: { data: string; hora: string }) => `${a.data}T${a.hora.slice(0, 5)}`);
+  return (data as { data: string; hora: string }[]).map(
+    (a) => `${a.data}T${a.hora.slice(0, 5)}`
+  );
 }
 
 export async function listarAgendamentos(): Promise<Agendamento[]> {
   const sb = supabase();
-  if (!sb) return [];
+  if (!sb) {
+    const hojeIso = new Date().toISOString().slice(0, 10);
+    return lerDemo()
+      .filter((a) => a.data >= hojeIso)
+      .sort((a, b) => `${a.data}${a.hora}`.localeCompare(`${b.data}${b.hora}`));
+  }
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
   const { data, error } = await sb
@@ -118,7 +163,10 @@ export async function mudarSituacao(
   situacao: Agendamento['situacao']
 ): Promise<string | null> {
   const sb = supabase();
-  if (!sb) return 'Supabase não configurado';
+  if (!sb) {
+    gravarDemo(lerDemo().map((a) => (a.id === id ? { ...a, situacao } : a)));
+    return null;
+  }
   const { error } = await sb.from('agendamentos').update({ situacao }).eq('id', id);
   return error ? error.message : null;
 }

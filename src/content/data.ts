@@ -633,7 +633,7 @@ export const assuntosPorArea: Record<string, string[]> = Object.fromEntries([
 export const preAgendamento = {
   titulo: 'Agendamento',
   intro:
-    'Escolha a área, o tipo de atendimento e o melhor horário. A mensagem chega pronta no WhatsApp e a advogada confirma com você.',
+    'Escolha a área, o tipo de atendimento e o melhor horário. O pedido entra direto na agenda do escritório e a advogada confirma com você.',
   /* As três frentes principais primeiro, depois as complementares */
   areas: [
     ...areas.map((a) => a.tituloCurto),
@@ -647,7 +647,7 @@ export const preAgendamento = {
     'Qualquer uma das opções',
   ],
   aviso:
-    'O horário fica reservado após a confirmação da advogada pelo WhatsApp.',
+    'Seus dados ficam guardados apenas para este atendimento e não são compartilhados com terceiros.',
 } as const;
 
 /**

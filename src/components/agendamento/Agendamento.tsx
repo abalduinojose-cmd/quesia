@@ -51,8 +51,21 @@ interface Props {
 const esquemaNome = z
   .string()
   .trim()
-  .min(2, 'Digite o seu nome para incluir na mensagem.')
+  .min(2, 'Digite o seu nome completo.')
   .max(80, 'Use um nome mais curto.');
+
+/* Sem WhatsApp no fim do fluxo, o contato é o único caminho de volta até a
+   pessoa: aceita telefone (10 a 13 dígitos) ou e-mail. */
+const esquemaContato = z
+  .string()
+  .trim()
+  .min(1, 'Precisamos de um telefone ou e-mail para confirmar com você.')
+  .refine(
+    (v) =>
+      /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v) ||
+      (v.replace(/\D/g, '').length >= 10 && v.replace(/\D/g, '').length <= 13),
+    'Confira o telefone com DDD, ou escreva um e-mail válido.'
+  );
 
 const rotulos = ['Assunto', 'Atendimento', 'Data', 'Valor', 'Dados'];
 
@@ -78,9 +91,13 @@ export default function Agendamento({
   const [hora, setHora] = useState<string | null>(null);
   const [cienteValor, setCienteValor] = useState<boolean | null>(null);
   const [nome, setNome] = useState('');
+  const [contato, setContato] = useState('');
   const [resumo, setResumo] = useState('');
   const [erro, setErro] = useState<string | null>(null);
+  const [erroContato, setErroContato] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
+  /* Depois de confirmado, o cartão troca de conteúdo em vez de mandar embora */
+  const [confirmado, setConfirmado] = useState<{ demo: boolean } | null>(null);
   /* A grade em si só alimenta a lista de dias; guardamos para recarregar
      quando um horário some no meio do caminho. */
   const [, setGrade] = useState<Grade>(gradePadrao);
@@ -98,16 +115,15 @@ export default function Agendamento({
         const r = await fetch(urlGrade, { cache: 'no-store' });
         if (r.ok) g = (await r.json()) as Grade;
       } catch {
-        /* segue sem grade: o passo de data oferece combinar pelo WhatsApp */
+        /* sem grade não há data para oferecer; o passo 3 avisa isso */
       }
     }
     if (!g) return null;
 
-    if (temSupabase) {
-      const tomados = await lerHorariosTomados();
-      g = { ...g, ocupados: [...(g.ocupados ?? []), ...tomados] };
-    }
-    return g;
+    /* Sempre descontar o que já foi pedido, venha do banco ou da demonstração:
+       senão duas pessoas escolheriam o mesmo horário. */
+    const tomados = await lerHorariosTomados();
+    return { ...g, ocupados: [...(g.ocupados ?? []), ...tomados] };
   };
 
   useEffect(() => {
@@ -185,55 +201,54 @@ export default function Agendamento({
     return r;
   };
 
-  const abrirWhats = async () => {
-    const r = validarNome();
-    if (!r.success) return;
+  const validarContato = () => {
+    const r = esquemaContato.safeParse(contato);
+    setErroContato(r.success ? null : (r.error.issues[0]?.message ?? 'Confira o contato.'));
+    return r;
+  };
 
-    /* Com banco, reserva o horário antes de abrir o WhatsApp: assim ele some
-       para os próximos visitantes. Se alguém pegou primeiro, avisa e volta. */
-    if (temSupabase && dia && hora) {
-      setEnviando(true);
-      const res = await criarAgendamento({
-        data: dia,
-        hora,
-        nome: r.data,
-        area: area ?? 'a definir',
-        assunto: assunto,
-        modalidade: modalidade ?? 'a combinar',
-        resumo: resumo.trim() || null,
-      });
-      setEnviando(false);
+  /** Grava o agendamento. Sem data escolhida não há o que reservar. */
+  const confirmar = async () => {
+    const rn = validarNome();
+    const rc = validarContato();
+    if (!rn.success || !rc.success) return;
 
-      if (!res.ok) {
-        if (res.erro === 'ocupado') {
-          setErro('Esse horário acabou de ser reservado. Escolha outro, por favor.');
-          const g = await carregarAgenda();
-          if (g) {
-            setGrade(g);
-            setDias(diasDisponiveis(g));
-          }
-          setHora(null);
-          setPasso(2);
-          return;
-        }
-        /* falha de rede não pode travar o cliente: segue para o WhatsApp */
-      }
+    if (!dia || !hora) {
+      setErro('Volte um passo e escolha o dia e o horário.');
+      return;
     }
 
-    const linhas = [
-      'Olá, Dra. Quesia! Vim pelo site e gostaria de agendar um atendimento.',
-      `Área: ${area ?? 'a definir'}`,
-      ...(assunto ? [`Assunto: ${assunto}`] : []),
-      `Atendimento: ${modalidade ?? 'a combinar'}`,
-      dia && hora
-        ? `Data escolhida: ${descreveEscolha(dia, hora)}`
-        : 'Data: prefiro combinar por aqui',
-      `Nome: ${r.data}`,
-      `Ciente do valor da consulta: ${honorarios.valor}`,
-    ];
-    if (resumo.trim()) linhas.push(`Resumo: ${resumo.trim()}`);
-    const url = `https://wa.me/${numeroWhats}?text=${encodeURIComponent(linhas.join('\n'))}`;
-    window.open(url, '_blank', 'noopener');
+    setEnviando(true);
+    const res = await criarAgendamento({
+      data: dia,
+      hora,
+      nome: rn.data,
+      contato: rc.data,
+      area: area ?? 'a definir',
+      assunto,
+      modalidade: modalidade ?? 'a combinar',
+      resumo: resumo.trim() || null,
+    });
+    setEnviando(false);
+
+    if (res.ok) {
+      setErro(null);
+      setConfirmado({ demo: Boolean(res.demo) });
+      return;
+    }
+
+    if (res.erro === 'ocupado') {
+      setErro('Esse horário acabou de ser reservado. Escolha outro, por favor.');
+      const g = await carregarAgenda();
+      if (g) {
+        setGrade(g);
+        setDias(diasDisponiveis(g));
+      }
+      setHora(null);
+      setPasso(2);
+      return;
+    }
+    setErro('Não consegui salvar agora. Tente de novo em instantes.');
   };
 
   const escolha = (
@@ -368,7 +383,67 @@ export default function Agendamento({
         </div>
       )}
 
+      {/* Confirmado: o cartão vira recibo e o resto do fluxo sai de cena */}
+      {confirmado && (
+        <div className="p-7 sm:p-9">
+          <span
+            aria-hidden="true"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/40 bg-gold/[0.10] text-gold"
+          >
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4.5 12.4 9.4 17.3 19.5 7.2"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+
+          <h3
+            ref={tituloRef}
+            tabIndex={-1}
+            className="mt-6 font-display text-[1.8rem] leading-snug text-bone outline-none"
+          >
+            Agendamento registrado
+          </h3>
+          <p className="medida-curta mt-3 text-[0.97rem] leading-relaxed text-bone-muted">
+            {dia && hora
+              ? `Guardamos ${descreveEscolha(dia, hora)}. A advogada confirma com você pelo contato que deixou.`
+              : 'A advogada confirma com você pelo contato que deixou.'}
+          </p>
+
+          <dl className="mt-7 flex flex-col gap-px overflow-hidden rounded-2xl border border-bone/12 bg-bone/10">
+            {[
+              ['Área', area ?? 'a definir'],
+              ['Tema', assunto ?? 'a definir'],
+              ['Atendimento', modalidade ?? 'a combinar'],
+              ['Nome', nome.trim()],
+              ['Contato', contato.trim()],
+              ['Valor da consulta', honorarios.valor],
+            ].map(([rotulo, valor]) => (
+              <div key={rotulo} className="flex flex-wrap gap-x-4 gap-y-1 bg-ink px-5 py-3.5">
+                <dt className="rotulo-caps min-w-[8rem] text-bone-muted">{rotulo}</dt>
+                <dd className="min-w-0 flex-1 text-[0.93rem] text-bone">{valor}</dd>
+              </div>
+            ))}
+          </dl>
+
+          {confirmado.demo && (
+            <p className="mt-6 rounded-2xl border border-[#C9A851]/35 bg-gold/[0.07] px-5 py-4 text-[0.86rem] leading-relaxed text-gold">
+              Modo demonstração: o banco de dados ainda não está ligado, então
+              este agendamento ficou guardado só neste navegador e não chegou ao
+              escritório.
+            </p>
+          )}
+
+          <p className="mt-6 text-xs leading-relaxed text-bone-muted">{aviso}</p>
+        </div>
+      )}
+
       {/* Trilha de passos */}
+      {!confirmado && (
       <div className="flex items-stretch border-b border-bone/10">
         {rotulos.map((r, i) => {
           const feito = i < passo;
@@ -416,8 +491,9 @@ export default function Agendamento({
           );
         })}
       </div>
+      )}
 
-      <div className="p-7 sm:p-9">
+      <div className={`p-7 sm:p-9 ${confirmado ? 'hidden' : ''}`}>
         {chips.length > 0 && (
           <div className="mb-7 flex flex-wrap gap-2">
             {chips.map((c) => (
@@ -508,16 +584,17 @@ export default function Agendamento({
               {!carregando && dias.length === 0 && (
                 <div className="rounded-2xl border border-bone/15 bg-white/[0.03] p-6">
                   <p className="text-[0.95rem] text-bone-muted">
-                    Não há horários publicados no momento. Siga assim mesmo e a
-                    advogada combina a data com você pelo WhatsApp.
+                    Não há horários abertos no momento. A agenda costuma receber
+                    datas novas toda semana, vale voltar em alguns dias.
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => setPasso(3)}
-                    className="btn-clean mt-5 text-[0.9rem]"
+                  <a
+                    href={`https://wa.me/${numeroWhats}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rotulo-caps mt-5 inline-block text-gold underline underline-offset-4"
                   >
-                    Continuar
-                  </button>
+                    Falar com a advogada
+                  </a>
                 </div>
               )}
 
@@ -582,14 +659,6 @@ export default function Agendamento({
                       Escolha um dia para ver os horários.
                     </p>
                   )}
-
-                  <button
-                    type="button"
-                    onClick={() => setPasso(3)}
-                    className="rotulo-caps mt-7 cursor-pointer text-bone-muted underline underline-offset-4 transition-colors hover:text-bone"
-                  >
-                    Prefiro combinar a data pelo WhatsApp
-                  </button>
                 </>
               )}
             </div>
@@ -703,6 +772,38 @@ export default function Agendamento({
               </div>
 
               <div>
+                <label htmlFor="ag-contato" className="rotulo-caps text-bone-muted">
+                  Telefone ou e-mail{' '}
+                  <span className="text-gold" aria-hidden="true">*</span>
+                </label>
+                <input
+                  id="ag-contato"
+                  type="text"
+                  required
+                  inputMode="tel"
+                  autoComplete="tel"
+                  placeholder="(24) 99999-0000"
+                  value={contato}
+                  onChange={(e) => setContato(e.target.value)}
+                  onBlur={() => {
+                    if (contato.length > 0) validarContato();
+                  }}
+                  aria-invalid={erroContato ? true : undefined}
+                  aria-describedby={erroContato ? 'ag-erro-contato' : 'ag-dica-contato'}
+                  className="mt-2.5 w-full rounded-xl border border-bone/15 bg-white/[0.03] px-4 py-3.5 text-bone outline-none transition-colors duration-300 placeholder:text-bone-muted/50 focus:border-gold"
+                />
+                {erroContato ? (
+                  <p id="ag-erro-contato" role="alert" className="mt-2 text-sm text-[#F2B8A2]">
+                    {erroContato}
+                  </p>
+                ) : (
+                  <p id="ag-dica-contato" className="mt-2 text-xs text-bone-muted">
+                    É por aqui que a advogada confirma o seu horário.
+                  </p>
+                )}
+              </div>
+
+              <div>
                 <label htmlFor="ag-resumo" className="rotulo-caps text-bone-muted">
                   Resumo do caso{' '}
                   <span className="normal-case tracking-normal">(opcional)</span>
@@ -719,7 +820,7 @@ export default function Agendamento({
 
               <button
                 type="button"
-                onClick={abrirWhats}
+                onClick={confirmar}
                 disabled={enviando}
                 className="btn-final"
               >
@@ -727,19 +828,25 @@ export default function Agendamento({
                   {enviando ? (
                     <span className="giro" />
                   ) : (
-                    <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413" />
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M8 3v3m8-3v3M3.5 9.5h17M5 6h14a1.5 1.5 0 0 1 1.5 1.5V19A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6Zm3.8 8.4 2 2 4-4"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                   )}
                 </span>
                 <span className="rotulo">
-                  {enviando ? 'Reservando o horário' : 'Confirmar pelo WhatsApp'}
+                  {enviando ? 'Reservando o horário' : 'Confirmar agendamento'}
                   <span className="linha-fina">
                     {enviando
                       ? 'só um instante'
                       : diaSelecionado && hora
                         ? `${diaSelecionado.rotuloDia} ${Number(diaSelecionado.numero)} de ${diaSelecionado.mes}, ${hora}`
-                        : 'a mensagem já vai montada'}
+                        : 'escolha o dia no passo anterior'}
                   </span>
                 </span>
                 <svg
@@ -795,9 +902,9 @@ export default function Agendamento({
             i: 'M12 2.5 5 5.5v5.2c0 4.3 2.9 8.3 7 9.3 4.1-1 7-5 7-9.3V5.5l-7-3Zm0 6.1a1.9 1.9 0 0 1 1 3.5v2a1 1 0 0 1-2 0v-2a1.9 1.9 0 0 1 1-3.5Z',
           },
           {
-            t: 'Resposta da advogada',
-            d: 'Quem responde no WhatsApp é ela, não um robô.',
-            i: 'M12 3a4.2 4.2 0 1 1 0 8.4A4.2 4.2 0 0 1 12 3Zm0 2a2.2 2.2 0 1 0 0 4.4A2.2 2.2 0 0 0 12 5ZM4.5 20.2c0-3.6 3.4-6.1 7.5-6.1s7.5 2.5 7.5 6.1a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1Zm2.1-1h10.8c-.5-2-2.7-3.1-5.4-3.1s-4.9 1.1-5.4 3.1Z',
+            t: 'Horário só seu',
+            d: 'Ao confirmar, a vaga sai da agenda e ninguém mais a pega.',
+            i: 'M8 3v3m8-3v3M3.5 9.5h17M5 6h14a1.5 1.5 0 0 1 1.5 1.5V19A1.5 1.5 0 0 1 19 20.5H5A1.5 1.5 0 0 1 3.5 19V7.5A1.5 1.5 0 0 1 5 6Zm3.8 8.4 2 2 4-4',
           },
         ].map((s) => (
           <div key={s.t} className="bg-ink px-6 py-5">

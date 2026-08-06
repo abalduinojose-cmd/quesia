@@ -157,6 +157,9 @@ const urlGrade = withBase('/grade.json');
       <!-- Atendimentos de hoje -->
       <div id="painel-hoje" class="rounded-3xl bg-ink p-6 text-bone sm:p-7"></div>
 
+      <!-- Aviso de pedidos novos vindos do site -->
+      <div id="selo-pedidos" class="hidden"></div>
+
       <!-- Resumo -->
       <div class="mt-4 grid grid-cols-3 gap-3">
         <div class="bloco p-4 sm:p-5">
@@ -260,6 +263,9 @@ const urlGrade = withBase('/grade.json');
 
     <!-- ABA: CADASTROS -->
     <section id="painel-cadastros" class="hidden">
+      <!-- Pedidos que chegaram pelo formulário do site -->
+      <div id="caixa-pedidos" class="mb-8"></div>
+
       <p class="rotulo-secao">Fichas</p>
       <h2 class="bloco-titulo mt-2">Quem agendou</h2>
       <p class="mt-2 text-sm text-ink-muted">
@@ -1051,6 +1057,9 @@ const urlGrade = withBase('/grade.json');
       cx.appendChild(linha);
     }
 
+    /* ------------------------------- Pedidos vindos do formulário do site */
+    desenharPedidos(chaveHoje);
+
     /* ------------------------------------------------------ Dias bloqueados */
     const lb = document.getElementById('lista-bloqueios');
     const futuros = grade.bloqueios.filter((x) => x >= chaveHoje).sort();
@@ -1122,6 +1131,129 @@ const urlGrade = withBase('/grade.json');
     salvar();
     avisar('Horário liberado');
   });
+
+  /* -------------------------------------------------------------------------
+     Pedidos de agendamento feitos no site
+     Sem banco ligado, o formulário guarda em qc-agendamentos-demo, no mesmo
+     navegador. Com o Supabase ligado, o painel do banco assume e esta tela
+     deixa de ser usada.
+  ------------------------------------------------------------------------- */
+  const CHAVE_PEDIDOS = 'qc-agendamentos-demo';
+
+  function lerPedidos() {
+    try {
+      const cru = JSON.parse(localStorage.getItem(CHAVE_PEDIDOS) || '[]');
+      return Array.isArray(cru) ? cru : [];
+    } catch { return []; }
+  }
+  function gravarPedidos(lista) {
+    localStorage.setItem(CHAVE_PEDIDOS, JSON.stringify(lista));
+  }
+
+  function desenharPedidos(chaveHoje) {
+    const pedidos = lerPedidos()
+      .filter((p) => p && p.data >= chaveHoje && p.situacao !== 'cancelado')
+      .sort((a, b) => `${a.data}${a.hora}`.localeCompare(`${b.data}${b.hora}`));
+    const novos = pedidos.filter((p) => p.situacao === 'pendente');
+
+    /* selo no topo da aba Agenda */
+    const selo = document.getElementById('selo-pedidos');
+    selo.classList.toggle('hidden', !novos.length);
+    if (novos.length) {
+      selo.className = 'mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#B4462F]/35 bg-[#B4462F]/[0.07] px-5 py-4';
+      selo.innerHTML = `
+        <div class="min-w-0">
+          <p class="text-[0.9rem] font-medium text-[#B4462F]">
+            ${novos.length} pedido${novos.length > 1 ? 's' : ''} novo${novos.length > 1 ? 's' : ''} pelo site
+          </p>
+          <p class="text-[0.78rem] text-ink-muted">Confira em Cadastros e confirme com a pessoa.</p>
+        </div>
+        <button type="button" id="ir-pedidos"
+          class="rotulo-caps shrink-0 cursor-pointer rounded-full border border-[#B4462F]/45 px-4 py-2 text-[#B4462F] transition-colors hover:bg-[#B4462F] hover:text-bone">
+          Ver pedidos
+        </button>`;
+      document.getElementById('ir-pedidos').addEventListener('click', () => trocarAba('cadastros'));
+    }
+
+    /* lista completa na aba Cadastros */
+    const caixa = document.getElementById('caixa-pedidos');
+    if (!pedidos.length) { caixa.innerHTML = ''; return; }
+
+    caixa.innerHTML = `
+      <p class="rotulo-secao">Vindos do site</p>
+      <h2 class="bloco-titulo mt-2">Pedidos de agendamento</h2>
+      <p class="mt-2 text-sm text-ink-muted">
+        Chegaram pelo formulário. Confirme para virar atendimento na agenda.
+      </p>
+      <div id="lista-pedidos" class="mt-5 flex flex-col gap-3"></div>`;
+
+    const lista = document.getElementById('lista-pedidos');
+    pedidos.forEach((p) => {
+      const d = doIso(p.data);
+      const zap = linkWhats(p.contato);
+      const cartao = document.createElement('div');
+      cartao.className = 'bloco flex gap-4 p-5 sm:gap-5 sm:p-6' +
+        (p.situacao === 'pendente' ? ' border-[#B4462F]/30' : '');
+      cartao.innerHTML = `
+        <div class="flex w-14 shrink-0 flex-col items-center justify-center rounded-2xl bg-gold/[0.10] py-3 text-gold-deep">
+          <span class="text-[0.6rem] uppercase tracking-[0.1em]">${diaCurto[d.getDay()]}</span>
+          <span class="font-display text-[1.4rem] leading-none">${d.getDate()}</span>
+          <span class="text-[0.6rem] uppercase tracking-[0.1em]">${mesCurto[d.getMonth()]}</span>
+        </div>
+        <div class="min-w-0 flex-1">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div class="min-w-0">
+              <p class="font-display text-[1.2rem] leading-tight">${esc(p.nome)}</p>
+              <p class="mt-1 text-[0.82rem] text-ink-muted">${p.hora} · ${esc(p.modalidade || '')}</p>
+            </div>
+            <span class="rotulo-caps shrink-0 rounded-full px-3 py-1 ${
+              p.situacao === 'pendente'
+                ? 'bg-[#B4462F]/12 text-[#B4462F]'
+                : 'bg-[#3E9A5F]/15 text-[#2F7A49]'
+            }">${p.situacao === 'pendente' ? 'novo' : 'confirmado'}</span>
+          </div>
+          <p class="mt-2.5 text-[0.88rem]">${esc(p.contato)}</p>
+          <p class="mt-1 text-[0.85rem] text-ink-muted">
+            ${esc(p.area || '')}${p.assunto ? ' · ' + esc(p.assunto) : ''}
+          </p>
+          ${p.resumo ? `<p class="mt-2 text-[0.85rem] text-ink-muted">${esc(p.resumo)}</p>` : ''}
+          <div class="mt-4 flex flex-wrap gap-2">
+            ${p.situacao === 'pendente' ? `<button type="button" data-confirmar="${p.id}" class="btn-clean text-[0.85rem]">Confirmar e marcar na agenda</button>` : ''}
+            ${zap ? `<a href="${zap}" target="_blank" rel="noopener noreferrer"
+              class="rotulo-caps rounded-full border border-[#25D366]/50 px-4 py-2.5 text-[#128C4A] transition-colors hover:bg-[#25D366]/12">WhatsApp</a>` : ''}
+            <button type="button" data-recusar="${p.id}"
+              class="rotulo-caps rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
+              Cancelar
+            </button>
+          </div>
+        </div>`;
+
+      cartao.querySelector('[data-confirmar]')?.addEventListener('click', () => {
+        const id = `${p.data}T${p.hora}`;
+        grade.reservas = (grade.reservas || []).filter((r) => r.id !== id);
+        grade.reservas.push({
+          id, nome: p.nome, contato: p.contato,
+          observacao: [p.area, p.assunto, p.resumo].filter(Boolean).join(' · '),
+          criadoEm: new Date().toISOString(),
+        });
+        if (!grade.ocupados.includes(id)) grade.ocupados.push(id);
+        gravarPedidos(lerPedidos().map((x) => (x.id === p.id ? { ...x, situacao: 'confirmado' } : x)));
+        salvar();
+        avisar(`${p.nome} marcado em ${p.hora}`);
+      });
+
+      cartao.querySelector('[data-recusar]').addEventListener('click', () => {
+        const id = `${p.data}T${p.hora}`;
+        grade.ocupados = grade.ocupados.filter((x) => x !== id);
+        grade.reservas = (grade.reservas || []).filter((r) => r.id !== id);
+        gravarPedidos(lerPedidos().map((x) => (x.id === p.id ? { ...x, situacao: 'cancelado' } : x)));
+        salvar();
+        avisar('Pedido cancelado, horário liberado');
+      });
+
+      lista.appendChild(cartao);
+    });
+  }
 
   /* Horário criado à mão na grade fixa */
   const dlgHora = document.getElementById('dialogo-hora');
