@@ -710,13 +710,29 @@ const urlGrade = withBase('/grade.json');
     return (lista || []).map((p) => ({ ...p, hora: String(p.hora || '').slice(0, 5) }));
   }
 
+  /** Devolve true se a grade tinha id com segundos e precisou ser corrigida. */
   function sanear() {
     grade.semana = grade.semana || {};
     const valido = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}/.test(x);
+    /* "2026-08-13T15:00:00" -> "2026-08-13T15:00". Conserta o que foi gravado
+       antes de cortarmos os segundos na chegada, senão o atendimento fica
+       preso num id que não casa com nenhum horário da grade. */
+    const semSegundos = (x) => (typeof x === 'string' && x.length > 16 ? x.slice(0, 16) : x);
+
+    const ocupadosAntes = JSON.stringify(grade.ocupados || []);
+    const reservasAntes = JSON.stringify(grade.reservas || []);
+
     grade.bloqueios = (grade.bloqueios || []).filter(valido);
-    grade.ocupados = (grade.ocupados || []).filter(valido);
+    grade.ocupados = [...new Set((grade.ocupados || []).filter(valido).map(semSegundos))];
     grade.extras = grade.extras || {};
-    grade.reservas = (grade.reservas || []).filter((r) => r && valido(r.id));
+    grade.reservas = (grade.reservas || [])
+      .filter((r) => r && valido(r.id))
+      .map((r) => ({ ...r, id: semSegundos(r.id) }));
+
+    return (
+      JSON.stringify(grade.ocupados) !== ocupadosAntes ||
+      JSON.stringify(grade.reservas) !== reservasAntes
+    );
   }
 
   async function carregar() {
@@ -736,7 +752,7 @@ const urlGrade = withBase('/grade.json');
       }
       pedidos = normalizarPedidos(lerPedidosLocais());
     }
-    sanear();
+    const corrigiu = sanear();
     if (!inicioSemana) {
       const h = hojeZero();
       inicioSemana = new Date(h);
@@ -745,6 +761,8 @@ const urlGrade = withBase('/grade.json');
     if (temSupabase) estadoBanco('Salvo automaticamente.', 'bg-[#3E9A5F]');
     else marcarSujo(localStorage.getItem(CHAVE_SUJO) === '1');
     desenhar();
+    /* grava de volta o que foi corrigido, para não refazer a cada visita */
+    if (corrigiu) salvar();
   }
 
   /* Abas */
