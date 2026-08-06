@@ -1,0 +1,46 @@
+# Publica a pasta docs/ no GitHub Pages.
+#
+# Substitui o pipeline legado "pages-build-deployment", que ficou preso em
+# deployment_queued e passou a bloquear todos os deploys seguintes. Este aqui
+# usa o caminho moderno (upload-pages-artifact + deploy-pages) e permite
+# cancelar uma execução travada, o que o legado não permitia.
+#
+# A pasta docs/ já vem pronta do `npm run build:pages`, então aqui não há
+# compilação: é só empacotar e entregar.
+name: Publicar site
+
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**', '.github/workflows/deploy-pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicação por vez; se chegar outra, a anterior é cancelada em vez de
+# travar a fila.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
