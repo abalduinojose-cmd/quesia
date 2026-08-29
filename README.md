@@ -33,7 +33,7 @@ vídeo bruto do Downloads).
 ## Deploy
 
 Repositório: https://github.com/abalduinojose-cmd/quesia
-Site: https://www.quesiaconstancio.com.br
+Site: https://quesiaconstancio.com.br
 
 ```bash
 npm run build
@@ -60,7 +60,7 @@ isso.
 
 ## Link de agendamento para enviar aos clientes
 
-https://www.quesiaconstancio.com.br/agendar
+https://quesiaconstancio.com.br/agendar
 
 Página enxuta que abre direto na escolha da área, sem o site inteiro pela
 frente. É o link para mandar por WhatsApp. O painel tem um botão que copia
@@ -102,7 +102,7 @@ criar um agendamento, nunca alterar horários.
 
 ## Agenda e painel da equipe
 
-- **Painel:** https://www.quesiaconstancio.com.br/admin
+- **Painel:** https://quesiaconstancio.com.br/admin
   Usuário `quesiaadv` · senha `123456` (trocar em `src/pages/admin.astro`,
   constantes `USUARIO` e `SENHA`).
 - Quatro abas:

@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.quesiaconstancio.com.br/sitemap-index.xml
+Sitemap: https://quesiaconstancio.com.br/sitemap-index.xml
