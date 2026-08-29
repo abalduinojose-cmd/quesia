@@ -367,9 +367,9 @@ export const capitulos = [
 ];
 
 export const hero = {
-  subDestaque: 'Dra. Quesia Constâncio, OAB/RJ 237.540.',
-  subResto:
-    'Direito Previdenciário, Imobiliário e Sucessório, com atendimento presencial em Pedro do Rio e online para todo o Brasil.',
+  /* Duas linhas fixas, na ordem em que aparecem sob o título. */
+  subLinha1: 'Dra. Quesia Constâncio | OAB/RJ 237.540',
+  subLinha2: 'Direito Previdenciário, Imobiliário e Sucessório.',
 } as const;
 
 export const totalFls = String(capitulos.length).padStart(2, '0');

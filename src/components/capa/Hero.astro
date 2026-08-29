@@ -45,21 +45,31 @@ import { withBase } from '@/lib/paths';
   <div
     class="relative z-10 mx-auto flex w-full max-w-[1280px] flex-col justify-end px-5 pb-16 pt-32 sm:px-8 md:justify-center md:pb-24 lg:px-12"
   >
+    <!-- As três linhas são fixas: o texto não quebra por acaso, quebra onde
+         foi decidido. Cada palavra entra sozinha, com atraso crescente. -->
     <h1
-      class="titulo-hero max-w-[13ch] font-display text-[clamp(2.65rem,6.1vw,5rem)] leading-[1.06] [text-shadow:0_2px_28px_rgb(0_0_0/0.35)]"
+      class="titulo-hero sombra-hero max-w-[15ch] font-display text-[clamp(2.65rem,6.1vw,5rem)] leading-[1.06]"
     >
-      <span class="palavra">Defendendo</span> <span class="palavra palavra-baixa">seus</span>
-      <span class="palavra texto-ouro-claro">direitos</span>
-      <span class="palavra palavra-baixa">com</span>
-      <span class="palavra texto-ouro-claro">paixão</span>
+      <span class="linha-hero">
+        <span class="palavra" style="--p: 0">Defendendo</span>
+      </span>
+      <span class="linha-hero">
+        <span class="palavra" style="--p: 1">seus</span>
+        <span class="palavra" style="--p: 2"><span class="ouro-hero texto-ouro-claro">direitos</span></span>
+      </span>
+      <span class="linha-hero">
+        <span class="palavra" style="--p: 3">com</span>
+        <span class="palavra" style="--p: 4"><span class="ouro-hero texto-ouro-claro">paixão.</span></span>
+      </span>
     </h1>
 
-    <p
-      class="anima medida-curta mt-7 text-[1.14rem] leading-relaxed text-bone [text-shadow:0_1px_18px_rgb(0_0_0/0.4)]"
-      style="--anima-delay: 120ms"
-    >
-      <strong class="font-semibold">{hero.subDestaque}</strong>
-      {hero.subResto}
+    <p class="sombra-hero-suave medida-curta mt-7 text-[1.14rem] leading-relaxed text-bone">
+      <span class="linha-hero entra-hero font-semibold" style="--atraso: 0.52s">
+        {hero.subLinha1}
+      </span>
+      <span class="linha-hero entra-hero" style="--atraso: 0.62s">
+        {hero.subLinha2}
+      </span>
     </p>
 
     <div

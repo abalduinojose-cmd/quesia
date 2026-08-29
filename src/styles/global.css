@@ -330,35 +330,71 @@ header[id] {
 }
 .btn-destaque svg { flex-shrink: 0; }
 
-/* Entrada do título do hero: cada palavra sobe com um leve atraso.
-   Roda sempre, junto com a mídia de fundo, e não pela via do .anima. */
+/* Linhas fixas do hero: cada uma é um bloco, então a quebra é a que foi
+   escolhida e não a que o navegador arranjar na largura do dia. */
+.linha-hero { display: block; }
+
+/* Entrada do título do hero: cada palavra sobe e sai de foco para o foco, com
+   atraso crescente pelo --p. Roda sempre, junto com a mídia de fundo, e não
+   pela via do .anima, que respeita reduced-motion. */
 .titulo-hero .palavra {
   display: inline-block;
-  animation: entraPalavra 0.85s var(--ease-editorial) both;
-}
-.titulo-hero .palavra:nth-child(1) { animation-delay: 0.10s; }
-.titulo-hero .palavra:nth-child(2) { animation-delay: 0.19s; }
-.titulo-hero .palavra:nth-child(3) { animation-delay: 0.28s; }
-.titulo-hero .palavra:nth-child(4) { animation-delay: 0.37s; }
-.titulo-hero .palavra:nth-child(5) { animation-delay: 0.46s; }
-
-/* "seus" e "com" descem um pouco em relação às palavras grandes. Usa position
-   e não transform de propósito: transform aqui é da animação de entrada, e um
-   sobrescreveria o outro. */
-.titulo-hero .palavra-baixa {
-  position: relative;
-  top: 0.17em;
+  animation: entraPalavra 0.9s var(--ease-editorial) both;
+  animation-delay: calc(0.12s + var(--p, 0) * 0.11s);
 }
 
 @keyframes entraPalavra {
   from {
     opacity: 0;
-    transform: translateY(0.38em);
+    transform: translateY(0.42em);
+    filter: blur(9px);
+  }
+  55% {
+    filter: blur(0);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
+}
+
+/* Entrada das duas linhas do subtítulo, na sequência do título. */
+.entra-hero {
+  animation: entraLinhaHero 0.9s var(--ease-editorial) both;
+  animation-delay: var(--atraso, 0s);
+}
+@keyframes entraLinhaHero {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Sombra do hero em três camadas: a curta define a borda da letra sobre a
+   pele e a roupa, a média separa do fundo e a longa dá o peso. Uma sombra só,
+   larga, embaça o texto em vez de destacá-lo. */
+.sombra-hero {
+  text-shadow:
+    0 1px 1px rgb(0 0 0 / 0.40),
+    0 3px 14px rgb(0 0 0 / 0.34),
+    0 12px 46px rgb(0 0 0 / 0.28);
+}
+.sombra-hero-suave {
+  text-shadow:
+    0 1px 1px rgb(0 0 0 / 0.36),
+    0 3px 14px rgb(0 0 0 / 0.30);
+}
+
+/* As palavras douradas são gradiente com a letra transparente. text-shadow ali
+   pinta a sombra ATRAVÉS da letra, o que lava a palavra em vez de destacá-la.
+   drop-shadow segue os pixels que foram realmente pintados, então faz o que se
+   espera. Vai num span de dentro porque o de fora anima o filter na entrada. */
+.titulo-hero .ouro-hero {
+  display: inline-block;
+  text-shadow: none;
+  filter:
+    drop-shadow(0 1px 1px rgb(0 0 0 / 0.45))
+    drop-shadow(0 4px 16px rgb(0 0 0 / 0.38))
+    drop-shadow(0 12px 40px rgb(0 0 0 / 0.30));
 }
 
 /* ---------------------------------------------------------------------------
