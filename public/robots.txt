@@ -2,5 +2,4 @@
 User-agent: *
 Allow: /
 
-# Prévia no GitHub Pages (trocar pelo domínio próprio quando houver)
-Sitemap: https://abalduinojose-cmd.github.io/quesia/sitemap-index.xml
+Sitemap: https://www.quesiaconstancio.com.br/sitemap-index.xml

@@ -33,26 +33,34 @@ vídeo bruto do Downloads).
 ## Deploy
 
 Repositório: https://github.com/abalduinojose-cmd/quesia
-Prévia: https://abalduinojose-cmd.github.io/quesia/
-
-**Prévia (GitHub Pages).** O `build:pages` já aplica sozinho a base `/quesia` e
-o domínio do Pages:
+Site: https://www.quesiaconstancio.com.br
 
 ```bash
-npm run build:pages
+npm run build
 ```
 
-Depois `git add -A`, commit e `git push`. Nas configurações do repositório,
-Pages deve estar em **branch main, pasta /docs**. O arquivo `public/.nojekyll`
-é obrigatório (sem ele o Jekyll do Pages descarta pastas iniciadas por
-underscore) e os assets saem em `assets/` justamente por isso.
+Depois `git add -A`, commit e `git push`. O restante é automático: a Action
+`Publicar site` empacota a pasta `docs/` e entrega ao Pages.
 
-**Domínio próprio.** Use `npm run build` (base na raiz), ajuste o domínio em
-`astro.config.mjs` e o `Sitemap:` em `public/robots.txt`.
+**Domínio.** O endereço principal é `www.quesiaconstancio.com.br`, registrado no
+Registro.br. O apex `quesiaconstancio.com.br` tem registros A para os quatro IPs
+do GitHub e redireciona para o www. O arquivo `public/CNAME` viaja junto com o
+build de propósito: sem ele um deploy pode zerar o domínio configurado no painel
+do GitHub.
+
+O endereço antigo `abalduinojose-cmd.github.io/quesia/` deixou de existir. Com o
+domínio ligado o GitHub redireciona para o domínio novo, e por isso o build
+precisa sair com base na raiz, não em `/quesia`. `build` e `build:pages` fazem a
+mesma coisa hoje.
+
+Nas configurações do repositório, Pages deve estar em **GitHub Actions**. O
+arquivo `public/.nojekyll` é obrigatório (sem ele o Jekyll do Pages descarta
+pastas iniciadas por underscore) e os assets saem em `assets/` justamente por
+isso.
 
 ## Link de agendamento para enviar aos clientes
 
-https://abalduinojose-cmd.github.io/quesia/agendar
+https://www.quesiaconstancio.com.br/agendar
 
 Página enxuta que abre direto na escolha da área, sem o site inteiro pela
 frente. É o link para mandar por WhatsApp. O painel tem um botão que copia
@@ -81,7 +89,7 @@ visitantes automaticamente.
    PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
    ```
 
-6. Rode `npm run build:pages`, faça commit e push. Pronto.
+6. Rode `npm run build`, faça commit e push. Pronto.
 
 **A troca é automática.** Sem o `.env`, o `/admin` mostra o painel local
 (usuário `quesiaadv`, senha `123456`, com botão Publicar) e o site lê o
@@ -94,7 +102,7 @@ criar um agendamento, nunca alterar horários.
 
 ## Agenda e painel da equipe
 
-- **Painel:** https://abalduinojose-cmd.github.io/quesia/admin
+- **Painel:** https://www.quesiaconstancio.com.br/admin
   Usuário `quesiaadv` · senha `123456` (trocar em `src/pages/admin.astro`,
   constantes `USUARIO` e `SENHA`).
 - Quatro abas:

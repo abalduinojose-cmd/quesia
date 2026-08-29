@@ -4,13 +4,16 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// `npm run build:pages` gera a prévia do GitHub Pages (repo abalduinojose-cmd/quesia).
-// `npm run build` gera para a raiz, pronto para domínio próprio.
-// As variáveis SITE_URL / BASE_PATH continuam mandando quando presentes.
-const ehPages = process.env.npm_lifecycle_event === 'build:pages';
-const SITE_URL =
-  process.env.SITE_URL ?? (ehPages ? 'https://abalduinojose-cmd.github.io' : 'https://quesiaconstancio.adv.br');
-const BASE_PATH = process.env.BASE_PATH ?? (ehPages ? '/quesia' : '/');
+// O site roda no domínio próprio, na raiz. A prévia antiga em
+// abalduinojose-cmd.github.io/quesia deixou de existir: com o domínio ligado, o
+// GitHub redireciona aquele endereço para cá, e um build com base `/quesia`
+// deixaria todo o CSS e o JS apontando para um caminho que não existe na raiz.
+//
+// `build` e `build:pages` fazem a mesma coisa desde a virada. SITE_URL e
+// BASE_PATH continuam mandando quando presentes, caso um dia seja preciso
+// gerar uma prévia em subpasta de novo.
+const SITE_URL = process.env.SITE_URL ?? 'https://www.quesiaconstancio.com.br';
+const BASE_PATH = process.env.BASE_PATH ?? '/';
 
 export default defineConfig({
   site: SITE_URL,
