@@ -455,7 +455,9 @@ const urlGrade = withBase('/grade.json');
     <div class="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3 sm:px-8">
       <div class="flex items-center gap-2.5">
         <span id="ponto-estado" class="h-2 w-2 shrink-0 rounded-full bg-[#3E9A5F]" aria-hidden="true"></span>
-        <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">Tudo publicado.</p>
+        <p id="estado-publicacao" class="text-[0.85rem] text-ink-muted">
+          {temSupabase ? 'Agenda salva.' : 'Tudo publicado.'}
+        </p>
       </div>
       {
         !temSupabase && (
@@ -474,6 +476,31 @@ const urlGrade = withBase('/grade.json');
               />
             </svg>
             <span id="rotulo-publicar">Publicar</span>
+          </button>
+        )
+      }
+      {
+        temSupabase && (
+          <button
+            id="btn-salvar"
+            type="button"
+            class="flex shrink-0 cursor-pointer items-center gap-2.5 rounded-full bg-ink px-6 py-3 text-[0.88rem] font-semibold text-bone transition-all duration-300 hover:bg-black active:scale-[0.98] disabled:cursor-default disabled:opacity-50"
+          >
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M3.5 2.5h7L13 5v8a.5.5 0 0 1-.5.5h-9A.5.5 0 0 1 3 13V3a.5.5 0 0 1 .5-.5Z"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M5.5 2.5v3h5v-3M5.5 13.5v-4h5v4"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span id="rotulo-salvar">Salvar agenda</span>
           </button>
         )
       }
@@ -689,18 +716,63 @@ const urlGrade = withBase('/grade.json');
 
   /* Grava no banco sem atropelar: junta as mudanças rápidas em uma escrita só */
   let timerBanco = null;
-  function agendarGravacao() {
-    estadoBanco('Salvando…', 'bg-[#C9A851] animate-pulse');
+  /* Salvar continua automático, para ninguém perder trabalho ao fechar a aba
+     sem querer. Mas "Salvo automaticamente" não dava segurança nenhuma a quem
+     acabou de montar dez dias de agenda: não dizia quando salvou nem deixava
+     conferir. Agora o estado é explícito, tem hora, e existe um botão para
+     mandar salvar na hora e ver a confirmação. */
+  let salvandoAgora = false;
+  let naoSalvo = false;
+
+  const horaCurta = () => {
+    const d = new Date();
+    return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  };
+
+  function pintarBotaoSalvar() {
+    const b = document.getElementById('btn-salvar');
+    if (!b) return;
+    b.disabled = salvandoAgora;
+    document.getElementById('rotulo-salvar').textContent =
+      salvandoAgora ? 'Salvando…' : naoSalvo ? 'Salvar agenda' : 'Salvar de novo';
+    /* Vermelho enquanto houver coisa não gravada: é o que puxa o olho. */
+    b.classList.toggle('bg-[#B4462F]', naoSalvo && !salvandoAgora);
+    b.classList.toggle('hover:bg-[#96371F]', naoSalvo && !salvandoAgora);
+    b.classList.toggle('bg-ink', !(naoSalvo && !salvandoAgora));
+    b.classList.toggle('hover:bg-black', !(naoSalvo && !salvandoAgora));
+  }
+
+  async function gravarAgora() {
     clearTimeout(timerBanco);
-    timerBanco = setTimeout(async () => {
-      const erro = await salvarGradeRemota(grade);
-      if (erro) {
-        estadoBanco('Não salvou. Confira a conexão.', 'bg-[#B4462F] animate-pulse');
-        avisar('Erro ao salvar: ' + erro);
-      } else {
-        estadoBanco('Salvo automaticamente.', 'bg-[#3E9A5F]');
-      }
-    }, 600);
+    if (salvandoAgora) return;
+    salvandoAgora = true;
+    estadoBanco('Salvando…', 'bg-[#C9A851] animate-pulse');
+    pintarBotaoSalvar();
+
+    const erro = await salvarGradeRemota(grade);
+    salvandoAgora = false;
+
+    if (erro) {
+      naoSalvo = true;
+      estadoBanco(
+        'Não salvou. O que você fez continua na tela: clique em Salvar agenda.',
+        'bg-[#B4462F] animate-pulse'
+      );
+      avisar('Não consegui salvar: ' + erro);
+    } else {
+      naoSalvo = false;
+      estadoBanco(`Agenda salva às ${horaCurta()}.`, 'bg-[#3E9A5F]');
+      avisar('Agenda salva.');
+    }
+    pintarBotaoSalvar();
+  }
+
+  function agendarGravacao() {
+    naoSalvo = true;
+    estadoBanco('Alterações ainda não salvas…', 'bg-[#C9A851] animate-pulse');
+    pintarBotaoSalvar();
+    clearTimeout(timerBanco);
+    timerBanco = setTimeout(gravarAgora, 900);
   }
 
   function salvar() {
@@ -768,7 +840,11 @@ const urlGrade = withBase('/grade.json');
       inicioSemana = new Date(h);
       inicioSemana.setDate(h.getDate() - h.getDay());
     }
-    if (temSupabase) estadoBanco('Salvo automaticamente.', 'bg-[#3E9A5F]');
+    if (temSupabase) {
+      naoSalvo = false;
+      estadoBanco('Agenda salva. Pode fechar quando quiser.', 'bg-[#3E9A5F]');
+      pintarBotaoSalvar();
+    }
     else marcarSujo(localStorage.getItem(CHAVE_SUJO) === '1');
     desenhar();
     /* grava de volta o que foi corrigido, para não refazer a cada visita */
@@ -1725,6 +1801,28 @@ const urlGrade = withBase('/grade.json');
       avisar('Arquivo inválido. Use um grade.json.');
     }
     e.target.value = '';
+  });
+
+  /* Salvar agenda: só existe no modo com banco. Grava na hora, sem esperar os
+     900 ms do automático, e mostra a confirmação com o horário. */
+  document.getElementById('btn-salvar')?.addEventListener('click', () => {
+    if (!grade) { avisar('A agenda ainda está carregando.'); return; }
+    const chaveHoje = iso(hojeZero());
+    /* Aproveita para tirar da grade o que já passou, senão ela cresce sem fim. */
+    grade.ocupados = grade.ocupados.filter((x) => x.slice(0, 10) >= chaveHoje);
+    grade.bloqueios = grade.bloqueios.filter((x) => x >= chaveHoje);
+    grade.reservas = (grade.reservas || []).filter((r) => r.id.slice(0, 10) >= chaveHoje);
+    Object.keys(grade.extras || {}).forEach((k) => { if (k < chaveHoje) delete grade.extras[k]; });
+    grade.atualizadoEm = chaveHoje;
+    gravarAgora();
+    desenhar();
+  });
+
+  /* Se fechar a aba com coisa não gravada, o navegador pergunta antes. */
+  window.addEventListener('beforeunload', (e) => {
+    if (!naoSalvo) return;
+    e.preventDefault();
+    e.returnValue = '';
   });
 
   /* Publicar: só existe no modo sem banco */
