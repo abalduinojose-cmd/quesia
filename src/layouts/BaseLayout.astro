@@ -39,6 +39,11 @@ const jsonLd = JSON.stringify(jsonLdAttorney(canonical, logoAbs, ogImage));
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#FAF9F9" />
 
+    <!-- Quando alguém sai daqui por um link, o outro site recebe só o domínio,
+         nunca a página. Importa porque há links de saída no rodapé e nas
+         avaliações, e /agendar pode carregar ?area= na URL. -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <link rel="icon" type="image/png" sizes="48x48" href={withBase('/favicon.png')} />
     <link rel="apple-touch-icon" href={withBase('/apple-touch-icon.png')} />
 

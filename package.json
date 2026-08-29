@@ -40,7 +40,10 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "ffmpeg-static": "^5.2.0",
-    "sharp": "^0.34.2",
+    "sharp": "^0.35.4",
     "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "sharp": "^0.35.4"
   }
 }

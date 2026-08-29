@@ -28,7 +28,17 @@ export default defineConfig({
   // A porta vem do ambiente (o harness pode atribuir outra); 5206 é só o padrão
   server: { port: Number(process.env.PORT) || 5206 },
   devToolbar: { enabled: false },
-  integrations: [react(), sitemap()],
+  integrations: [
+    react(),
+    sitemap({
+      /* O /admin fica fora do sitemap. Ele já tem noindex, mas listar no
+         sitemap é o site dizendo "indexe isto" enquanto a página diz o
+         contrário: na prática, entregava o endereço do painel de bandeja.
+         De propósito NÃO entra Disallow no robots.txt: bloquear a leitura
+         impediria o buscador de ver o próprio noindex. */
+      filter: (pagina) => !pagina.includes('/admin'),
+    }),
+  ],
   vite: { plugins: [tailwindcss()] },
   build: {
     // "assets" sem underscore: o GitHub Pages (Jekyll) ignora pastas _assim
