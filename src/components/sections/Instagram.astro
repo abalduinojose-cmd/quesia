@@ -5,8 +5,8 @@ import { withBase } from '@/lib/paths';
 
 <section id="instagram" aria-labelledby="instagram-titulo" class="overflow-hidden bg-bone">
   <div class="mx-auto w-full max-w-[1280px] px-5 py-20 sm:px-8 lg:px-12 lg:py-28">
-    <div class="flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
-      <div>
+    <div class="flex flex-col items-center gap-5 text-center">
+      <div class="flex flex-col items-center">
         <p class="anima rotulo-caps flex items-center gap-2.5 text-gold-deep">
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
             <path
@@ -18,12 +18,12 @@ import { withBase } from '@/lib/paths';
         </p>
         <h2
           id="instagram-titulo"
-          class="anima mt-4 max-w-xl font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] text-ink"
+          class="anima mt-4 max-w-xl text-balance font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] text-ink"
           style="--anima-delay: 80ms"
         >
           O dia a dia de quem <span class="texto-ouro">defende você</span>
         </h2>
-        <p class="anima medida mt-4 text-ink-muted" style="--anima-delay: 140ms">
+        <p class="anima medida mx-auto mt-4 text-ink-muted" style="--anima-delay: 140ms">
           {instagram.texto}
         </p>
       </div>
@@ -47,7 +47,7 @@ import { withBase } from '@/lib/paths';
 
     <div
       id="trilho-reels"
-      class="carrossel sem-scrollbar anima mt-12"
+      class="carrossel carrossel-centro sem-scrollbar anima mt-12"
       style="--anima-delay: 160ms"
       role="list"
     >

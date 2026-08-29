@@ -1,6 +1,10 @@
 ---
-import { capitulos, site } from '@/content/data';
+import { areasDoMenu, capitulos, site } from '@/content/data';
 import { withBase } from '@/lib/paths';
+
+/** Áreas sem seção própria abrem o agendamento já na área certa. */
+const hrefArea = (a: { href: string; abreArea?: string }) =>
+  a.abreArea ? withBase(`/agendar?area=${encodeURIComponent(a.abreArea)}`) : a.href;
 ---
 
 <nav id="navbar" class="fixed inset-x-0 top-0 z-50" aria-label="Navegação do site">
@@ -26,14 +30,52 @@ import { withBase } from '@/lib/paths';
     </a>
 
     <div class="hidden items-center gap-5 lg:flex xl:gap-7">
-      {capitulos.map((c) => (
-        <a
-          href={`#${c.id}`}
-          class="nav-tinta-suave link-draw whitespace-nowrap text-[0.9rem]"
-        >
-          {c.curto}
-        </a>
-      ))}
+      {capitulos.map((c) =>
+        c.id === 'areas' ? (
+          <div class="submenu relative" data-submenu>
+            <button
+              type="button"
+              id="gatilho-areas"
+              class="submenu-gatilho nav-tinta-suave whitespace-nowrap text-[0.9rem]"
+              aria-expanded="false"
+              aria-controls="submenu-areas"
+            >
+              {c.curto}
+              <svg
+                class="submenu-seta"
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.4"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
+              </svg>
+            </button>
+
+            <div id="submenu-areas" class="submenu-caixa" hidden>
+              <p class="rotulo-caps px-4 pb-2 pt-1 text-gold-deep">Áreas de atuação</p>
+              <ul role="list">
+                {areasDoMenu.map((a) => (
+                  <li>
+                    <a href={hrefArea(a)} class="submenu-item">
+                      {a.rotulo}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <a
+            href={`#${c.id}`}
+            class="nav-tinta-suave link-draw whitespace-nowrap text-[0.9rem]"
+          >
+            {c.curto}
+          </a>
+        )
+      )}
     </div>
 
     <div class="flex items-center gap-3">
@@ -114,22 +156,61 @@ import { withBase } from '@/lib/paths';
 
   <nav class="flex-1 overflow-y-auto px-7 py-6" aria-label="Seções do site">
     <ul class="flex flex-col" role="list">
-      {capitulos.map((c, i) => (
-        <li>
-          <a
-            href={`#${c.id}`}
-            class="menu-item group flex items-baseline gap-3 py-3 font-display text-[1.32rem] leading-snug text-bone-muted transition-colors duration-300 hover:text-bone"
-            style={`--i: ${i}`}
-          >
-            <span
-              class="h-px w-0 shrink-0 bg-gold transition-all duration-300 group-hover:w-5"
-              aria-hidden="true"
+      {capitulos.map((c, i) =>
+        c.id === 'areas' ? (
+          /* <details> em vez de JS: abre, fecha e é acessível de graça */
+          <li>
+            <details class="menu-item group" style={`--i: ${i}`}>
+              <summary class="flex cursor-pointer items-baseline gap-3 py-3 font-display text-[1.32rem] leading-snug text-bone-muted transition-colors duration-300 hover:text-bone">
+                <span
+                  class="h-px w-0 shrink-0 bg-gold transition-all duration-300 group-hover:w-5"
+                  aria-hidden="true"
+                >
+                </span>
+                {c.titulo}
+                <svg
+                  class="submenu-seta ml-1 self-center"
+                  width="11"
+                  height="11"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path d="M1.5 3.5 5 7l3.5-3.5" stroke="currentColor" stroke-width="1.4"
+                    stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </summary>
+              <ul class="mb-2 ml-8 flex flex-col border-l border-bone/15 pl-4" role="list">
+                {areasDoMenu.map((a) => (
+                  <li>
+                    <a
+                      href={hrefArea(a)}
+                      class="block py-2 text-[0.98rem] text-bone-muted transition-colors duration-200 hover:text-gold"
+                    >
+                      {a.rotulo}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        ) : (
+          <li>
+            <a
+              href={`#${c.id}`}
+              class="menu-item group flex items-baseline gap-3 py-3 font-display text-[1.32rem] leading-snug text-bone-muted transition-colors duration-300 hover:text-bone"
+              style={`--i: ${i}`}
             >
-            </span>
-            {c.titulo}
-          </a>
-        </li>
-      ))}
+              <span
+                class="h-px w-0 shrink-0 bg-gold transition-all duration-300 group-hover:w-5"
+                aria-hidden="true"
+              >
+              </span>
+              {c.titulo}
+            </a>
+          </li>
+        )
+      )}
     </ul>
   </nav>
 
@@ -193,6 +274,39 @@ import { withBase } from '@/lib/paths';
       overlay.hidden = true;
     }, 320);
   };
+
+  /* Submenu de áreas no desktop: abre no hover, alterna no clique, fecha no Esc
+     e ao clicar fora. O clique existe para quem navega por teclado ou toque. */
+  const caixaAreas = document.getElementById('submenu-areas');
+  const gatilhoAreas = document.getElementById('gatilho-areas');
+  const grupoAreas = gatilhoAreas?.closest('[data-submenu]');
+
+  const mostrarAreas = (abrir: boolean) => {
+    if (!caixaAreas || !gatilhoAreas) return;
+    caixaAreas.hidden = !abrir;
+    grupoAreas?.classList.toggle('aberto', abrir);
+    gatilhoAreas.setAttribute('aria-expanded', String(abrir));
+  };
+
+  if (caixaAreas && gatilhoAreas && grupoAreas) {
+    grupoAreas.addEventListener('mouseenter', () => mostrarAreas(true));
+    grupoAreas.addEventListener('mouseleave', () => mostrarAreas(false));
+    gatilhoAreas.addEventListener('click', () =>
+      mostrarAreas(caixaAreas.hidden)
+    );
+    caixaAreas.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => mostrarAreas(false))
+    );
+    document.addEventListener('click', (e) => {
+      if (!grupoAreas.contains(e.target as Node)) mostrarAreas(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') mostrarAreas(false);
+    });
+    /* Rolar a página com o menu aberto e o mouse parado deixaria a caixa
+       flutuando sobre o conteúdo. */
+    document.addEventListener('scroll', () => mostrarAreas(false), { passive: true });
+  }
 
   abre?.addEventListener('click', abrirMenu);
   fecha?.addEventListener('click', fecharMenu);

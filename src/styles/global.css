@@ -342,6 +342,14 @@ header[id] {
 .titulo-hero .palavra:nth-child(4) { animation-delay: 0.37s; }
 .titulo-hero .palavra:nth-child(5) { animation-delay: 0.46s; }
 
+/* "seus" e "com" descem um pouco em relação às palavras grandes. Usa position
+   e não transform de propósito: transform aqui é da animação de entrada, e um
+   sobrescreveria o outro. */
+.titulo-hero .palavra-baixa {
+  position: relative;
+  top: 0.17em;
+}
+
 @keyframes entraPalavra {
   from {
     opacity: 0;
@@ -644,6 +652,61 @@ header[id] {
 #navbar.nav-solida .nav-tinta { color: var(--color-ink); }
 #navbar .nav-tinta-suave { color: rgb(250 249 249 / 0.75); transition: color 0.35s ease; }
 #navbar.nav-solida .nav-tinta-suave { color: var(--color-ink-muted); }
+/* Submenu de áreas de atuação, no desktop. A caixa é sempre clara, mesmo com a
+   navbar transparente sobre a foto: texto escuro em fundo claro se lê nas duas
+   situações, e um dropdown translúcido sobre a hero ficaria ilegível. */
+#navbar .submenu-gatilho {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+}
+#navbar .submenu-seta { transition: transform 0.25s ease; }
+#navbar .submenu.aberto .submenu-seta { transform: rotate(180deg); }
+#navbar .submenu-caixa {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  left: 50%;
+  translate: -50% 0;
+  min-width: 15rem;
+  padding: 0.55rem 0;
+  border-radius: 1rem;
+  border: 1px solid rgb(201 168 81 / 0.28);
+  background: var(--color-bone);
+  box-shadow: 0 24px 48px -24px rgb(36 36 36 / 0.45);
+  animation: entraSubmenu 0.22s var(--ease-editorial) both;
+}
+/* Ponte invisível entre o gatilho e a caixa: sem ela o menu fecha no vão. */
+#navbar .submenu-caixa::before {
+  content: "";
+  position: absolute;
+  inset: -0.9rem 0 100% 0;
+}
+#navbar .submenu-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.92rem;
+  color: var(--color-ink-muted);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+#navbar .submenu-item:hover {
+  background: rgb(201 168 81 / 0.10);
+  color: var(--color-gold-deep);
+}
+@keyframes entraSubmenu {
+  from { opacity: 0; translate: -50% -0.4rem; }
+  to   { opacity: 1; translate: -50% 0; }
+}
+
+/* Seta do submenu no menu do celular */
+.menu-painel details[open] .submenu-seta { transform: rotate(180deg); }
+.menu-painel summary { list-style: none; }
+.menu-painel summary::-webkit-details-marker { display: none; }
+
 #navbar .nav-logo-claro { display: block; }
 #navbar .nav-logo-escuro { display: none; }
 #navbar.nav-solida .nav-logo-claro { display: none; }
@@ -1007,6 +1070,16 @@ details.acordeao[open] {
 .carrossel > * {
   scroll-snap-align: start;
   flex: 0 0 min(86%, 21rem);
+}
+/* No desktop os três reels cabem inteiros, então em vez de encostarem à
+   esquerda com um vazio à direita, ficam centrados. Abaixo disso continua
+   rolando de lado como antes. */
+@media (min-width: 1024px) {
+  .carrossel-centro {
+    justify-content: center;
+    overflow-x: visible;
+    cursor: default;
+  }
 }
 
 /* Carrossel de reels: cartões um pouco mais estreitos (9:16) */

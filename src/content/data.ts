@@ -587,6 +587,24 @@ export const areasSoAgenda = [
 ] as const;
 
 /**
+ * Lista para o submenu de "Áreas de atuação" no menu principal. Junta as três
+ * áreas com seção própria, as duas de consultoria e as duas que só existem no
+ * agendamento, para quem abre o menu ver de uma vez tudo que a advogada faz.
+ *
+ * `abreArea` só vai nas que não têm seção na página: o clique leva ao
+ * agendamento com a área já marcada, que é o mesmo caminho dos cartões.
+ */
+export const areasDoMenu: { rotulo: string; href: string; abreArea?: string }[] = [
+  ...areas.map((a) => ({ rotulo: a.tituloCurto, href: '#areas' })),
+  ...servicosExtras.itens.map((a) => ({ rotulo: a.tituloCurto, href: '#holding' })),
+  ...areasSoAgenda.map((a) => ({
+    rotulo: a.tituloCurto,
+    href: '#agendamento',
+    abreArea: a.tituloCurto,
+  })),
+];
+
+/**
  * Ícone de cada área nas opções do agendamento. Traço fino de 1,5, mesmo
  * desenho dos cartões de área, para não destoar do resto do site.
  */
