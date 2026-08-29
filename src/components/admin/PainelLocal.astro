@@ -576,11 +576,21 @@ const urlGrade = withBase('/grade.json');
   import {
     temSupabase,
     supabase,
+    entrarNoPainel,
     lerGradeRemota,
     salvarGradeRemota,
     listarAgendamentos,
     mudarSituacao,
   } from '@/lib/supabase';
+
+  /* Contra clickjacking. O CSP por <meta> não aceita frame-ancestors, e o
+     GitHub Pages não deixa mandar cabeçalho, então o painel se defende sozinho:
+     dentro de iframe ele apaga a página antes de desenhar qualquer botão. */
+  if (window.top !== window.self) {
+    document.documentElement.innerHTML =
+      '<p style="font:16px/1.6 system-ui;padding:2rem">Este painel não pode ser aberto dentro de outra página.</p>';
+    throw new Error('painel carregado dentro de um iframe');
+  }
 
   const urlGrade = document.getElementById('cfg-painel').dataset.urlGrade;
 
@@ -1537,10 +1547,21 @@ const urlGrade = withBase('/grade.json');
        sessão autenticada, então login de mentira não adiantaria nada. */
     if (temSupabase) {
       btnEntrar.disabled = true;
-      const { error } = await supabase().auth.signInWithPassword({ email: u, password: s });
+      const r = await entrarNoPainel(u, s);
       btnEntrar.disabled = false;
-      if (error) { contarErro('E-mail ou senha incorretos.'); return; }
-      aceitarEntrada();
+
+      if (r.ok) { aceitarEntrada(); return; }
+
+      /* Banco fora do ar não é senha errada. Antes as duas coisas davam a mesma
+         mensagem, então bastava o projeto do Supabase estar pausado para a
+         advogada tentar cinco vezes, se convencer de que esqueceu a senha e
+         ainda levar 15 minutos de bloqueio. Aqui não gasta tentativa. */
+      if (r.motivo === 'rede') {
+        mostrarErro('O banco de dados não respondeu. Isso não é senha errada: o projeto do Supabase pode estar pausado. Nenhuma tentativa foi gasta.');
+        return;
+      }
+
+      contarErro('E-mail ou senha incorretos.');
       return;
     }
 

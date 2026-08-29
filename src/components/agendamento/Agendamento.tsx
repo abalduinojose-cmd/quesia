@@ -9,6 +9,7 @@ import {
 } from '@/lib/grade';
 import {
   criarAgendamento,
+  guardarPendente,
   lerGradeRemota,
   lerHorariosTomados,
   temSupabase,
@@ -45,6 +46,8 @@ interface Props {
   foto?: string;
   advogada?: string;
   oab?: string;
+  /** Só aparece se o sistema de agendamento cair, para não perder o cliente */
+  whatsapp?: string;
 }
 
 const esquemaNome = z
@@ -80,6 +83,7 @@ export default function Agendamento({
   foto,
   advogada,
   oab,
+  whatsapp,
 }: Props) {
   const [passo, setPasso] = useState(0);
   const [area, setArea] = useState<string | null>(null);
@@ -96,6 +100,8 @@ export default function Agendamento({
   const [enviando, setEnviando] = useState(false);
   /* Depois de confirmado, o cartão troca de conteúdo em vez de mandar embora */
   const [confirmado, setConfirmado] = useState<{ demo: boolean } | null>(null);
+  /* Banco fora do ar: o pedido não foi salvo e insistir não adianta */
+  const [foraDoAr, setForaDoAr] = useState(false);
   /* A grade em si só alimenta a lista de dias; guardamos para recarregar
      quando um horário some no meio do caminho. */
   const [, setGrade] = useState<Grade>(gradePadrao);
@@ -246,7 +252,41 @@ export default function Agendamento({
       setPasso(2);
       return;
     }
-    setErro('Não consegui salvar agora. Tente de novo em instantes.');
+
+    /* Cada falha diz o que de fato aconteceu. Antes tudo virava "tente de novo
+       em instantes", que manda a pessoa embora justamente quando insistir não
+       resolve. */
+    if (res.erro === 'rede') {
+      /* O sistema está fora do ar. Guarda o pedido para o formulário não se
+         perder e abre um caminho direto, senão o cliente vai embora. */
+      guardarPendente({
+        data: dia,
+        hora,
+        nome: rn.data,
+        contato: rc.data,
+        area: area ?? 'a definir',
+        assunto,
+        modalidade: modalidade ?? 'a combinar',
+        resumo: resumo.trim() || null,
+      });
+      setForaDoAr(true);
+      setErro(null);
+      return;
+    }
+
+    if (res.erro === 'vazao') {
+      setErro(
+        'O sistema recebeu muitos pedidos nos últimos minutos e bloqueou novos envios por segurança. Tente de novo daqui a pouco.'
+      );
+      return;
+    }
+
+    if (res.erro === 'invalido') {
+      setErro('Algum campo ficou fora do formato esperado. Confira o nome e o contato.');
+      return;
+    }
+
+    setErro('Não consegui salvar seu pedido. Tente de novo, por favor.');
   };
 
   const escolha = (
@@ -381,6 +421,66 @@ export default function Agendamento({
         </div>
       )}
 
+      {/* Sistema fora do ar: o pedido NAO foi salvo, e dizer "tente em instantes"
+          seria mentira. Mostra o que aconteceu e abre um caminho direto, senão
+          a pessoa preenche cinco passos e vai embora sem falar com ninguém. */}
+      {foraDoAr && (
+        <div className="p-7 sm:p-9">
+          <span
+            aria-hidden="true"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[#C97A5A]/45 bg-[#C97A5A]/10 text-[#F2B8A2]"
+          >
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 8.2v4.6M12 16.4h.01M10.3 3.9 2.6 17.2a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+
+          <h3
+            ref={tituloRef}
+            tabIndex={-1}
+            className="mt-6 font-display text-[1.8rem] leading-snug text-bone outline-none"
+          >
+            O sistema de agendamento está fora do ar
+          </h3>
+          <p className="medida-curta mt-3 text-[0.97rem] leading-relaxed text-bone-muted">
+            Seu pedido não chegou ao escritório, e o problema é do nosso lado,
+            não do seu. Guardamos o que você preencheu neste navegador.
+            {dia && hora ? ` Você havia escolhido ${descreveEscolha(dia, hora)}.` : ''}
+          </p>
+
+          <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => {
+                setForaDoAr(false);
+                setErro(null);
+              }}
+              className="btn-ouro rotulo-caps justify-center"
+            >
+              Tentar enviar de novo
+            </button>
+            {whatsapp && (
+              <a
+                href={`https://wa.me/${whatsapp}?text=${encodeURIComponent(
+                  `Olá! Tentei agendar pelo site${dia && hora ? ` para ${descreveEscolha(dia, hora)}` : ''}, mas o sistema estava fora do ar.`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-contorno-claro rotulo-caps justify-center"
+              >
+                Falar direto com o escritório
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Confirmado: o cartão vira recibo e o resto do fluxo sai de cena */}
       {confirmado && (
         <div className="p-7 sm:p-9">
@@ -441,7 +541,7 @@ export default function Agendamento({
       )}
 
       {/* Trilha de passos */}
-      {!confirmado && (
+      {!confirmado && !foraDoAr && (
       <div className="flex items-stretch border-b border-bone/10">
         {rotulos.map((r, i) => {
           const feito = i < passo;
@@ -491,7 +591,7 @@ export default function Agendamento({
       </div>
       )}
 
-      <div className={`p-7 sm:p-9 ${confirmado ? 'hidden' : ''}`}>
+      <div className={`p-7 sm:p-9 ${confirmado || foraDoAr ? 'hidden' : ''}`}>
         {chips.length > 0 && (
           <div className="mb-7 flex flex-wrap gap-2">
             {chips.map((c) => (
@@ -741,6 +841,7 @@ export default function Agendamento({
                 </label>
                 <input
                   id="ag-nome"
+                  maxLength={80}
                   type="text"
                   required
                   autoComplete="name"
@@ -768,6 +869,7 @@ export default function Agendamento({
                 </label>
                 <input
                   id="ag-contato"
+                  maxLength={120}
                   type="text"
                   required
                   inputMode="tel"
@@ -800,6 +902,7 @@ export default function Agendamento({
                 </label>
                 <textarea
                   id="ag-resumo"
+                  maxLength={1000}
                   rows={3}
                   placeholder="Conte em poucas linhas o que está acontecendo"
                   value={resumo}

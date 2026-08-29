@@ -28,6 +28,79 @@ export function supabase(): SupabaseClient | null {
 }
 
 /* ---------------------------------------------------------------------------
+   Por que a falha precisa ter nome
+
+   Todo erro virava a mesma frase na tela: "não consegui salvar agora, tente de
+   novo em instantes". Quando o projeto do Supabase ficou pausado, quem tentava
+   agendar recebia isso e ia embora, e quem tentava entrar no painel recebia
+   "e-mail ou senha incorretos" e queimava as cinco tentativas achando que tinha
+   esquecido a senha. Nos dois casos o problema não era nem o horário nem a
+   senha: era o banco estar fora do ar.
+--------------------------------------------------------------------------- */
+
+export type MotivoFalha =
+  | 'rede'       // o banco não respondeu (pausado, sem internet, fora do ar)
+  | 'ocupado'    // alguém pegou o horário primeiro
+  | 'vazao'      // trava de 30 pedidos por hora do banco
+  | 'invalido'   // dado recusado pelas restrições da tabela
+  | 'credencial' // e-mail ou senha errados
+  | 'outro';
+
+interface ErroBruto {
+  message?: string;
+  code?: string;
+  status?: number;
+  name?: string;
+}
+
+/** Distingue "o banco respondeu não" de "o banco não respondeu". */
+function classificar(erro: ErroBruto | null): MotivoFalha {
+  if (!erro) return 'outro';
+
+  /* Códigos do Postgres, que só chegam aqui se o banco respondeu. */
+  if (erro.code === '23505') return 'ocupado';
+  if (erro.code === 'P0001') return 'vazao';
+  if (erro.code === '23514') return 'invalido';
+
+  /* Servidor fora do ar responde 5xx (o Supabase pausado devolve 521/502). */
+  if (typeof erro.status === 'number' && erro.status >= 500) return 'rede';
+
+  /* Falha de rede não tem status: o fetch nem chegou a completar. */
+  const m = `${erro.name ?? ''} ${erro.message ?? ''}`.toLowerCase();
+  if (
+    erro.status === 0 ||
+    m.includes('failed to fetch') ||
+    m.includes('fetch failed') ||
+    m.includes('networkerror') ||
+    m.includes('network request failed') ||
+    m.includes('load failed') ||
+    m.includes('retryable')
+  ) {
+    return 'rede';
+  }
+
+  return 'outro';
+}
+
+/** Login do painel, separando senha errada de banco fora do ar. */
+export async function entrarNoPainel(
+  email: string,
+  senha: string
+): Promise<{ ok: boolean; motivo?: MotivoFalha }> {
+  const sb = supabase();
+  if (!sb) return { ok: false, motivo: 'outro' };
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email, password: senha });
+    if (!error) return { ok: true };
+    const motivo = classificar(error as ErroBruto);
+    /* O que sobrou é o próprio Supabase dizendo que a credencial não bate. */
+    return { ok: false, motivo: motivo === 'outro' ? 'credencial' : motivo };
+  } catch (e) {
+    return { ok: false, motivo: classificar(e as ErroBruto) };
+  }
+}
+
+/* ---------------------------------------------------------------------------
    Agenda (uma linha só, id = 1)
 --------------------------------------------------------------------------- */
 
@@ -95,7 +168,7 @@ function gravarDemo(lista: Agendamento[]): void {
 
 export async function criarAgendamento(
   a: Agendamento
-): Promise<{ ok: boolean; erro?: string; demo?: boolean }> {
+): Promise<{ ok: boolean; erro?: MotivoFalha; demo?: boolean }> {
   const sb = supabase();
 
   if (!sb) {
@@ -110,13 +183,54 @@ export async function criarAgendamento(
     return { ok: true, demo: true };
   }
 
-  const { error } = await sb.from('agendamentos').insert({ ...a, situacao: 'pendente' });
-  if (error) {
-    /* violação de unicidade: alguém pegou o horário primeiro */
-    if (error.code === '23505') return { ok: false, erro: 'ocupado' };
-    return { ok: false, erro: error.message };
+  try {
+    /* situacao vai daqui por clareza, mas quem decide é o gatilho do banco:
+       o navegador não manda em que estado o pedido nasce. */
+    const { error } = await sb.from('agendamentos').insert({ ...a, situacao: 'pendente' });
+    if (error) return { ok: false, erro: classificar(error as ErroBruto) };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, erro: classificar(e as ErroBruto) };
   }
-  return { ok: true };
+}
+
+/**
+ * Guarda o pedido no navegador quando o banco não respondeu, para a pessoa não
+ * ter que digitar tudo de novo e para o site poder reenviar sozinho depois.
+ * Não substitui o banco: é rede de segurança para não perder o cliente.
+ */
+const CHAVE_PENDENTE = 'qc-agendamento-pendente';
+
+export function guardarPendente(a: Agendamento): void {
+  try {
+    localStorage.setItem(CHAVE_PENDENTE, JSON.stringify({ ...a, guardadoEm: Date.now() }));
+  } catch {
+    /* navegador sem localStorage: sem rede de segurança, mas sem quebrar nada */
+  }
+}
+
+export function lerPendente(): Agendamento | null {
+  try {
+    const cru = localStorage.getItem(CHAVE_PENDENTE);
+    if (!cru) return null;
+    const p = JSON.parse(cru) as Agendamento & { guardadoEm?: number };
+    /* Depois de 3 dias o horário provavelmente já passou; não insiste. */
+    if (p.guardadoEm && Date.now() - p.guardadoEm > 3 * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(CHAVE_PENDENTE);
+      return null;
+    }
+    return p;
+  } catch {
+    return null;
+  }
+}
+
+export function esquecerPendente(): void {
+  try {
+    localStorage.removeItem(CHAVE_PENDENTE);
+  } catch {
+    /* idem */
+  }
 }
 
 /**
