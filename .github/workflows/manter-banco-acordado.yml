@@ -1,0 +1,49 @@
+# Mantém o projeto do Supabase acordado e avisa quando ele cai.
+#
+# O plano gratuito do Supabase pausa o projeto depois de 7 dias sem nenhuma
+# requisição. Quando isso acontece o hostname simplesmente deixa de existir no
+# DNS e o agendamento do site morre em silêncio: a pessoa preenche tudo e
+# recebe "não consegui salvar agora". Foi exatamente o que aconteceu.
+#
+# Uma chamada por dia conta como atividade. Não substitui o plano pago, que é a
+# única garantia formal, mas resolve o caso real de uma semana sem agendamento.
+#
+# Como o passo falha quando a resposta não é 200, este arquivo também funciona
+# como monitor: se o banco cair de novo, chega um e-mail do GitHub no mesmo dia
+# em vez de a advogada descobrir por um cliente que não conseguiu agendar.
+#
+# A chave abaixo é a mesma publishable que já viaja no JavaScript do site, que
+# qualquer visitante lê no navegador. Ela só permite criar um agendamento e ler
+# os horários ocupados, nunca ler nome ou contato de quem agendou.
+name: Manter o banco acordado
+
+on:
+  schedule:
+    # 09:17 UTC = 06:17 em Brasília. Minuto quebrado de propósito: o GitHub
+    # atrasa agendamentos em horas cheias, quando a fila dele lota.
+    - cron: '17 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Chamar horarios_ocupados
+        env:
+          BANCO: https://yglmlgythwjagjffvbsa.supabase.co
+          CHAVE: sb_publishable_nMMfUdKqdaU_6VU-okj-Ww_tQU2WhM8
+        run: |
+          codigo=$(curl -sS -o /tmp/resposta.json -w '%{http_code}' --max-time 30 \
+            -X POST "$BANCO/rest/v1/rpc/horarios_ocupados" \
+            -H "apikey: $CHAVE" \
+            -H "Authorization: Bearer $CHAVE" \
+            -H 'Content-Type: application/json' \
+            -d '{}') || true
+          echo "HTTP $codigo"
+          head -c 400 /tmp/resposta.json 2>/dev/null || true
+          echo
+          if [ "$codigo" != "200" ]; then
+            echo "::error::O banco nao respondeu. Provavelmente o projeto foi pausado: abra o painel do Supabase e clique em Restore project."
+            exit 1
+          fi
