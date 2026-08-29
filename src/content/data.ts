@@ -372,12 +372,6 @@ export const hero = {
   subLinha2: 'Direito Previdenciário, Imobiliário e Sucessório.',
 } as const;
 
-export const totalFls = String(capitulos.length).padStart(2, '0');
-
-export function numeroCapitulo(id: string): string {
-  const i = capitulos.findIndex((c) => c.id === id);
-  return String(i + 1).padStart(2, '0');
-}
 
 export const sobre = {
   headline: 'Um direito que enxerga pessoas antes de processos',

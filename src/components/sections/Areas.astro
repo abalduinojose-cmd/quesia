@@ -1,5 +1,5 @@
 ---
-import { areas, numeroCapitulo } from '@/content/data';
+import { areas } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 
 /* Ícones stroke fino (1.5) por área */
@@ -16,7 +16,6 @@ const icones: Record<string, string> = {
 <section id="areas" aria-labelledby="areas-titulo" class="overflow-hidden bg-bone">
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
     <TituloSecao
-      numero={numeroCapitulo('areas')}
       eyebrow="Áreas de atuação"
       tituloId="areas-titulo"
     >

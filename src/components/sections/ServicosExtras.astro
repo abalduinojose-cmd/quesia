@@ -4,7 +4,7 @@
  * e sem gradiente, para ficar mais leve que os cartões das três frentes
  * principais e não competir com eles.
  */
-import { servicosExtras, numeroCapitulo } from '@/content/data';
+import { servicosExtras } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 ---
 
@@ -14,7 +14,6 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
     <div class="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-16">
       <div class="lg:col-span-7">
         <TituloSecao
-          numero={numeroCapitulo('holding')}
           eyebrow={servicosExtras.eyebrow}
           tituloId="holding-titulo"
         >

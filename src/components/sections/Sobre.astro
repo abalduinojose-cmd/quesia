@@ -1,5 +1,5 @@
 ---
-import { sobre, numeroCapitulo } from '@/content/data';
+import { sobre } from '@/content/data';
 import { withBase } from '@/lib/paths';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 ---
@@ -7,7 +7,6 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
 <section id="sobre" aria-labelledby="sobre-titulo" class="overflow-hidden bg-bone">
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
     <TituloSecao
-      numero={numeroCapitulo('sobre')}
       eyebrow="Sobre a advogada"
       tituloId="sobre-titulo"
     >

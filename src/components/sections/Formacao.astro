@@ -1,5 +1,5 @@
 ---
-import { formacao, numeroCapitulo } from '@/content/data';
+import { formacao } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 
 const temPendencia = formacao.some((f) => f.confirmar);
@@ -8,7 +8,6 @@ const temPendencia = formacao.some((f) => f.confirmar);
 <section id="formacao" aria-labelledby="formacao-titulo" class="overflow-hidden bg-bone">
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-28">
     <TituloSecao
-      numero={numeroCapitulo('formacao')}
       eyebrow="Formação e atuação"
       tituloId="formacao-titulo"
     >

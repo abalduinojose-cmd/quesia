@@ -5,7 +5,10 @@
 --------------------------------------------------------------------------- */
 @theme {
   --color-bone: #FAF9F9;
-  --color-bone-dim: #F1EFEC;
+  /* Cinza quente das seções alternadas. Estava #F1EFEC, a nove pontos do bone:
+     no papel era cinza, na tela lia como branco de novo. Puxado para o lado do
+     dourado da marca, não para um cinza neutro. */
+  --color-bone-dim: #EDE9E1;
   --color-ink: #242424;
   --color-ink-muted: rgb(36 36 36 / 68%);
   --color-bone-muted: rgb(250 249 249 / 74%);
@@ -610,19 +613,6 @@ header[id] {
 }
 
 /* Numeração gigante apagada atrás das seções */
-.numeral-fantasma {
-  position: absolute;
-  z-index: 0;
-  font-family: var(--font-display);
-  font-variation-settings: "SOFT" 60, "WONK" 0;
-  font-style: italic;
-  font-size: clamp(7rem, 16vw, 13rem);
-  line-height: 1;
-  color: rgb(36 36 36 / 0.05);
-  pointer-events: none;
-  user-select: none;
-}
-.numeral-fantasma-claro { color: rgb(250 249 249 / 0.05); }
 
 /* Régua fina com tique dourado (estatísticas) */
 .regua-tick {

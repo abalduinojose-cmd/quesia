@@ -1,5 +1,5 @@
 ---
-import { site, contato, numeroCapitulo } from '@/content/data';
+import { site, contato } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 
 const redes = [
@@ -37,7 +37,6 @@ const redes = [
 >
   <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
     <TituloSecao
-      numero={numeroCapitulo('contato')}
       eyebrow="Contato"
       tema="escuro"
       tituloId="contato-titulo"

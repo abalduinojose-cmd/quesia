@@ -1,5 +1,5 @@
 ---
-import { faq, numeroCapitulo } from '@/content/data';
+import { faq } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 ---
 
@@ -8,7 +8,6 @@ import TituloSecao from '@/components/ui/TituloSecao.astro';
     <div class="grid gap-14 lg:grid-cols-12">
       <div class="lg:col-span-4">
         <TituloSecao
-          numero={numeroCapitulo('faq')}
           eyebrow="Perguntas frequentes"
           tituloId="faq-titulo"
         >

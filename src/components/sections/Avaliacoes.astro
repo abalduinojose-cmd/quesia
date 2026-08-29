@@ -1,5 +1,5 @@
 ---
-import { avaliacoes, numeroCapitulo } from '@/content/data';
+import { avaliacoes } from '@/content/data';
 import TituloSecao from '@/components/ui/TituloSecao.astro';
 import Selo from '@/components/capa/Selo.astro';
 ---
@@ -10,7 +10,6 @@ import Selo from '@/components/capa/Selo.astro';
       <div class="mx-auto w-full max-w-[1280px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
         <div class="flex flex-wrap items-end justify-between gap-10">
           <TituloSecao
-            numero={numeroCapitulo('avaliacoes')}
             eyebrow="O que dizem os clientes"
             tituloId="avaliacoes-titulo"
           >

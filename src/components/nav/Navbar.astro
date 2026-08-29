@@ -2,6 +2,12 @@
 import { areasDoMenu, capitulos, site } from '@/content/data';
 import { withBase } from '@/lib/paths';
 
+/* A barra do desktop mostra só o essencial. Como funciona, Formação, FAQ e
+   Holding continuam na página e no menu do celular, que tem espaço de sobra;
+   na barra elas viravam nove itens em fila e nada se destacava. */
+const FORA_DA_BARRA = ['como-funciona', 'formacao', 'faq', 'holding'];
+const menuDesktop = capitulos.filter((c) => !FORA_DA_BARRA.includes(c.id));
+
 /** Áreas sem seção própria abrem o agendamento já na área certa. */
 const hrefArea = (a: { href: string; abreArea?: string }) =>
   a.abreArea ? withBase(`/agendar?area=${encodeURIComponent(a.abreArea)}`) : a.href;
@@ -29,8 +35,8 @@ const hrefArea = (a: { href: string; abreArea?: string }) =>
       <span class="nav-tinta rotulo-caps hidden sm:block">{site.nome}</span>
     </a>
 
-    <div class="hidden items-center gap-5 lg:flex xl:gap-7">
-      {capitulos.map((c) =>
+    <div class="hidden items-center gap-6 lg:flex xl:gap-8">
+      {menuDesktop.map((c) =>
         c.id === 'areas' ? (
           <div class="submenu relative" data-submenu>
             <button
