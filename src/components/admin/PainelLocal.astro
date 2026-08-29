@@ -381,24 +381,43 @@ const urlGrade = withBase('/grade.json');
       <div class="bloco mt-6 border-gold/25 bg-gold/[0.05] p-6">
         <p class="rotulo-secao">Publicação</p>
         <h3 class="bloco-titulo mt-2 text-[1.15rem]">Como as mudanças entram no site</h3>
-        <ol class="mt-4 flex flex-col gap-3">
-          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">1</span>
-            Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.
-          </li>
-          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">2</span>
-            O arquivo <code class="rounded bg-ink/5 px-1.5">grade.json</code> é baixado.
-          </li>
-          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">3</span>
-            No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5">docs</code> e envie por cima do antigo.
-          </li>
-          <li class="flex gap-3 text-[0.9rem] text-ink-muted">
-            <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">4</span>
-            Em 2 a 3 minutos o site mostra os horários novos.
-          </li>
-        </ol>
+        {
+          temSupabase ? (
+            <ol class="mt-4 flex flex-col gap-3">
+              <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">1</span>
+                Toque em <strong class="text-ink">Salvar agenda</strong>, na barra de baixo.
+              </li>
+              <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">2</span>
+                Pronto. O site já mostra os horários novos, na hora.
+              </li>
+            </ol>
+          ) : (
+            <ol class="mt-4 flex flex-col gap-3">
+              <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">1</span>
+                Toque em <strong class="text-ink">Publicar</strong>, na barra de baixo.
+              </li>
+              <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">2</span>
+                O arquivo <code class="rounded bg-ink/5 px-1.5">grade.json</code> é baixado.
+              </li>
+              <li class="flex gap-3 text-[0.9rem] text-ink-muted">
+                <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold/20 text-[0.7rem] font-semibold text-gold-deep">3</span>
+                No GitHub, entre na pasta <code class="rounded bg-ink/5 px-1.5">docs</code> e envie por cima do antigo.
+              </li>
+            </ol>
+          )
+        }
+        {
+          temSupabase && (
+            <p class="mt-4 text-[0.85rem] leading-relaxed text-ink-muted">
+              Não precisa gerar o site de novo nem mexer no GitHub. A agenda fica no
+              banco de dados e o site lê de lá a cada visita.
+            </p>
+          )
+        }
       </div>
 
       <div class="bloco mt-6 border-gold/25 bg-gold/[0.05] p-5 sm:p-6">
@@ -406,7 +425,12 @@ const urlGrade = withBase('/grade.json');
         <h3 class="bloco-titulo mt-2 text-[1.15rem]">Testar com atendimentos de exemplo</h3>
         <p class="mt-2 text-[0.85rem] text-ink-muted">
           Preenche a agenda com nomes fictícios para você clicar à vontade e ver como
-          fica na prática. Nada disso vai para o site: some quando você limpar.
+          fica na prática.
+          {
+            temSupabase
+              ? ' Atenção: eles ocupam horários de verdade, então esses horários somem do site enquanto estiverem aqui. Toque em Limpar exemplos quando terminar.'
+              : ' Nada disso vai para o site: some quando você limpar.'
+          }
         </p>
         <div class="mt-4 flex flex-wrap gap-2.5">
           <button id="btn-exemplos" type="button" class="btn-clean text-[0.88rem]">
@@ -423,29 +447,42 @@ const urlGrade = withBase('/grade.json');
         <p class="rotulo-secao">Cópia de segurança</p>
         <h3 class="bloco-titulo mt-2 text-[1.15rem]">Levar a agenda para outro aparelho</h3>
         <p class="mt-2 text-[0.85rem] text-ink-muted">
-          A agenda fica guardada neste navegador. Baixe o arquivo para levar a outro
-          computador ou para guardar antes de trocar de aparelho.
+          {
+            temSupabase
+              ? 'A agenda fica no banco de dados, e não neste navegador: ela já abre igual em qualquer aparelho. Baixe uma cópia se quiser guardar como está hoje antes de mudar bastante coisa.'
+              : 'A agenda fica guardada neste navegador. Baixe o arquivo para levar a outro computador ou para guardar antes de trocar de aparelho.'
+          }
         </p>
         <div class="mt-4 flex flex-wrap gap-2.5">
           <button id="btn-baixar-copia" type="button"
             class="rotulo-caps rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
             Baixar cópia
           </button>
-          <button id="btn-copiar-json" type="button"
-            class="rotulo-caps rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
-            Copiar conteúdo
-          </button>
-          <label class="rotulo-caps cursor-pointer rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
-            Carregar arquivo
-            <input id="in-importar" type="file" accept="application/json,.json" class="sr-only" />
-          </label>
+          {
+            !temSupabase && (
+              <>
+                <button id="btn-copiar-json" type="button"
+                  class="rotulo-caps rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
+                  Copiar conteúdo
+                </button>
+                <label class="rotulo-caps cursor-pointer rounded-full border border-ink/15 px-4 py-2.5 text-ink-muted transition-colors hover:border-gold-deep hover:text-gold-deep">
+                  Carregar arquivo
+                  <input id="in-importar" type="file" accept="application/json,.json" class="sr-only" />
+                </label>
+              </>
+            )
+          }
         </div>
       </div>
 
-      <button id="btn-restaurar" type="button"
-        class="rotulo-caps mt-6 rounded-full border border-ink/15 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
-        Descartar mudanças não publicadas
-      </button>
+      {
+        !temSupabase && (
+          <button id="btn-restaurar" type="button"
+            class="rotulo-caps mt-6 rounded-full border border-ink/15 px-5 py-2.5 text-ink-muted transition-colors hover:border-[#B4462F] hover:text-[#B4462F]">
+            Descartar mudanças não publicadas
+          </button>
+        )
+      }
     </section>
     </main>
   </div>
@@ -1218,7 +1255,60 @@ const urlGrade = withBase('/grade.json');
         </div>
         <div class="mt-4 flex flex-wrap gap-1.5" data-dia="${dS}"></div>`;
       linha.querySelector('[data-limpa]')?.addEventListener('click', () => { grade.semana[String(dS)] = []; salvar(); });
+
+      /* Atalhos de faixa. Montar a semana clicando chip por chip são 98 cliques;
+         com estes botões a semana inteira sai em meia dúzia. */
+      const atalhos = document.createElement('div');
+      atalhos.className = 'mt-4 flex flex-wrap items-center gap-2';
+
+      const porFaixa = (rotulo, horas, titulo) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.title = titulo;
+        b.className = 'atalho-faixa';
+        b.textContent = rotulo;
+        b.addEventListener('click', () => {
+          const atuais = grade.semana[String(dS)] || [];
+          /* Se a faixa já está inteira ligada, o mesmo botão desliga. */
+          const jaTem = horas.every((h) => atuais.includes(h));
+          grade.semana[String(dS)] = jaTem
+            ? atuais.filter((h) => !horas.includes(h))
+            : [...new Set([...atuais, ...horas])].sort();
+          salvar();
+        });
+        return b;
+      };
+
+      const MANHA = ['08:00', '09:00', '10:00', '11:00'];
+      const TARDE = ['14:00', '15:00', '16:00', '17:00'];
+      atalhos.appendChild(porFaixa('Manhã', MANHA, 'Das 8h às 11h'));
+      atalhos.appendChild(porFaixa('Tarde', TARDE, 'Das 14h às 17h'));
+      atalhos.appendChild(porFaixa('Manhã e tarde', [...MANHA, ...TARDE], 'As duas faixas'));
+
+      /* Copiar de outro dia: o caso mais comum é terça e quinta iguais. */
+      const comHorario = [];
+      for (let d = 0; d < 7; d++) {
+        if (d !== dS && (grade.semana[String(d)] || []).length) comHorario.push(d);
+      }
+      if (comHorario.length) {
+        const sel = document.createElement('select');
+        sel.className = 'atalho-copiar';
+        sel.innerHTML =
+          '<option value="">copiar de outro dia…</option>' +
+          comHorario.map((d) => `<option value="${d}">${nomesDia[d]} (${grade.semana[String(d)].length}h)</option>`).join('');
+        sel.addEventListener('change', () => {
+          if (sel.value === '') return;
+          grade.semana[String(dS)] = [...(grade.semana[String(sel.value)] || [])];
+          salvar();
+        });
+        atalhos.appendChild(sel);
+      }
+
       const cont = linha.querySelector('[data-dia]');
+      /* Antes dos chips: o atalho é a ação principal, os chips são o ajuste
+         fino. Embaixo, ela passaria por catorze horários antes de ver o botão. */
+      linha.insertBefore(atalhos, cont);
+      cont.classList.add('mt-3');
       /* às horas cheias somam-se as criadas à mão, que podem ter minuto */
       const lista = [...new Set([...HORAS, ...ativos])].sort();
       lista.forEach((h) => {
@@ -1676,7 +1766,7 @@ const urlGrade = withBase('/grade.json');
   document.getElementById('in-dias').addEventListener('change', (e) => {
     grade.diasFuturos = Number(e.target.value) || 30; salvar(); avisar('Janela atualizada');
   });
-  document.getElementById('btn-restaurar').addEventListener('click', async () => {
+  document.getElementById('btn-restaurar')?.addEventListener('click', async () => {
     if (temSupabase) {
       grade = null; await carregar(); avisar('Recarregado do banco');
       return;
@@ -1773,14 +1863,14 @@ const urlGrade = withBase('/grade.json');
     avisar('Cópia baixada');
   });
 
-  document.getElementById('btn-copiar-json').addEventListener('click', async () => {
+  document.getElementById('btn-copiar-json')?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(grade, null, 2));
       avisar('Conteúdo copiado');
     } catch { avisar('O navegador não deixou copiar'); }
   });
 
-  document.getElementById('in-importar').addEventListener('change', async (e) => {
+  document.getElementById('in-importar')?.addEventListener('change', async (e) => {
     const arquivo = e.target.files && e.target.files[0];
     if (!arquivo) return;
     try {

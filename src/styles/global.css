@@ -874,6 +874,36 @@ details.acordeao[open] {
   background: rgb(201 168 81 / 0.1);
 }
 
+/* Atalhos da grade fixa: montam uma faixa inteira de horários de uma vez.
+   Sólidos e escuros de propósito, para se lerem como ação e não como mais um
+   horário: eles ficam logo acima da fileira de chips. */
+.atalho-faixa {
+  border-radius: 999px;
+  border: 1px solid rgb(36 36 36 / 0.14);
+  padding: 0.42rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 550;
+  color: var(--color-ink);
+  background: rgb(36 36 36 / 0.03);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.atalho-faixa:hover {
+  border-color: var(--color-gold-deep);
+  background: rgb(201 168 81 / 0.12);
+  color: var(--color-gold-deep);
+}
+.atalho-copiar {
+  border-radius: 999px;
+  border: 1px dashed rgb(36 36 36 / 0.2);
+  padding: 0.42rem 0.8rem;
+  font-size: 0.78rem;
+  color: var(--color-ink-muted);
+  background: transparent;
+  cursor: pointer;
+}
+.atalho-copiar:hover { border-color: var(--color-gold-deep); color: var(--color-gold-deep); }
+
 /* Painel da agenda: pontinho de status e setas de navegação */
 .ponto {
   display: inline-block;
