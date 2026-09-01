@@ -1636,10 +1636,19 @@ const urlGrade = withBase('/grade.json');
     catch { avisar(linkAgendar); }
   });
 
-  /* Login: 5 tentativas e depois 15 minutos de espera */
+  /* Login: no máximo 5 tentativas por hora. Errou cinco vezes, fica uma hora
+     sem poder tentar.
+     A contagem também é por hora: quem errou duas vezes semana passada não
+     começa hoje com três restantes, senão a trava iria disparar sozinha um dia
+     desses no meio de um login legítimo.
+     Isto vive no navegador, então é barreira contra insistência humana, não
+     contra script. Quem barra script é o limite de tentativas do próprio
+     Supabase, que roda no servidor dele. */
   const MAX_TENTATIVAS = 5;
-  const ESPERA_MS = 15 * 60 * 1000;
+  const ESPERA_MS = 60 * 60 * 1000;
+  const JANELA_MS = 60 * 60 * 1000;
   const CHAVE_TENT = 'qc-admin-tentativas';
+  const CHAVE_TENT_EM = 'qc-admin-tentativas-desde';
   const CHAVE_TRAVA = 'qc-admin-travado-ate';
 
   const erroLogin = document.getElementById('erro-login');
@@ -1648,16 +1657,29 @@ const urlGrade = withBase('/grade.json');
   let contagem = null;
 
   const travadoAte = () => Number(localStorage.getItem(CHAVE_TRAVA) || 0);
-  const tentativas = () => Number(localStorage.getItem(CHAVE_TENT) || 0);
+
+  function tentativas() {
+    const desde = Number(localStorage.getItem(CHAVE_TENT_EM) || 0);
+    if (desde && Date.now() - desde > JANELA_MS) {
+      localStorage.removeItem(CHAVE_TENT);
+      localStorage.removeItem(CHAVE_TENT_EM);
+      return 0;
+    }
+    return Number(localStorage.getItem(CHAVE_TENT) || 0);
+  }
 
   function mostrarErro(texto) {
     erroLogin.textContent = texto;
     erroLogin.classList.remove('hidden');
   }
 
+  /* Com uma hora de espera, MM:SS viraria "60:00", que se lê mal. */
   function minutosSegundos(ms) {
     const t = Math.max(0, Math.ceil(ms / 1000));
-    return `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(t % 60).padStart(2, '0')}`;
+    const h = Math.floor(t / 3600);
+    const m = String(Math.floor((t % 3600) / 60)).padStart(2, '0');
+    const seg = String(t % 60).padStart(2, '0');
+    return h ? `${h}:${m}:${seg}` : `${m}:${seg}`;
   }
 
   /** Desenha o estado da trava e volta true se ainda está bloqueado. */
@@ -1675,7 +1697,7 @@ const urlGrade = withBase('/grade.json');
     btnEntrar.disabled = true;
     document.getElementById('usuario').disabled = true;
     document.getElementById('senha').disabled = true;
-    mostrarErro(`Muitas tentativas. Tente de novo em ${minutosSegundos(falta)}.`);
+    mostrarErro(`Cinco tentativas erradas. O acesso fica bloqueado por uma hora. Faltam ${minutosSegundos(falta)}.`);
     if (!contagem) contagem = setInterval(conferirTrava, 1000);
     return true;
   }
@@ -1683,11 +1705,13 @@ const urlGrade = withBase('/grade.json');
 
   function contarErro(mensagem) {
     const n = tentativas() + 1;
+    if (n === 1) localStorage.setItem(CHAVE_TENT_EM, String(Date.now()));
     localStorage.setItem(CHAVE_TENT, String(n));
     document.getElementById('senha').value = '';
     if (n >= MAX_TENTATIVAS) {
       localStorage.setItem(CHAVE_TRAVA, String(Date.now() + ESPERA_MS));
-      localStorage.setItem(CHAVE_TENT, '0');
+      localStorage.removeItem(CHAVE_TENT);
+      localStorage.removeItem(CHAVE_TENT_EM);
       conferirTrava();
       return;
     }
@@ -1697,6 +1721,7 @@ const urlGrade = withBase('/grade.json');
 
   function aceitarEntrada() {
     localStorage.removeItem(CHAVE_TENT);
+    localStorage.removeItem(CHAVE_TENT_EM);
     localStorage.removeItem(CHAVE_TRAVA);
     erroLogin.classList.add('hidden');
     entrar();

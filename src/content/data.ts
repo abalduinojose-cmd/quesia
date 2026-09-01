@@ -461,16 +461,6 @@ export const processo: Etapa[] = [
 
 export const formacao: Credencial[] = [
   {
-    titulo: 'Bacharelado em Direito',
-    detalhe: 'instituição a confirmar',
-    confirmar: true,
-  },
-  {
-    titulo: 'Pós-graduação em Direito Previdenciário',
-    detalhe: 'a confirmar',
-    confirmar: true,
-  },
-  {
     titulo: 'Inscrição na Ordem dos Advogados do Brasil',
     detalhe: 'OAB/RJ 237.540',
   },
