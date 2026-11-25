@@ -38,6 +38,10 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
   const [nome, setNome] = useState('');
   const [valor, setValor] = useState('');
   const [erroNome, setErroNome] = useState<string | null>(null);
+  /* Para onde a cena viaja na troca. A entrada vem do lado de onde a pessoa
+     está indo: avançando entra pela direita, voltando entra pela esquerda.
+     Sem isso a troca não tem vetor e lê como piscada. */
+  const [sentido, setSentido] = useState<'frente' | 'tras'>('frente');
   const tituloRef = useRef<HTMLParagraphElement>(null);
 
   const foco = () => {
@@ -50,12 +54,14 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
 
   const responder = (id: string, opcao: string) => {
     setRespostas((r) => ({ ...r, [id]: opcao }));
+    setSentido('frente');
     setPasso((p) => p + 1);
     foco();
   };
 
   const voltar = () => {
     setErroNome(null);
+    setSentido('tras');
     setPasso((p) => Math.max(0, p - 1));
     foco();
   };
@@ -80,7 +86,6 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
 
   const concluido = passo >= total;
   const indice = Math.min(passo, total - 1);
-  const progresso = Math.round(((concluido ? total : passo) / total) * 100);
 
   const irParaResumo = () => {
     const n = nome.trim();
@@ -89,6 +94,7 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
       return;
     }
     setErroNome(null);
+    setSentido('frente');
     setPasso(total);
     foco();
   };
@@ -96,18 +102,27 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
   return (
     <div className="funil">
       {/* Barra de progresso: a pessoa precisa enxergar que é curto */}
+      {/* Segmentos em vez de uma barra: a pessoa conta quantos faltam de
+          relance, e "seis traços" lê mais curto que uma barra pela metade. */}
       <div className="funil-topo">
-        <div className="funil-barra" aria-hidden="true">
-          <span style={{ width: `${progresso}%` }} />
+        <div className="funil-marcas" aria-hidden="true">
+          {Array.from({ length: total }, (_, i) => (
+            <span
+              key={i}
+              className="funil-marca"
+              data-estado={concluido || i < passo ? 'feito' : i === passo ? 'agora' : 'falta'}
+            />
+          ))}
         </div>
         <p className="funil-contador">
-          {concluido ? 'Pronto' : `Pergunta ${indice + 1} de ${total}`}
+          {concluido ? 'Pronto para enviar' : `${indice + 1} de ${total}`}
         </p>
       </div>
 
       <div className="funil-corpo">
+        <div key={passo} className="funil-cena" data-sentido={sentido}>
         {!concluido && passo < passos.length && (
-          <div key={passos[passo].id}>
+          <div>
             <p
               ref={tituloRef}
               tabIndex={-1}
@@ -119,11 +134,12 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
             <p className="funil-ajuda">{passos[passo].ajuda}</p>
 
             <div className="funil-opcoes">
-              {passos[passo].opcoes.map((o) => (
+              {passos[passo].opcoes.map((o, i) => (
                 <button
                   key={o}
                   type="button"
                   className="funil-opcao"
+                  style={{ '--i': i } as React.CSSProperties}
                   onClick={() => responder(passos[passo].id, o)}
                 >
                   <span>{o}</span>
@@ -237,6 +253,7 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
             </a>
           </div>
         )}
+        </div>
       </div>
 
       <div className="funil-rodape">
