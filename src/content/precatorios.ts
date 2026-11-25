@@ -156,6 +156,7 @@ export const precatorios = {
     },
   ],
 
-  aviso:
-    'Esta página tem caráter informativo e não substitui a análise do seu caso. Nenhuma informação aqui constitui promessa de resultado ou de prazo de pagamento.',
+  /* Curto, mas sem abrir mão do que a OAB exige: nada de promessa de
+     resultado nem de prazo. */
+  aviso: 'Conteúdo informativo. Não constitui promessa de resultado ou de prazo.',
 } as const;
