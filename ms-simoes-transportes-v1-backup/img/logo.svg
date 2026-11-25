@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 260" role="img" aria-label="M S Simões Transportes">
+  <defs>
+    <style>
+      .t { font-family: 'Montserrat', Arial, sans-serif; font-style: italic; font-weight: 900; }
+    </style>
+  </defs>
+
+  <!-- swoosh amarelo -->
+  <path d="M40 150
+           C 90 195, 330 200, 420 105
+           C 445 78, 430 60, 395 62
+           C 430 66, 432 84, 408 106
+           C 330 178, 110 175, 62 138
+           C 50 128, 46 138, 40 150 Z"
+        fill="#F4C126" stroke="#8C1212" stroke-width="7" stroke-linejoin="round"/>
+
+  <!-- MS -->
+  <text x="225" y="128" text-anchor="middle" class="t" font-size="118"
+        fill="#ffffff" stroke="#8C1212" stroke-width="9" paint-order="stroke" stroke-linejoin="round">MS</text>
+
+  <!-- SIMÕES -->
+  <text x="318" y="152" text-anchor="middle" class="t" font-size="30" letter-spacing="1"
+        fill="#ffffff" stroke="#8C1212" stroke-width="6" paint-order="stroke" stroke-linejoin="round">SIMÕES</text>
+
+  <!-- TRANSPORTES -->
+  <text x="230" y="225" text-anchor="middle" class="t" font-size="55" letter-spacing="0"
+        fill="#ffffff" stroke="#8C1212" stroke-width="9" paint-order="stroke" stroke-linejoin="round">TRANSPORTES</text>
+</svg>

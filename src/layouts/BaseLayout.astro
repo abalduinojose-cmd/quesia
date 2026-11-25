@@ -11,12 +11,15 @@ interface Props {
   descricao?: string;
   /** caminho relativo ao site, ex.: "/privacidade" */
   caminho?: string;
+  /** Página de anúncio: fica fora do Google e fora do sitemap. */
+  noindex?: boolean;
 }
 
 const {
   titulo = seo.titulo,
   descricao = seo.descricao,
   caminho = '/',
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://abjpublicidade.github.io');
@@ -34,6 +37,7 @@ const jsonLd = JSON.stringify(jsonLdAttorney(canonical, logoAbs, ogImage));
     <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{titulo}</title>
     <meta name="description" content={descricao} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="keywords" content={seo.palavrasChave.join(', ')} />
     <meta name="author" content={`${site.nome} ${site.sufixo}`} />
     <link rel="canonical" href={canonical} />

@@ -36,7 +36,8 @@ export default defineConfig({
          contrário: na prática, entregava o endereço do painel de bandeja.
          De propósito NÃO entra Disallow no robots.txt: bloquear a leitura
          impediria o buscador de ver o próprio noindex. */
-      filter: (pagina) => !pagina.includes('/admin'),
+      filter: (pagina) =>
+        !pagina.includes('/admin') && !pagina.includes('/precatorios'),
     }),
   ],
   vite: { plugins: [tailwindcss()] },

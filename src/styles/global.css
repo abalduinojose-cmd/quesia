@@ -1184,3 +1184,445 @@ details.acordeao[open] {
   }
   .pa-passo { animation: paFade 0.4s var(--ease-editorial); }
 }
+
+/* ---------------------------------------------------------------------------
+   Página /precatorios · anúncio
+   Fora do site de propósito: sem navbar, sem rodapé do site, sem saída que
+   não seja o WhatsApp. Mesma paleta e mesmas fontes da marca.
+--------------------------------------------------------------------------- */
+.pagina-pre {
+  min-height: 100dvh;
+  background:
+    radial-gradient(90rem 50rem at 15% -10%, rgb(201 168 81 / 0.13), transparent 62%),
+    radial-gradient(70rem 40rem at 95% 8%, rgb(201 168 81 / 0.07), transparent 58%),
+    var(--color-ink);
+  color: var(--color-bone);
+}
+
+.pre-topo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1.15rem 1.25rem;
+  border-bottom: 1px solid rgb(250 249 249 / 0.1);
+}
+.pre-topo img { height: 2rem; width: auto; }
+.pre-topo .rotulo-caps { color: var(--color-bone-muted); }
+.pre-topo em { font-style: normal; color: var(--color-gold); }
+
+/* --- dobra: coluna única centrada ---
+   Anúncio não comporta duas colunas de leitura: o olho tem de ir do título
+   direto para a primeira pergunta, sem desviar para o lado. --- */
+.pre-dobra {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 40rem;
+  padding: 2.2rem 1.25rem 2.5rem;
+  text-align: center;
+  scroll-margin-top: 1rem;
+}
+@media (min-width: 900px) { .pre-dobra { padding: 3rem 2rem 3.5rem; } }
+
+.pre-dobra h1 {
+  margin-top: 0.85rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.05rem, 5.4vw, 3rem);
+  line-height: 1.06;
+  text-wrap: balance;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 0.3), 0 4px 18px rgb(0 0 0 / 0.25);
+}
+.pre-sub {
+  margin: 0.85rem auto 0;
+  max-width: 30rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  text-wrap: balance;
+  color: var(--color-bone-muted);
+}
+
+/* Prova social em uma linha só, separada por pontos. Em bloco ela empurrava
+   o funil para baixo da dobra do celular. */
+.pre-selos {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  color: rgb(250 249 249 / 0.55);
+}
+.pre-selos li { display: flex; align-items: center; gap: 0.35rem; }
+/* O separador só entra onde os três cabem na mesma linha. No celular eles
+   quebram, e o ponto ficava sobrando no começo de cada linha. */
+@media (min-width: 680px) {
+  .pre-selos li + li::before {
+    content: "·";
+    margin-right: 0.5rem;
+    color: rgb(250 249 249 / 0.3);
+  }
+}
+@media (max-width: 679px) {
+  .pre-selos { flex-direction: column; gap: 0.3rem; }
+}
+.pre-estrela { color: var(--color-gold); }
+
+.pre-oab {
+  margin-top: 1.1rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(250 249 249 / 0.42);
+}
+
+/* --- o cartão do funil: é o herói da página --- */
+.pre-cartao-area { position: relative; margin-top: 1.6rem; text-align: left; }
+.pre-cartao-area::before {
+  content: "";
+  position: absolute;
+  inset: -12% -8% -8%;
+  background: radial-gradient(60% 50% at 50% 35%, rgb(201 168 81 / 0.22), transparent 70%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+.pre-cartao {
+  position: relative;
+  border-radius: 1.6rem;
+  padding: 1px;
+  background: linear-gradient(160deg, rgb(201 168 81 / 0.6), rgb(250 249 249 / 0.1) 45%, transparent);
+  box-shadow: 0 40px 90px -45px rgb(0 0 0 / 0.95);
+}
+
+.funil {
+  border-radius: calc(1.6rem - 1px);
+  background: #1B1B1B;
+  overflow: hidden;
+}
+
+/* --- progresso --- */
+.funil-topo { padding: 1.25rem 1.4rem 0; }
+.funil-barra {
+  height: 3px;
+  border-radius: 999px;
+  background: rgb(250 249 249 / 0.12);
+  overflow: hidden;
+}
+.funil-barra span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--color-gold-deep), var(--color-gold-claro));
+  transition: width 0.45s var(--ease-editorial);
+}
+.funil-contador {
+  margin-top: 0.6rem;
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgb(250 249 249 / 0.45);
+}
+
+.funil-corpo { padding: 1.1rem 1.4rem 1.4rem; }
+@media (min-width: 560px) { .funil-corpo { padding: 1.3rem 1.8rem 1.6rem; } }
+
+.funil-pergunta {
+  font-family: var(--font-display);
+  font-size: 1.42rem;
+  line-height: 1.22;
+  outline: none;
+  text-wrap: balance;
+}
+.funil-ajuda {
+  margin-top: 0.55rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-bone-muted);
+}
+
+/* --- opções: alvo grande, um toque e avança --- */
+.funil-opcoes {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.funil-opcao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.95rem 1.1rem;
+  border-radius: 0.9rem;
+  border: 1px solid rgb(250 249 249 / 0.14);
+  background: rgb(250 249 249 / 0.03);
+  color: var(--color-bone);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease-editorial);
+}
+.funil-opcao svg { color: rgb(250 249 249 / 0.35); flex-shrink: 0; transition: color 0.2s ease, transform 0.2s ease; }
+.funil-opcao:hover {
+  border-color: var(--color-gold);
+  background: rgb(201 168 81 / 0.1);
+}
+.funil-opcao:hover svg { color: var(--color-gold); transform: translateX(2px); }
+.funil-opcao:active { transform: scale(0.99); }
+
+/* --- último passo --- */
+.funil-campo { margin-top: 1.3rem; display: block; }
+.funil-campo .rotulo-caps { color: var(--color-bone-muted); }
+.funil-campo input {
+  margin-top: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgb(250 249 249 / 0.16);
+  background: rgb(250 249 249 / 0.03);
+  color: var(--color-bone);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+.funil-campo input::placeholder { color: rgb(250 249 249 / 0.32); }
+.funil-campo input:focus { border-color: var(--color-gold); }
+.funil-erro { margin-top: 0.5rem; font-size: 0.85rem; color: #F2B8A2; }
+
+.funil-sublabel {
+  margin-top: 1.4rem;
+  color: var(--color-bone-muted);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.funil-sublabel span {
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: rgb(250 249 249 / 0.38);
+  border: 1px solid rgb(250 249 249 / 0.16);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.funil-pilulas { margin-top: 0.7rem; display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.funil-pilula {
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgb(250 249 249 / 0.16);
+  background: transparent;
+  color: var(--color-bone-muted);
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.funil-pilula:hover { border-color: var(--color-gold); color: var(--color-bone); }
+.funil-pilula[aria-pressed="true"] {
+  border-color: var(--color-gold);
+  background: rgb(201 168 81 / 0.16);
+  color: var(--color-gold-claro);
+  font-weight: 550;
+}
+
+.funil-enviar { margin-top: 1.5rem; width: 100%; justify-content: center; }
+
+/* --- resumo --- */
+.funil-resumo {
+  margin-top: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(250 249 249 / 0.12);
+  overflow: hidden;
+}
+.funil-resumo-linha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.9rem;
+  padding: 0.8rem 1rem;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  background: rgb(250 249 249 / 0.03);
+  border-bottom: 1px solid rgb(250 249 249 / 0.08);
+}
+.funil-resumo-linha:last-child { border-bottom: 0; }
+.funil-resumo-linha span {
+  flex: 0 0 9rem;
+  font-size: 0.68rem;
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgb(250 249 249 / 0.45);
+  padding-top: 0.18rem;
+}
+
+.funil-whats {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 1.05rem 1.2rem;
+  border-radius: 999px;
+  background: #25D366;
+  color: #06331A;
+  font-size: 1rem;
+  font-weight: 650;
+  transition: background-color 0.25s ease, transform 0.25s var(--ease-editorial);
+}
+.funil-whats:hover { background: #1FBE5A; }
+.funil-whats:active { transform: scale(0.99); }
+
+/* --- rodapé do cartão: voltar e o atalho discreto --- */
+.funil-rodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.4rem 1.1rem;
+  border-top: 1px solid rgb(250 249 249 / 0.08);
+}
+.funil-voltar {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-bone-muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.funil-voltar:hover { color: var(--color-gold); }
+/* Discreto de propósito: existe para não perder quem não quer responder,
+   não para competir com o funil. */
+.funil-atalho {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: rgb(250 249 249 / 0.4);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+.funil-atalho:hover { color: #25D366; }
+
+/* --- faixas de conteúdo --- */
+.pre-faixa {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 68rem;
+  padding: 3rem 1.25rem;
+}
+@media (min-width: 900px) { .pre-faixa { padding: 4rem 2rem; } }
+.pre-faixa-escura {
+  background: rgb(0 0 0 / 0.22);
+  max-width: none;
+  border-block: 1px solid rgb(250 249 249 / 0.08);
+}
+.pre-faixa-escura > * { margin-inline: auto; max-width: 68rem; }
+.pre-faixa h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.15;
+}
+
+.pre-passos {
+  margin-top: 2rem;
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 760px) { .pre-passos { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+.pre-num {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.7rem;
+  color: var(--color-gold);
+}
+.pre-passo-titulo { margin-top: 0.5rem; font-family: var(--font-display); font-size: 1.2rem; }
+.pre-passo-texto { margin-top: 0.5rem; font-size: 0.92rem; line-height: 1.6; color: var(--color-bone-muted); }
+
+.pre-duvidas { margin-top: 1.8rem; display: flex; flex-direction: column; }
+.pre-duvida { border-bottom: 1px solid rgb(250 249 249 / 0.1); }
+.pre-duvida summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.05rem 0;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+.pre-duvida summary::-webkit-details-marker { display: none; }
+.pre-duvida summary:hover { color: var(--color-gold-claro); }
+.pre-duvida summary svg { color: var(--color-gold); flex-shrink: 0; transition: transform 0.25s ease; }
+.pre-duvida[open] summary svg { transform: rotate(180deg); }
+.pre-duvida p {
+  padding: 0 0 1.1rem;
+  max-width: 52rem;
+  font-size: 0.93rem;
+  line-height: 1.68;
+  color: var(--color-bone-muted);
+}
+
+/* --- fechamento --- */
+.pre-fim {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 48rem;
+  padding: 3.5rem 1.25rem;
+  text-align: center;
+}
+.pre-fim h2 { font-family: var(--font-display); font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.15; }
+.pre-fim p { margin: 0.9rem auto 0; max-width: 34rem; color: var(--color-bone-muted); line-height: 1.65; }
+.pre-fim-botoes {
+  margin-top: 1.8rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+}
+.pre-btn-whats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(37 211 102 / 0.5);
+  color: #6FE6A0;
+  font-size: 0.92rem;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.pre-btn-whats:hover { background: rgb(37 211 102 / 0.12); border-color: #25D366; }
+
+.pre-rodape {
+  border-top: 1px solid rgb(250 249 249 / 0.08);
+  padding: 2rem 1.25rem 6rem;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: rgb(250 249 249 / 0.45);
+}
+.pre-aviso { margin-top: 0.9rem; max-width: 44rem; margin-inline: auto; font-size: 0.76rem; }
+
+/* --- flutuante --- */
+.pre-fab {
+  position: fixed;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.1rem;
+  width: 3.1rem;
+  border-radius: 999px;
+  background: #25D366;
+  color: #06331A;
+  box-shadow: 0 14px 30px -12px rgb(0 0 0 / 0.7);
+  transition: transform 0.25s var(--ease-editorial);
+}
+.pre-fab:hover { transform: scale(1.06); }
