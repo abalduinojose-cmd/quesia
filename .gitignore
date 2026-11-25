@@ -4,3 +4,7 @@ node_modules/
 *.log
 .DS_Store
 src-assets/hero-raw.mp4
+
+# Backup de OUTRO cliente que mora dentro desta pasta. Nunca versionar
+# aqui: este repositorio e publico.
+ms-simoes-transportes-v1-backup/
