@@ -1591,6 +1591,95 @@ details.acordeao[open] {
 }
 .funil-atalho:hover { color: #25D366; }
 
+/* --- prova social: oito avaliações reais do Google --- */
+.pre-provas-sociais {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 72rem;
+  padding: 1rem 1.25rem 2.5rem;
+  border-top: 1px solid rgb(250 249 249 / 0.07);
+  margin-top: 1.5rem;
+}
+@media (min-width: 900px) { .pre-provas-sociais { padding: 2rem 2rem 3rem; } }
+
+.pre-provas-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  padding-top: 1.4rem;
+}
+.pre-provas-topo h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  line-height: 1.15;
+}
+.pre-selo-google {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--color-gold);
+  border: 1px solid rgb(201 168 81 / 0.3);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+.pre-selo-google:hover { border-color: var(--color-gold); background: rgb(201 168 81 / 0.1); }
+
+.pre-avaliacoes {
+  margin-top: 1.3rem;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 640px) { .pre-avaliacoes { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1040px) { .pre-avaliacoes { grid-template-columns: repeat(4, 1fr); } }
+
+.pre-avaliacao {
+  border-radius: 1.1rem;
+  border: 1px solid rgb(250 249 249 / 0.09);
+  background: rgb(250 249 249 / 0.025);
+  padding: 1rem 1.05rem;
+  /* Cascata curta, igual à das opções do funil: monta a grade sem desfilar */
+  animation: opcaoEntra 0.42s var(--ease-editorial) backwards;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.045s);
+}
+.pre-avaliacao-topo { display: flex; align-items: center; gap: 0.6rem; }
+.pre-avaliacao-topo img {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgb(250 249 249 / 0.08);
+  flex-shrink: 0;
+}
+.pre-avaliacao-nome {
+  font-size: 0.86rem;
+  font-weight: 550;
+  line-height: 1.2;
+  color: var(--color-bone);
+}
+.pre-avaliacao-estrelas {
+  margin-top: 0.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--color-gold);
+}
+/* Quatro linhas: num anúncio ninguém lê depoimento inteiro, e o corte
+   mantém os oito cartões na mesma altura. */
+.pre-avaliacao-texto {
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--color-bone-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 /* --- rodapé legal --- */
 .pre-rodape {
   margin-top: auto;

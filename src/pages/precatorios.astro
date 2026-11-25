@@ -11,6 +11,11 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site, avaliacoes } from '@/content/data';
+
+/* Oito avaliações reais do Google Negócios dela, as mais recentes da lista
+   que já alimenta o site. Prova social num anúncio vale mais que explicação:
+   por isso ficam logo abaixo do funil, e não uma seção institucional. */
+const oitoAvaliacoes = avaliacoes.itens.slice(0, 8);
 import { precatorios } from '@/content/precatorios';
 import { withBase } from '@/lib/paths';
 import Funil from '@/components/precatorios/Funil';
@@ -70,6 +75,47 @@ const zapDireto = `https://wa.me/${site.whatsapp.numero}?text=${encodeURICompone
         </div>
 
         <p class="pre-oab">Dra. {site.nome} · {site.oab}</p>
+      </section>
+
+      <!-- PROVA SOCIAL: oito avaliações reais do Google -->
+      <section class="pre-provas-sociais" aria-labelledby="pre-avaliacoes-titulo">
+        <div class="pre-provas-topo">
+          <h2 id="pre-avaliacoes-titulo">O que dizem quem já foi atendido</h2>
+          <a
+            href={avaliacoes.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="pre-selo-google"
+          >
+            <span aria-hidden="true">★</span>
+            {avaliacoes.nota} no Google · {avaliacoes.total} avaliações
+          </a>
+        </div>
+
+        <ul class="pre-avaliacoes" role="list">
+          {oitoAvaliacoes.map((a, i) => (
+            <li class="pre-avaliacao" style={`--i: ${i}`}>
+              <div class="pre-avaliacao-topo">
+                <img
+                  src={a.foto}
+                  alt=""
+                  width="40"
+                  height="40"
+                  loading="lazy"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                />
+                <div>
+                  <p class="pre-avaliacao-nome">{a.nome}</p>
+                  <p class="pre-avaliacao-estrelas" aria-label={`${a.nota} de 5`}>
+                    {'★'.repeat(a.nota)}
+                  </p>
+                </div>
+              </div>
+              <p class="pre-avaliacao-texto">{a.texto}</p>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <footer class="pre-rodape">

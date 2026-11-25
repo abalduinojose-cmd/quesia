@@ -67,15 +67,18 @@ export default function Funil({ passos, valores, whatsapp, atalhoWhats }: Props)
   };
 
   const mensagem = useMemo(() => {
+    /* O asterisco é a marcação de negrito do WhatsApp: *assim* chega em
+       negrito no aplicativo. Só os rótulos vão em negrito, para a advogada
+       varrer a mensagem de relance. */
     const linhas = [
       'Olá, Dra. Quesia! Vim pela página de precatórios.',
       '',
-      `Nome: ${nome.trim()}`,
+      `*Nome:* ${nome.trim()}`,
       ...passos
         .filter((p) => respostas[p.id])
-        .map((p) => `${p.rotulo}: ${respostas[p.id]}`),
+        .map((p) => `*${p.rotulo}:* ${respostas[p.id]}`),
     ];
-    if (valor) linhas.push(`Valor aproximado: ${valor}`);
+    if (valor) linhas.push(`*Valor aproximado:* ${valor}`);
     return linhas.join('\n');
   }, [nome, valor, respostas, passos]);
 
